@@ -1,0 +1,18 @@
+* text=auto
+
+# Force to use LF line endings
+.gitattributes eol=lf
+.gitignore eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+
+# Mark textures as nontext
+*.png binary
+*.jpg binary
+*.ico binary
+*.svg binary
+# Mark audios as nontext
+*.mp3 binary
+*.wav binary
+# Mark fonts as nontext
+*.ttf binary
