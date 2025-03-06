@@ -13,5 +13,87 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\Manager">
+      <UniqueIdentifier>{eeaf11ba-d592-4197-a46b-5073714c3391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Manager">
+      <UniqueIdentifier>{f926747b-77f2-4b83-a5ca-fa4bf775341f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Manager\Concrete">
+      <UniqueIdentifier>{3aea023b-2866-46b3-9238-8c5c8b2f67dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Manager\Concrete">
+      <UniqueIdentifier>{f6bed69b-8919-44e1-a484-710557a2ee4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Infra">
+      <UniqueIdentifier>{ba9f9731-3251-4406-bbde-83e45d72b751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Infra">
+      <UniqueIdentifier>{3c3ab3f3-53bd-4a5f-886e-9d608616d2d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\_Dependencies">
+      <UniqueIdentifier>{3806a362-9cc5-4355-b58f-ea336f0385f4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Scripts\Source\Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\AudioManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\GameManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\ResourceManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Infra\Animation.cpp">
+      <Filter>源文件\Infra</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Infra\Timer.cpp">
+      <Filter>源文件\Infra</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Infra\Vector2.cpp">
+      <Filter>源文件\Infra</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\ConfigManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\cJSON\cJSON.c">
+      <Filter>源文件\_Dependencies</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\GameManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\ResourceManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Manager.hpp">
+      <Filter>头文件\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Infra\Animation.h">
+      <Filter>头文件\Infra</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Infra\Timer.h">
+      <Filter>头文件\Infra</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Infra\Vector2.h">
+      <Filter>头文件\Infra</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\ConfigManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
