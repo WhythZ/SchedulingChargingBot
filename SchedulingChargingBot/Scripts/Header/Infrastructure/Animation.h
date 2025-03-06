@@ -4,7 +4,7 @@
 #include <functional>
 #include <vector>
 #include <SDL.h>
-#include "../Infra/Timer.h"
+#include "../Infrastructure/Timer.h"
 
 //动画播放的默认帧间隔
 #define ANIMATION_DEFAULT_FRAME_INTERVAL 0.1

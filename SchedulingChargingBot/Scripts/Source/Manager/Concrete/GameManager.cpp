@@ -112,6 +112,11 @@ int GameManager::Run(int _argc, char** _argv)
 	return 0;
 }
 
+SDL_Rect GameManager::GetMapRect() const
+{
+	return mapRect;
+}
+
 void GameManager::InitAssert(bool _flag, const char* _errMsg)
 {
 	//如果初始化成功，那么无事发生，直接返回

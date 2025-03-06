@@ -31,11 +31,10 @@ bool ResourceManager::LoadTextureRes(SDL_Renderer* _renderer)
 	//SDL_Texture* _imgTexture = SDL_CreateTextureFromSurface(_renderer, _imgSurface);  //从内存加载到显存（GPU纹理数据）
 
 	//将图片资源加载存储在图像池（unordered_map类型的容器）
-	texturePool[TextureResID::Park16x16] = IMG_LoadTexture(_renderer, "Assets/Sprites/Park16x16.png");
+	texturePool[TextureResID::Tileset] = IMG_LoadTexture(_renderer, "Assets/Sprites/Tileset.png");
 	texturePool[TextureResID::Vehicle] = IMG_LoadTexture(_renderer, "Assets/Sprites/Vehicle.png");
 	texturePool[TextureResID::Robot] = IMG_LoadTexture(_renderer, "Assets/Sprites/Robot.png");
 	texturePool[TextureResID::Battery] = IMG_LoadTexture(_renderer, "Assets/Sprites/Battery.png");
-	texturePool[TextureResID::Charge] = IMG_LoadTexture(_renderer, "Assets/Sprites/Charge.png");
 
 	//检查unordered_map容器中所有键值对的值是否有效；其中auto是自动类型推导，成员second访问的是键值对的值
 	for (const auto& _pair : texturePool)

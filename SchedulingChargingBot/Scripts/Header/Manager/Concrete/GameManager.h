@@ -24,6 +24,8 @@ private:
 public:
 	int Run(int, char**);
 
+	SDL_Rect GetMapRect() const;
+
 private:
 	GameManager();                   
 	~GameManager();                  

@@ -10,11 +10,10 @@
 //图像资源、音频资源、字体资源
 enum class TextureResID
 {
-	Park16x16,
+	Tileset,
 	Vehicle,
 	Robot,
-	Battery,
-	Charge
+	Battery
 };
 
 enum class SoundResID

@@ -6,8 +6,10 @@
 class Vehicle :public Chargeable
 {
 public:
-	Vehicle() = default;
+	Vehicle();
 	~Vehicle() = default;
+
+	void OnUpdate(double) override;
 };
 
 #endif
