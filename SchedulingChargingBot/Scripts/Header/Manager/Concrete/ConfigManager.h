@@ -1,13 +1,11 @@
 #ifndef _CONFIG_MANAGER_H_
 #define _CONFIG_MANAGER_H_
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
 #include <string>
 #include <cJSON.h>
 #include <SDL.h>
 #include "../Manager.hpp"
+#include "../../Tilemap/Map.h"
 
 //用于处理游戏配置文件数据
 class ConfigManager :public Manager<ConfigManager>
@@ -27,9 +25,11 @@ public:
 
 public:
 	BasicConfigPrefab basicPrefab;
+	Map map;
 
 public:
 	bool LoadConfig(const std::string&);
+	bool LoadMap(const std::string&);
 
 private:
 	ConfigManager() = default;

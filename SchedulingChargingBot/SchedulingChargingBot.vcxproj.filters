@@ -46,6 +46,12 @@
     <Filter Include="源文件\Chargeable\Concrete">
       <UniqueIdentifier>{d0b44556-2412-4a3b-88d7-3e30f2b1a861}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Tilemap">
+      <UniqueIdentifier>{b5d065a2-833e-4c5b-8b57-1960e8e894f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Tilemap">
+      <UniqueIdentifier>{e449f2a8-3c9f-4746-a466-76d76ff96bca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scripts\Source\Main.cpp">
@@ -99,6 +105,9 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\Tilemap\Map.cpp">
+      <Filter>源文件\Tilemap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -148,6 +157,12 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Chargeable\Chargeable.h">
       <Filter>头文件\Chargeable</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Tilemap\Map.h">
+      <Filter>头文件\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Tilemap\Tile.h">
+      <Filter>头文件\Tilemap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

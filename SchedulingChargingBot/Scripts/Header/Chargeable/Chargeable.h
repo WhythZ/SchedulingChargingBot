@@ -21,7 +21,8 @@ protected:
 	#pragma region Animation
 	Animation* animCurrent;                    //当前动画
 	Animation animIdle;                        //闲置动画
-	Animation animCharge;                      //带电荷动画
+	Animation animCharge;                      //充电动画
+	Animation animDischarge;                   //放电动画
 	#pragma endregion
 
 	#pragma region Charging

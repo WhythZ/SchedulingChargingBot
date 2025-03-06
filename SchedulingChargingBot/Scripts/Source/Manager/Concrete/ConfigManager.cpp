@@ -1,4 +1,7 @@
 #include "../../../Header/Manager/Concrete/ConfigManager.h"
+#include <iostream>
+#include <sstream>
+#include <fstream>
 
 bool ConfigManager::LoadConfig(const std::string& _path)
 {
@@ -26,6 +29,11 @@ bool ConfigManager::LoadConfig(const std::string& _path)
 	//释放内存并返回
 	cJSON_Delete(_jsonRoot);
 	return true;
+}
+
+bool ConfigManager::LoadMap(const std::string& _csvPath)
+{
+	return map.Load(_csvPath);
 }
 
 bool ConfigManager::ParseBasicConfigPrefab(BasicConfigPrefab& _prefab, cJSON* _jsonRoot)
