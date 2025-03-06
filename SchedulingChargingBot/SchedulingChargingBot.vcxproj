@@ -135,25 +135,39 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\cJSON\cJSON.c" />
-    <ClCompile Include="Scripts\Source\Infra\Animation.cpp" />
-    <ClCompile Include="Scripts\Source\Infra\Timer.cpp" />
-    <ClCompile Include="Scripts\Source\Infra\Vector2.cpp" />
+    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Battery.cpp" />
+    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Robot.cpp" />
+    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Vehicle.cpp" />
+    <ClCompile Include="Scripts\Source\Infrastructure\Animation.cpp" />
+    <ClCompile Include="Scripts\Source\Infrastructure\Timer.cpp" />
+    <ClCompile Include="Scripts\Source\Infrastructure\Vector2.cpp" />
+    <ClCompile Include="Scripts\Source\Chargeable\Chargeable.cpp" />
     <ClCompile Include="Scripts\Source\Main.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\AudioManager.cpp" />
+    <ClCompile Include="Scripts\Source\Manager\Concrete\BatteryManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ConfigManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\GameManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ResourceManager.cpp" />
+    <ClCompile Include="Scripts\Source\Manager\Concrete\RobotManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp" />
+    <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scripts\Header\Infra\Animation.h" />
-    <ClInclude Include="Scripts\Header\Infra\Timer.h" />
-    <ClInclude Include="Scripts\Header\Infra\Vector2.h" />
+    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h" />
+    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Robot.h" />
+    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Vehicle.h" />
+    <ClInclude Include="Scripts\Header\Infrastructure\Animation.h" />
+    <ClInclude Include="Scripts\Header\Infrastructure\Timer.h" />
+    <ClInclude Include="Scripts\Header\Infrastructure\Vector2.h" />
+    <ClInclude Include="Scripts\Header\Chargeable\Chargeable.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\BatteryManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ConfigManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\GameManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ResourceManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\RobotManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

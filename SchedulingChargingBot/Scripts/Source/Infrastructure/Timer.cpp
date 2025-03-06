@@ -1,4 +1,4 @@
-#include "../../Header/Infra/Timer.h"
+#include "../../Header/Infrastructure/Timer.h"
 
 void Timer::SetWaitTime(double _wait)
 {

@@ -25,14 +25,26 @@
     <Filter Include="源文件\Manager\Concrete">
       <UniqueIdentifier>{f6bed69b-8919-44e1-a484-710557a2ee4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Infra">
-      <UniqueIdentifier>{ba9f9731-3251-4406-bbde-83e45d72b751}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Infra">
-      <UniqueIdentifier>{3c3ab3f3-53bd-4a5f-886e-9d608616d2d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\_Dependencies">
       <UniqueIdentifier>{3806a362-9cc5-4355-b58f-ea336f0385f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Chargeable">
+      <UniqueIdentifier>{0499751d-e34e-4d54-8e31-9efb35e8cfb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Infrastructure">
+      <UniqueIdentifier>{ba9f9731-3251-4406-bbde-83e45d72b751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Infrastructure">
+      <UniqueIdentifier>{3c3ab3f3-53bd-4a5f-886e-9d608616d2d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Chargeable">
+      <UniqueIdentifier>{a84b2b66-7301-405d-a224-48e76b560af2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Chargeable\Concrete">
+      <UniqueIdentifier>{4296dfb9-2117-4f2a-b503-3dfdd3ea83ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Chargeable\Concrete">
+      <UniqueIdentifier>{d0b44556-2412-4a3b-88d7-3e30f2b1a861}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,20 +63,41 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Infra\Animation.cpp">
-      <Filter>源文件\Infra</Filter>
+    <ClCompile Include="Scripts\Source\Infrastructure\Animation.cpp">
+      <Filter>源文件\Infrastructure</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Infra\Timer.cpp">
-      <Filter>源文件\Infra</Filter>
+    <ClCompile Include="Scripts\Source\Infrastructure\Timer.cpp">
+      <Filter>源文件\Infrastructure</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Infra\Vector2.cpp">
-      <Filter>源文件\Infra</Filter>
+    <ClCompile Include="Scripts\Source\Infrastructure\Vector2.cpp">
+      <Filter>源文件\Infrastructure</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Source\Manager\Concrete\ConfigManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="..\Dependencies\cJSON\cJSON.c">
       <Filter>源文件\_Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Battery.cpp">
+      <Filter>源文件\Chargeable\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Chargeable\Chargeable.cpp">
+      <Filter>源文件\Chargeable</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Robot.cpp">
+      <Filter>源文件\Chargeable\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Vehicle.cpp">
+      <Filter>源文件\Chargeable\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\BatteryManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\RobotManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,17 +116,38 @@
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp">
       <Filter>头文件\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\Infra\Animation.h">
-      <Filter>头文件\Infra</Filter>
+    <ClInclude Include="Scripts\Header\Infrastructure\Animation.h">
+      <Filter>头文件\Infrastructure</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\Infra\Timer.h">
-      <Filter>头文件\Infra</Filter>
+    <ClInclude Include="Scripts\Header\Infrastructure\Timer.h">
+      <Filter>头文件\Infrastructure</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\Infra\Vector2.h">
-      <Filter>头文件\Infra</Filter>
+    <ClInclude Include="Scripts\Header\Infrastructure\Vector2.h">
+      <Filter>头文件\Infrastructure</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\ConfigManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\BatteryManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\RobotManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h">
+      <Filter>头文件\Chargeable\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Robot.h">
+      <Filter>头文件\Chargeable\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Vehicle.h">
+      <Filter>头文件\Chargeable\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Chargeable\Chargeable.h">
+      <Filter>头文件\Chargeable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
