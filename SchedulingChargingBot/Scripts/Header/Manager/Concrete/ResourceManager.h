@@ -13,7 +13,9 @@ enum class TextureResID
 	Tileset,
 	Vehicle,
 	Robot,
-	Battery
+	Battery,
+	CursorHover,
+	//CursorSelect
 };
 
 enum class SoundResID

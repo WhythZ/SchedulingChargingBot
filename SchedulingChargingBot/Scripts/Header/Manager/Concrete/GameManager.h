@@ -24,6 +24,9 @@ private:
 public:
 	int Run(int, char**);
 
+	SDL_Point GetCursorPosition() const;       //获取鼠标位置
+	SDL_Point GetCursorTileIdx() const;        //获取鼠标位置所在的瓦片索引
+
 private:
 	GameManager();                   
 	~GameManager();                  

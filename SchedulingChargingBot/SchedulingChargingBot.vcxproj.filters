@@ -114,7 +114,10 @@
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp">
       <Filter>源文件\Tilemap</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\UI\StatusBar.cpp">
+    <ClCompile Include="Scripts\Source\UI\StatusUI.cpp">
+      <Filter>源文件\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\UI\CursorUI.cpp">
       <Filter>源文件\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,7 +176,10 @@
     <ClInclude Include="Scripts\Header\Tilemap\Tile.h">
       <Filter>头文件\Tilemap</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\UI\StatusBar.h">
+    <ClInclude Include="Scripts\Header\UI\StatusUI.h">
+      <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\UI\CursorUI.h">
       <Filter>头文件\UI</Filter>
     </ClInclude>
   </ItemGroup>

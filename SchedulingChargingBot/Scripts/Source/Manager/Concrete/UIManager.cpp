@@ -5,26 +5,31 @@
 
 UIManager::UIManager()
 {
-	statusBar = new StatusBar();
+	statusUI = new StatusUI();
+	cursorUI = new CursorUI();
 }
 
 UIManager::~UIManager()
 {
-	delete statusBar;
+	delete statusUI;
+	delete cursorUI;
 }
 
 void UIManager::OnInput(const SDL_Event& _event)
 {
+	cursorUI->OnInput(_event);
 }
 
 void UIManager::OnUpdate(SDL_Renderer* _renderer)
 {
-	statusBar->OnUpdate(_renderer);
+	statusUI->OnUpdate(_renderer);
+	cursorUI->OnUpdate(_renderer);
 }
 
 void UIManager::OnRender(SDL_Renderer* _renderer)
 {
-	statusBar->OnRender(_renderer);
+	statusUI->OnRender(_renderer);
+	cursorUI->OnRender(_renderer);
 }
 
 void UIManager::DrawTexture(SDL_Renderer* _renderer, SDL_Texture* _texture, const SDL_Point& _LeftUpPosition, const SDL_Point& _size)

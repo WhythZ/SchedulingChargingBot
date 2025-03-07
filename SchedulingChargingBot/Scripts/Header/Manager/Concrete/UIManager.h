@@ -4,14 +4,16 @@
 #include "../Manager.hpp"
 #include <SDL.h>
 #include "ResourceManager.h"
-#include "../../UI/StatusBar.h"
+#include "../../UI/StatusUI.h"
+#include "../../UI/CursorUI.h"
 
 class UIManager :public Manager<UIManager>
 {
 	friend class Manager<UIManager>;
 
 private:
-	StatusBar* statusBar;
+	StatusUI* statusUI;
+	CursorUI* cursorUI;
 
 public:
 	void OnInput(const SDL_Event&);

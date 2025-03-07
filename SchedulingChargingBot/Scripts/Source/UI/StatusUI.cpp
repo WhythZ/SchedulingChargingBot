@@ -1,4 +1,4 @@
-#include "../../Header/UI/StatusBar.h"
+#include "../../Header/UI/StatusUI.h"
 #include <string>
 #include <SDL_ttf.h>
 #include "../../Header/Manager/Concrete/ResourceManager.h"
@@ -8,7 +8,7 @@
 #include "../../Header/Manager/Concrete/VehicleManager.h"
 #include "../../Header/Manager/Concrete/BatteryManager.h"
 
-void StatusBar::OnUpdate(SDL_Renderer* _renderer)
+void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 {
 	#pragma region Clear
 	//由于每帧OnUpdate函数都会生成一张文本的纹理，故先清除掉上一帧的遗留垃圾
@@ -55,7 +55,7 @@ void StatusBar::OnUpdate(SDL_Renderer* _renderer)
 	#pragma endregion
 }
 
-void StatusBar::OnRender(SDL_Renderer* _renderer)
+void StatusUI::OnRender(SDL_Renderer* _renderer)
 {
 	//引入纹理渲染相关方法
 	static UIManager* _ui = UIManager::Instance();

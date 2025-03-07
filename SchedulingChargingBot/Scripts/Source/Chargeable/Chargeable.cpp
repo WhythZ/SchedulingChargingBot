@@ -67,6 +67,11 @@ bool Chargeable::IsValid() const
 	return isValid;
 }
 
+Vector2 Chargeable::GetPosition() const
+{
+	return position;
+}
+
 void Chargeable::UpdateIdling(double _delta)
 {
 	//更新为闲置时动画

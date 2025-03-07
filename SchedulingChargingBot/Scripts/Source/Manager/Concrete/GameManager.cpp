@@ -56,9 +56,7 @@ GameManager::GameManager()
 	#pragma endregion
 
 	//测试实例化
-	RobotManager::Instance()->SpawnAt({ 2,3 });
-	VehicleManager::Instance()->SpawnAt({ 3,3 });
-	BatteryManager::Instance()->SpawnAt({ 4,3 });
+	RobotManager::Instance()->SpawnAt({ 2,8 });
 }
 
 GameManager::~GameManager()
@@ -120,6 +118,20 @@ int GameManager::Run(int _argc, char** _argv)
 	return 0;
 }
 
+SDL_Point GameManager::GetCursorPosition() const
+{
+	return cursorPosition;
+}
+
+SDL_Point GameManager::GetCursorTileIdx() const
+{
+	static SDL_Point _pt;
+	_pt.x = (cursorPosition.x % TILE_SIZE == 0) ? cursorPosition.x / TILE_SIZE - 1 : cursorPosition.x / TILE_SIZE;
+	_pt.y = (cursorPosition.y % TILE_SIZE == 0) ? cursorPosition.y / TILE_SIZE - 1 : cursorPosition.y / TILE_SIZE;
+	//std::cout << "CursorPosition=(" << cursorPosition.x << "," << cursorPosition.y << "),CursorTileIdx=(" << _pt.x << "," << _pt.y << ")\n";
+	return _pt;
+}
+
 void GameManager::InitAssert(bool _flag, const char* _errMsg)
 {
 	//如果初始化成功，那么无事发生，直接返回
@@ -143,6 +155,9 @@ void GameManager::OnInput()
 		cursorPosition.x = event.motion.x;
 		cursorPosition.y = event.motion.y;
 	}
+
+	//UI管理器的按键输入
+	UIManager::Instance()->OnInput(event);
 }
 
 void GameManager::OnUpdate(double _delta)

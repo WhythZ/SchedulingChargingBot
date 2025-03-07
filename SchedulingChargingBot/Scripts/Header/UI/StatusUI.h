@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-class StatusBar
+class StatusUI
 {
 private:
 	#pragma region Color
@@ -29,8 +29,8 @@ private:
 	#pragma endregion
 
 public:
-	StatusBar() = default;
-	~StatusBar() = default;
+	StatusUI() = default;
+	~StatusUI() = default;
 
 	void OnUpdate(SDL_Renderer*);
 	void OnRender(SDL_Renderer*);

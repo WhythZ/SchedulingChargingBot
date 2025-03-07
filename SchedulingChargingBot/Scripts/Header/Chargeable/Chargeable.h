@@ -53,6 +53,7 @@ public:
 	void Invalidate();                         //设置为不合法，等待管理器清除
 
 	bool IsValid() const;                      //查询合法状态
+	Vector2 GetPosition() const;               //获取中心位置
 
 protected:
 	void UpdateIdling(double);                 //更新闲置时数据

@@ -152,7 +152,8 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleManager.cpp" />
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp" />
-    <ClCompile Include="Scripts\Source\UI\StatusBar.cpp" />
+    <ClCompile Include="Scripts\Source\UI\CursorUI.cpp" />
+    <ClCompile Include="Scripts\Source\UI\StatusUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h" />
@@ -173,7 +174,8 @@
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp" />
     <ClInclude Include="Scripts\Header\Tilemap\Tile.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Map.h" />
-    <ClInclude Include="Scripts\Header\UI\StatusBar.h" />
+    <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
+    <ClInclude Include="Scripts\Header\UI\StatusUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
