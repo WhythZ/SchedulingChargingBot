@@ -97,3 +97,19 @@ void UIManager::DrawBox(SDL_Renderer* _renderer, const SDL_Point& _LeftUpPositio
 	boxRGBA(_renderer, _LeftUpPosition.x, _LeftUpPosition.y, _LeftUpPosition.x + _size.x, _LeftUpPosition.y + _size.y,
 		_color.r, _color.g, _color.b, _color.a);
 }
+
+void UIManager::DrawLine(SDL_Renderer* _renderer, SDL_Point _beginPoint, SDL_Point _endPoint, SDL_Color _color)
+{
+	//保存当前颜色
+	Uint8 _prevR, _prevG, _prevB, _prevA;
+	SDL_GetRenderDrawColor(_renderer, &_prevR, &_prevG, &_prevB, &_prevA);
+
+	//设置新颜色
+	SDL_SetRenderDrawColor(_renderer, _color.r, _color.g, _color.b, _color.a);
+
+	//绘制线条
+	SDL_RenderDrawLine(_renderer, _beginPoint.x, _beginPoint.y, _endPoint.x, _endPoint.y);
+
+	//恢复之前的颜色
+	SDL_SetRenderDrawColor(_renderer, _prevR, _prevG, _prevB, _prevA);
+}

@@ -8,6 +8,8 @@ class Battery :public Chargeable
 public:
 	Battery();
 	~Battery() = default;
+
+	void OnUpdate(double) override;
 };
 
 #endif

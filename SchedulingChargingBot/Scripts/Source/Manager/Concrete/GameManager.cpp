@@ -56,9 +56,14 @@ GameManager::GameManager()
 	#pragma endregion
 
 	//²âÊÔÊµÀý»¯
-	RobotManager::Instance()->SpawnAt({ 2,8 });
-	VehicleManager::Instance()->SpawnAt({ 5,8 });
-	BatteryManager::Instance()->SpawnAt({ 8,8 });
+	RobotManager::Instance()->SpawnAt({ 2,0 });
+	RobotManager::Instance()->SpawnAt({ 4,0 });
+	BatteryManager::Instance()->SpawnAt({ 15,0 });
+	BatteryManager::Instance()->SpawnAt({ 17,0 });
+	VehicleManager::Instance()->SpawnAt({ 8,5 });
+	VehicleManager::Instance()->SpawnAt({ 11,5 });
+	VehicleManager::Instance()->SpawnAt({ 8,8 });
+	VehicleManager::Instance()->SpawnAt({ 11,8 });
 }
 
 GameManager::~GameManager()

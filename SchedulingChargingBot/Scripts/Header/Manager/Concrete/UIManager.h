@@ -29,6 +29,8 @@ public:
 	void DrawCircle(SDL_Renderer*, const SDL_Point&, double, const SDL_Color&, const SDL_Color&);
 	//根据左上顶点位置、矩形尺寸、矩形颜色，绘制一个矩形色块
 	void DrawBox(SDL_Renderer*, const SDL_Point&, const SDL_Point&, const SDL_Color&);
+	//根据两个点的位置、颜色，绘制两点间的线条
+	void DrawLine(SDL_Renderer*, SDL_Point, SDL_Point, SDL_Color);
 
 private:
 	UIManager();

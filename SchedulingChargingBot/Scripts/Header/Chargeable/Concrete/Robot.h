@@ -8,6 +8,8 @@ class Robot :public Chargeable
 public:
 	Robot();
 	~Robot() = default;
+
+	void OnUpdate(double) override;
 };
 
 #endif

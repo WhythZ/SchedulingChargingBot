@@ -120,6 +120,9 @@
     <ClCompile Include="Scripts\Source\UI\CursorUI.cpp">
       <Filter>源文件\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\UI\LinkUI.cpp">
+      <Filter>源文件\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -180,6 +183,9 @@
       <Filter>头文件\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\UI\CursorUI.h">
+      <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\UI\LinkUI.h">
       <Filter>头文件\UI</Filter>
     </ClInclude>
   </ItemGroup>

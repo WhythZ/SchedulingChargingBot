@@ -8,6 +8,8 @@ class Vehicle :public Chargeable
 public:
 	Vehicle();
 	~Vehicle() = default;
+
+	void OnUpdate(double) override;
 };
 
 #endif

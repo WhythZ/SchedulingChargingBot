@@ -1,5 +1,7 @@
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
+#include "../../../Header/Manager/Concrete/RobotManager.h"
+#include "../../../Header/Manager/Concrete/BatteryManager.h"
 
 Vehicle::Vehicle()
 {
@@ -11,4 +13,19 @@ Vehicle::Vehicle()
 	animCharging.SetLoop(true); animCharging.SetAnimFrames(_sheet, 3, 1, { 1 });
 	animDischarging.SetLoop(true); animDischarging.SetAnimFrames(_sheet, 3, 1, { 2 });
 	#pragma endregion
+
+	//无法主动移动
+	speed = 0;
+}
+
+void Vehicle::OnUpdate(double _delta)
+{
+	#pragma region Charing
+	static RobotManager* _rm = RobotManager::Instance();
+	static BatteryManager* _bm = BatteryManager::Instance();
+	//在机器人或电池附近被充电
+	//if ()
+	#pragma endregion
+
+	Chargeable::OnUpdate(_delta);
 }

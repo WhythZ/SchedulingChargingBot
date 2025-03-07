@@ -1,5 +1,7 @@
 #include "../../../Header/Chargeable/Concrete/Robot.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
+#include "../../../Header/Manager/Concrete/ConfigManager.h"
+#include "../../../Header/Manager/Concrete/VehicleManager.h"
 
 Robot::Robot()
 {
@@ -14,4 +16,33 @@ Robot::Robot()
 
 	//只有机器人会主动移动，故设置速率大小为正数
 	speed = 1;
+}
+
+void Robot::OnUpdate(double _delta)
+{
+	#pragma region Discharging
+	static VehicleManager* _vm = VehicleManager::Instance();
+	////若处于非繁忙状态才可以进入新的充放电状态
+	//if (!isCharging && !isDischarging)
+	//{
+	//	//在车辆附近放电
+	//	for (Vehicle* _vehicle : _vm->GetVehicleList())
+	//	{
+	//		if ((position - _vehicle->GetPosition()).Length() <= collideRadius)
+	//		{
+	//			isDischarging = true;
+	//			_vehicle->isCharging = true;
+	//			linkEntity = _vehicle;
+	//			_vehicle->linkEntity = this;
+	//		}
+	//	}
+	//}
+	#pragma endregion
+
+	#pragma region Charing
+	//在充电桩附近被充电
+	//if ()
+	#pragma endregion
+
+	Chargeable::OnUpdate(_delta);
 }
