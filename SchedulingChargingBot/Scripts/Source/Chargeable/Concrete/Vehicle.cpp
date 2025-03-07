@@ -16,6 +16,9 @@ Vehicle::Vehicle()
 
 	//无法主动移动
 	speed = 0;
+
+	//（重新）初始化电量为0
+	currentElectricityRatio = 0.5;
 }
 
 void Vehicle::OnUpdate(double _delta)

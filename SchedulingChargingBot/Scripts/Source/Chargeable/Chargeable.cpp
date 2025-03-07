@@ -6,8 +6,8 @@
 
 Chargeable::Chargeable()
 {
-	//初始化当前电量为最大电量
-	currentElectricity = maximumElectricity;
+	//初始化当前电量为最大电量百分比
+	currentElectricityRatio = 1;
 
 	//初始化当前动画为闲置动画
 	animCurrent = &animIdling;
@@ -18,8 +18,8 @@ Chargeable::Chargeable()
 	chargingTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricity += chargingIntensity;
-			currentElectricity = (currentElectricity > maximumElectricity) ? maximumElectricity : currentElectricity;
+			currentElectricityRatio += chargingIntensity;
+			currentElectricityRatio = (currentElectricityRatio >= 1) ? 1 : currentElectricityRatio;
 		}
 	);
 
@@ -27,8 +27,8 @@ Chargeable::Chargeable()
 	dischargingTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricity -= dischargingIntensity;
-			currentElectricity = (currentElectricity < 0) ? 0 : currentElectricity;
+			currentElectricityRatio -= dischargingIntensity;
+			currentElectricityRatio = (currentElectricityRatio < 0) ? 0 : currentElectricityRatio;
 		}
 	);
 	#pragma endregion
@@ -85,18 +85,13 @@ void Chargeable::OnUpdate(double _delta)
 void Chargeable::OnRender(SDL_Renderer* _renderer)
 {
 	#pragma region ElectricityBar
-	//先计算当前电量比例，控制在[0,1]之间
-	double _ratio = currentElectricity / maximumElectricity;
-	_ratio = (_ratio < 0) ? 0 : _ratio;
-	_ratio = (_ratio > 1) ? 1 : _ratio;
-
 	//电量条渲染在底层，从下往上代表电量，传入左上顶点（y值乘上比例）和右下顶点，然后是颜色
 	static SDL_Rect _barRect;
-	_barRect.x = (int)(position.x);
-	_barRect.y = (int)(position.y - size.y / 2);
 	_barRect.w = size.x / 2;
-	_barRect.h = size.y;
-	boxRGBA(_renderer, _barRect.x, (Sint16)(_barRect.y * _ratio), _barRect.x + _barRect.w, _barRect.y + _barRect.h,
+	_barRect.h = (int)(size.y * currentElectricityRatio);
+	_barRect.x = (int)(position.x);
+	_barRect.y = (int)(position.y + size.y / 2 - _barRect.h);
+	boxRGBA(_renderer, _barRect.x, _barRect.y, _barRect.x + _barRect.w, _barRect.y + _barRect.h,
 		barColor.r, barColor.g, barColor.b, barColor.a);
 	#pragma endregion
 

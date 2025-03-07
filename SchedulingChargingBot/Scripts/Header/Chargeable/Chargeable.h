@@ -35,15 +35,14 @@ protected:
 	#pragma endregion
 
 	#pragma region Electricity
-	double maximumElectricity = 100;           //最大电量，在子类初始化时确定
-	double currentElectricity;                 //当前电量
+	double currentElectricityRatio = 0;        //当前电量百分比[0,1]
 
 	double chargingCooldown = 0.1;             //充电冷却间隔时间
-	double chargingIntensity = 0.5;            //每经过冷却后充入多少电量
+	double chargingIntensity = 0.01;           //每经过冷却后充入多少百分比电量
 	Timer chargingTimer;                       //实施充电间隔
 
-	double dischargingCooldown = 0.2;          //放电冷却间隔时间
-	double dischargingIntensity = 0.5;         //每经过冷却后输出多少电量
+	double dischargingCooldown = 0.1;          //放电冷却间隔时间
+	double dischargingIntensity = 0.01;        //每经过冷却后输出多少百分比电量
 	Timer dischargingTimer;                    //实施放电间隔
 	#pragma endregion
 
