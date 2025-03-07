@@ -25,7 +25,14 @@ public:
 
 public:
 	BasicConfigPrefab basicPrefab;
+
+	#pragma region Map
+	//存储被加载的瓦片地图
 	Map map;
+	//用于从目标窗口中切割出一块区域，用于塞入mapTexture的画面内容
+	SDL_Rect mapRect = { 0 };
+	#pragma endregion
+
 
 public:
 	bool LoadConfig(const std::string&);

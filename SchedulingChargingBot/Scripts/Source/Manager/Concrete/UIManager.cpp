@@ -5,10 +5,12 @@
 
 UIManager::UIManager()
 {
+	statusBar = new StatusBar();
 }
 
 UIManager::~UIManager()
 {
+	delete statusBar;
 }
 
 void UIManager::OnInput(const SDL_Event& _event)
@@ -17,10 +19,12 @@ void UIManager::OnInput(const SDL_Event& _event)
 
 void UIManager::OnUpdate(SDL_Renderer* _renderer)
 {
+	statusBar->OnUpdate(_renderer);
 }
 
 void UIManager::OnRender(SDL_Renderer* _renderer)
 {
+	statusBar->OnRender(_renderer);
 }
 
 void UIManager::DrawTexture(SDL_Renderer* _renderer, SDL_Texture* _texture, const SDL_Point& _LeftUpPosition, const SDL_Point& _size)

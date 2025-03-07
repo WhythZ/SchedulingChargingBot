@@ -13,16 +13,18 @@ private:
 	std::vector<Battery*> batteryList;
 
 public:
-	void SpawnAt(SDL_Point);                 //以瓦片地图的瓦片索引间接实例化该实体
+	void SpawnAt(SDL_Point);                       //以瓦片地图的瓦片索引间接实例化该实体
 
 	void OnUpdate(double);
 	void OnRender(SDL_Renderer*);
+
+	std::vector<Battery*> GetBatteryList() const;  //获取实例列表
 
 private:
 	BatteryManager() = default;
 	~BatteryManager();
 
-	void RemoveInvalid();                    //移除非法实例
+	void RemoveInvalid();                          //移除非法实例
 };
 
 #endif

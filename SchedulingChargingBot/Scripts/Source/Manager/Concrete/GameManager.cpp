@@ -120,11 +120,6 @@ int GameManager::Run(int _argc, char** _argv)
 	return 0;
 }
 
-SDL_Rect GameManager::GetMapRect() const
-{
-	return mapRect;
-}
-
 void GameManager::InitAssert(bool _flag, const char* _errMsg)
 {
 	//如果初始化成功，那么无事发生，直接返回
@@ -163,7 +158,7 @@ void GameManager::OnRender()
 {
 	#pragma region GameWindow
 	//将mapTexture渲染在mapRect从窗口中切割出的区域内
-	SDL_RenderCopy(renderer, mapTexture, nullptr, &mapRect);
+	SDL_RenderCopy(renderer, mapTexture, nullptr, &ConfigManager::Instance()->mapRect);
 	#pragma endregion
 
 	RobotManager::Instance()->OnRender(renderer);
@@ -195,11 +190,12 @@ bool GameManager::GenerateTilemapTexture()
 	#pragma region PrepareMapRect
 	//更改地图纹理的渲染位置（SDL_Rect对象：成员x和y表示纹理图片的矩形左上角顶点的坐标、成员w和h表示矩形的宽高）
 	//利用定义好的（固定的）窗口宽度减去嵌在窗口中间的矩形地图的宽度（参考“回”字的结构）后再除以2即可得到地图纹理矩形左上定点的横坐标，纵坐标同理
-	mapRect.x = (ConfigManager::Instance()->basicPrefab.windowWidth - _tileMapWidth) / 2;
-	mapRect.y = (ConfigManager::Instance()->basicPrefab.windowHeight - _tileMapHeight) / 2;
+	SDL_Rect& _mapRect = ConfigManager::Instance()->mapRect;
+	_mapRect.x = (ConfigManager::Instance()->basicPrefab.windowWidth - _tileMapWidth) / 2;
+	_mapRect.y = (ConfigManager::Instance()->basicPrefab.windowHeight - _tileMapHeight) / 2;
 	//宽高的值是绝对的（x和y坐标表示的点的位置是相对于窗口的），所以直接赋值即可
-	mapRect.w = _tileMapWidth;
-	mapRect.h = _tileMapHeight;
+	_mapRect.w = _tileMapWidth;
+	_mapRect.h = _tileMapHeight;
 	#pragma endregion
 
 	//设置地图纹理的混合渲染模式（SDL_BLENDMODE_BLEND即启用透明度的渲染）

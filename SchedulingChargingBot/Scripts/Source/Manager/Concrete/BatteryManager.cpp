@@ -51,3 +51,8 @@ void BatteryManager::RemoveInvalid()
 	//删除所有无效的子弹，此时的列表在remove_if的排列下，所有无效的子弹指针均在列表末尾
 	batteryList.erase(_begin, batteryList.end());
 }
+
+std::vector<Battery*> BatteryManager::GetBatteryList() const
+{
+	return batteryList;
+}

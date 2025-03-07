@@ -51,3 +51,8 @@ void RobotManager::RemoveInvalid()
 	//删除所有无效的子弹，此时的列表在remove_if的排列下，所有无效的子弹指针均在列表末尾
 	robotList.erase(_begin, robotList.end());
 }
+
+std::vector<Robot*> RobotManager::GetRobotList() const
+{
+	return robotList;
+}

@@ -52,3 +52,8 @@ void VehicleManager::RemoveInvalid()
 	//删除所有无效的子弹，此时的列表在remove_if的排列下，所有无效的子弹指针均在列表末尾
 	vehicleList.erase(_begin, vehicleList.end());
 }
+
+std::vector<Vehicle*> VehicleManager::GetVehicleList() const
+{
+	return vehicleList;
+}

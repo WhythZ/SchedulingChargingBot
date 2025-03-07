@@ -17,15 +17,12 @@ private:
 	bool isQuit = false;                       //决定游戏主循环是否结束
 	int fps = 60;                              //需要维持的游戏帧率，即每秒刷新的帧数
 	
-	SDL_Rect mapRect = { 0 };                  //用于从目标窗口中切割出一块区域，用于塞入mapTexture的画面内容
 	SDL_Texture* mapTexture = nullptr;         //存储被渲染成一整张SDL_Texture*纹理图片的瓦片地图
 	
 	SDL_Point cursorPosition = { 0,0 };        //存储鼠标指针位置，其位置在事件检测更新中被刷新
 
 public:
 	int Run(int, char**);
-
-	SDL_Rect GetMapRect() const;
 
 private:
 	GameManager();                   

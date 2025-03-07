@@ -52,6 +52,12 @@
     <Filter Include="源文件\Tilemap">
       <UniqueIdentifier>{e449f2a8-3c9f-4746-a466-76d76ff96bca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\UI">
+      <UniqueIdentifier>{cb19fec5-f271-4c76-b246-6153a04beb29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\UI">
+      <UniqueIdentifier>{e03b64bb-ce42-436d-b2e9-14fd0ec61375}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scripts\Source\Main.cpp">
@@ -108,6 +114,9 @@
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp">
       <Filter>源文件\Tilemap</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\UI\StatusBar.cpp">
+      <Filter>源文件\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -163,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Tilemap\Tile.h">
       <Filter>头文件\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\UI\StatusBar.h">
+      <Filter>头文件\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
