@@ -11,6 +11,8 @@
 class Chargeable
 {
 protected:
+	bool isValid = true;                       //管理器通过该变量管理实例是否应当处于场景中
+
 	#pragma region Transform
 	Vector2 position;                          //中心位置
 	SDL_Point size = { TILE_SIZE,TILE_SIZE };  //纹理图尺寸，也用作碰撞箱
@@ -19,13 +21,13 @@ protected:
 	#pragma endregion
 
 	#pragma region Animation
-	Animation* animCurrent;                    //当前动画
+	Animation* animCurrent;                    //当前渲染的动画
 	Animation animIdling;                      //闲置动画
 	Animation animCharging;                    //充电动画
 	Animation animDischarging;                 //放电动画
 	#pragma endregion
 
-	#pragma region Charging
+	#pragma region Electricity
 	double maximumElectricity = 100;           //最大电量，在子类初始化时确定
 	double currentElectricity;                 //当前电量
 
@@ -47,6 +49,10 @@ public:
 
 	virtual void OnUpdate(double);             //每帧更新数据
 	void OnRender(SDL_Renderer*);              //每帧渲染动画
+
+	void Invalidate();                         //设置为不合法，等待管理器清除
+
+	bool IsValid() const;                      //查询合法状态
 
 protected:
 	void UpdateIdling(double);                 //更新闲置时数据

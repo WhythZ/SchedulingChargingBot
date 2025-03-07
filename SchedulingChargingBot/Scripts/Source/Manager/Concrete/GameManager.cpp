@@ -5,8 +5,10 @@
 #include <SDL_mixer.h>
 #include "../../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
-#include "../../../Header/Manager/Concrete/AudioManager.h"
 #include "../../../Header/Manager/Concrete/UIManager.h"
+#include "../../../Header/Manager/Concrete/RobotManager.h"
+#include "../../../Header/Manager/Concrete/VehicleManager.h"
+#include "../../../Header/Manager/Concrete/BatteryManager.h"
 
 GameManager::GameManager()
 {
@@ -52,6 +54,11 @@ GameManager::GameManager()
 	//生成场景纹理
 	InitAssert(GenerateTilemapTexture(), u8"Failed To Genrate Scene Texture");
 	#pragma endregion
+
+	//测试实例化
+	RobotManager::Instance()->SpawnAt({ 2,3 });
+	VehicleManager::Instance()->SpawnAt({ 3,3 });
+	BatteryManager::Instance()->SpawnAt({ 4,3 });
 }
 
 GameManager::~GameManager()
@@ -147,6 +154,9 @@ void GameManager::OnUpdate(double _delta)
 {
 	//更新各管理器数据
 	UIManager::Instance()->OnUpdate(renderer);
+	RobotManager::Instance()->OnUpdate(_delta);
+	VehicleManager::Instance()->OnUpdate(_delta);
+	BatteryManager::Instance()->OnUpdate(_delta);
 }
 
 void GameManager::OnRender()
@@ -156,6 +166,9 @@ void GameManager::OnRender()
 	SDL_RenderCopy(renderer, mapTexture, nullptr, &mapRect);
 	#pragma endregion
 
+	RobotManager::Instance()->OnRender(renderer);
+	VehicleManager::Instance()->OnRender(renderer);
+	BatteryManager::Instance()->OnRender(renderer);
 	//UI应当最后渲染的以保证始终在最上层
 	UIManager::Instance()->OnRender(renderer);
 }

@@ -52,9 +52,19 @@ void Chargeable::OnUpdate(double _delta)
 void Chargeable::OnRender(SDL_Renderer* _renderer)
 {
 	static SDL_Point _point;
-	_point.x = position.x - size.x / 2;
-	_point.y = position.y - size.y / 2;
+	_point.x = (int)(position.x - size.x / 2);
+	_point.y = (int)(position.y - size.y / 2);
 	animCurrent->OnRender(_renderer, _point);
+}
+
+void Chargeable::Invalidate()
+{
+	isValid = false;
+}
+
+bool Chargeable::IsValid() const
+{
+	return isValid;
 }
 
 void Chargeable::UpdateIdling(double _delta)

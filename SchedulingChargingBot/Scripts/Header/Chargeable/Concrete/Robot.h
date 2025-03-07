@@ -12,6 +12,7 @@ private:
 public:
 	Robot();
 	~Robot() = default;
+	void SetVelocity(Vector2);                 //更新速度
 
 	void OnUpdate(double) override;
 };
