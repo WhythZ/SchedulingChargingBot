@@ -1,5 +1,7 @@
 #include "../../Header/Chargeable/Chargeable.h"
 #include "../../Header/Tilemap/Tile.h"
+#include "../../Header/Manager/Concrete/ConfigManager.h"
+#include "../../Header/Manager/Concrete/GameManager.h"
 
 Chargeable::Chargeable()
 {
@@ -37,6 +39,12 @@ void Chargeable::SetPosition(int _x, int _y)
 	position.y = _y;
 }
 
+void Chargeable::SetVelocity(Vector2 _velocity)
+{
+	velocity = _velocity;
+}
+
+
 void Chargeable::OnUpdate(double _delta)
 {
 	animCurrent->OnUpdate(_delta);
@@ -47,6 +55,23 @@ void Chargeable::OnUpdate(double _delta)
 		UpdateDischarging(_delta);
 	else
 		UpdateIdling(_delta);
+
+	//若未被拖拽，则依据速度更新其位置
+	static GameManager* _gm = GameManager::Instance();
+	if (isCursorDragging)
+	{
+		position.x = (double)(_gm->GetCursorPosition().x);
+		position.y = (double)(_gm->GetCursorPosition().y);
+	}
+	else
+		position += velocity * _delta;
+
+	//防止跑出地图边界
+	static SDL_Rect _mapRect = ConfigManager::Instance()->mapRect;
+	if (position.x <= _mapRect.x) position.x = _mapRect.x;
+	if (position.x >= _mapRect.x + _mapRect.w) position.x = _mapRect.x + _mapRect.w;
+	if (position.y <= _mapRect.y) position.y = _mapRect.y;
+	if (position.y >= _mapRect.y + _mapRect.h) position.y = _mapRect.y + _mapRect.h;
 }
 
 void Chargeable::OnRender(SDL_Renderer* _renderer)

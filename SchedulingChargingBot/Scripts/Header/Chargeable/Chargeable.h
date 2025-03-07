@@ -10,11 +10,17 @@
 //可充电机器，派生载具、机器人、电池
 class Chargeable
 {
+public:
+	bool isCursorDragging = false;             //是否处于被鼠标拖拽的状态
+
 protected:
 	bool isValid = true;                       //管理器通过该变量管理实例是否应当处于场景中
 
-	#pragma region Transform
 	Vector2 position;                          //中心位置
+	Vector2 velocity;                          //速度向量
+	double speed = 0;                          //速率大小，单位为"瓦片/单位时间"
+
+	#pragma region Size
 	SDL_Point size = { TILE_SIZE,TILE_SIZE };  //纹理图尺寸，也用作碰撞箱
 	//相对位置，覆盖右侧，用于填充电量条
 	SDL_Rect barRect = { TILE_SIZE/2,0,TILE_SIZE/2,TILE_SIZE };
@@ -46,8 +52,9 @@ public:
 	Chargeable();
 	~Chargeable() = default;
 	void SetPosition(int, int);                //设置具体到像素的位置
+	void SetVelocity(Vector2);                 //更新速度
 
-	virtual void OnUpdate(double);             //每帧更新数据
+	void OnUpdate(double);                     //每帧更新数据
 	void OnRender(SDL_Renderer*);              //每帧渲染动画
 
 	void Invalidate();                         //设置为不合法，等待管理器清除

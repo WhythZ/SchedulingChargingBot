@@ -39,21 +39,6 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			else
 				isTouchChargeable = false;
 		}
-		for (Vehicle* _vehicle : _vm->GetVehicleList())
-		{
-			static SDL_Rect _vehicleRect;
-			_vehicleRect.x = (int)(_vehicle->GetPosition().x - TILE_SIZE / 2);
-			_vehicleRect.y = (int)(_vehicle->GetPosition().y - TILE_SIZE / 2);
-			_vehicleRect.w = TILE_SIZE;
-			_vehicleRect.h = TILE_SIZE;
-			if (SDL_PointInRect(&cursorPosition, &_vehicleRect))
-			{
-				isTouchChargeable = true;
-				return;
-			}
-			else
-				isTouchChargeable = false;
-		}
 		for (Battery* _battery : _bm->GetBatteryList())
 		{
 			static SDL_Rect _batteryRect;
@@ -72,7 +57,6 @@ void CursorUI::OnInput(const SDL_Event& _event)
 	}
 	case SDL_MOUSEBUTTONDOWN:
 	{
-		//遍历所有机器人
 		for (Robot* _robot : _rm->GetRobotList())
 		{
 			//记录当前机器人的Rect
@@ -85,17 +69,48 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			if (SDL_PointInRect(&cursorPosition, &_robotRect))
 			{
 				_robot->isCursorDragging = true;
-				//跳出，防止选中多个
+				//跳出switch语句该case内的局部区域，防止选中多个
 				return;
 			}
+		}
+		for (Battery* _battery : _bm->GetBatteryList())
+		{
+			static SDL_Rect _batteryRect;
+			_batteryRect.x = (int)(_battery->GetPosition().x - TILE_SIZE / 2);
+			_batteryRect.y = (int)(_battery->GetPosition().y - TILE_SIZE / 2);
+			_batteryRect.w = TILE_SIZE;
+			_batteryRect.h = TILE_SIZE;
+			if (SDL_PointInRect(&cursorPosition, &_batteryRect))
+			{
+				_battery->isCursorDragging = true;
+				return;
+			}
+			else
+				isTouchChargeable = false;
 		}
 	}
 	break;
 	case SDL_MOUSEBUTTONUP:
 	{
-		//遍历所有机器人，取消拖拽
+		//遍历所有实例找到被拖拽的那个，取消拖拽，并将其归正对齐到鼠标所在瓦片位置
 		for (Robot* _robot : _rm->GetRobotList())
-			_robot->isCursorDragging = false;
+		{
+			if (_robot->isCursorDragging)
+			{
+				_robot->isCursorDragging = false;
+				_robot->SetPosition(cursorTilePosition.x, cursorTilePosition.y);
+				return;
+			}
+		}
+		for (Battery* _battery : _bm->GetBatteryList())
+		{
+			if (_battery->isCursorDragging)
+			{
+				_battery->isCursorDragging = false;
+				_battery->SetPosition(cursorTilePosition.x, cursorTilePosition.y);
+				return;
+			}
+		}
 	}
 	default:
 		break;

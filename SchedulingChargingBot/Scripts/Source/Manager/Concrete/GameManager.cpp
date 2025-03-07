@@ -57,6 +57,8 @@ GameManager::GameManager()
 
 	//²âÊÔÊµÀý»¯
 	RobotManager::Instance()->SpawnAt({ 2,8 });
+	VehicleManager::Instance()->SpawnAt({ 5,8 });
+	BatteryManager::Instance()->SpawnAt({ 8,8 });
 }
 
 GameManager::~GameManager()
