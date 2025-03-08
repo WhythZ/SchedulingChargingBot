@@ -1,7 +1,6 @@
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
-#include "../../../Header/Manager/Concrete/RobotManager.h"
-#include "../../../Header/Manager/Concrete/BatteryManager.h"
+#include "../../../Header/Manager/Concrete/ChargeableManager.h"
 
 Vehicle::Vehicle()
 {
@@ -24,8 +23,7 @@ Vehicle::Vehicle()
 void Vehicle::OnUpdate(double _delta)
 {
 	#pragma region Charing
-	static RobotManager* _rm = RobotManager::Instance();
-	static BatteryManager* _bm = BatteryManager::Instance();
+	static ChargeableManager* _cm = ChargeableManager::Instance();
 	//在机器人或电池附近被充电
 	//if ()
 	#pragma endregion

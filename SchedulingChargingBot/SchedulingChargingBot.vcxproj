@@ -144,19 +144,18 @@
     <ClCompile Include="Scripts\Source\Chargeable\Chargeable.cpp" />
     <ClCompile Include="Scripts\Source\Main.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\AudioManager.cpp" />
-    <ClCompile Include="Scripts\Source\Manager\Concrete\BatteryManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ConfigManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\GameManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ResourceManager.cpp" />
-    <ClCompile Include="Scripts\Source\Manager\Concrete\RobotManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp" />
-    <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleManager.cpp" />
+    <ClCompile Include="Scripts\Source\Manager\Concrete\ChargeableManager.cpp" />
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp" />
     <ClCompile Include="Scripts\Source\UI\CursorUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\LinkUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\StatusUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scripts\Header\Chargeable\ChargeableType.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Robot.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Vehicle.h" />
@@ -165,13 +164,11 @@
     <ClInclude Include="Scripts\Header\Infrastructure\Vector2.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Chargeable.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h" />
-    <ClInclude Include="Scripts\Header\Manager\Concrete\BatteryManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ConfigManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\GameManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ResourceManager.h" />
-    <ClInclude Include="Scripts\Header\Manager\Concrete\RobotManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h" />
-    <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp" />
     <ClInclude Include="Scripts\Header\Tilemap\Tile.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Map.h" />

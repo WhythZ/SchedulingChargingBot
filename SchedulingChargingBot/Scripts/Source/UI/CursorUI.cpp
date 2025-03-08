@@ -3,15 +3,11 @@
 #include "../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../Header/Manager/Concrete/UIManager.h"
-#include "../../Header/Manager/Concrete/RobotManager.h"
-#include "../../Header/Manager/Concrete/BatteryManager.h"
-#include "../../Header/Manager/Concrete/VehicleManager.h"
+#include "../../Header/Manager/Concrete/ChargeableManager.h"
 
 void CursorUI::OnInput(const SDL_Event& _event)
 {
-	static RobotManager* _rm = RobotManager::Instance();
-	static VehicleManager* _vm = VehicleManager::Instance();
-	static BatteryManager* _bm = BatteryManager::Instance();
+	static ChargeableManager* _cm = ChargeableManager::Instance();
 
 	switch (_event.type)
 	{
@@ -22,7 +18,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 		cursorPosition.y = _event.motion.y;
 
 		//检测鼠标指针是否在实例范围内
-		for (Robot* _robot : _rm->GetRobotList())
+		for (Chargeable* _robot : _cm->GetRobotList())
 		{
 			//记录当前机器人的Rect
 			static SDL_Rect _robotRect;
@@ -39,7 +35,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			else
 				isTouchChargeable = false;
 		}
-		for (Battery* _battery : _bm->GetBatteryList())
+		for (Chargeable* _battery : _cm->GetBatteryList())
 		{
 			static SDL_Rect _batteryRect;
 			_batteryRect.x = (int)(_battery->GetPosition().x - TILE_SIZE / 2);
@@ -57,7 +53,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 	}
 	case SDL_MOUSEBUTTONDOWN:
 	{
-		for (Robot* _robot : _rm->GetRobotList())
+		for (Chargeable* _robot : _cm->GetRobotList())
 		{
 			//记录当前机器人的Rect
 			static SDL_Rect _robotRect;
@@ -73,7 +69,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 				return;
 			}
 		}
-		for (Battery* _battery : _bm->GetBatteryList())
+		for (Chargeable* _battery : _cm->GetBatteryList())
 		{
 			static SDL_Rect _batteryRect;
 			_batteryRect.x = (int)(_battery->GetPosition().x - TILE_SIZE / 2);
@@ -93,7 +89,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 	case SDL_MOUSEBUTTONUP:
 	{
 		//遍历所有实例找到被拖拽的那个，取消拖拽，并将其归正对齐到鼠标所在瓦片位置
-		for (Robot* _robot : _rm->GetRobotList())
+		for (Chargeable* _robot : _cm->GetRobotList())
 		{
 			if (_robot->isCursorDragging)
 			{
@@ -102,7 +98,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 				return;
 			}
 		}
-		for (Battery* _battery : _bm->GetBatteryList())
+		for (Chargeable* _battery : _cm->GetBatteryList())
 		{
 			if (_battery->isCursorDragging)
 			{

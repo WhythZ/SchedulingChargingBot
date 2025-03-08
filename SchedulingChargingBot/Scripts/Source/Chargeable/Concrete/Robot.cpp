@@ -1,7 +1,7 @@
 #include "../../../Header/Chargeable/Concrete/Robot.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ConfigManager.h"
-#include "../../../Header/Manager/Concrete/VehicleManager.h"
+#include "../../../Header/Manager/Concrete/ChargeableManager.h"
 
 Robot::Robot()
 {
@@ -21,12 +21,12 @@ Robot::Robot()
 void Robot::OnUpdate(double _delta)
 {
 	#pragma region Discharging
-	static VehicleManager* _vm = VehicleManager::Instance();
+	static ChargeableManager* _cm = ChargeableManager::Instance();
 	////若处于非繁忙状态才可以进入新的充放电状态
 	//if (!isCharging && !isDischarging)
 	//{
 	//	//在车辆附近放电
-	//	for (Vehicle* _vehicle : _vm->GetVehicleList())
+	//	for (Vehicle* _vehicle : _cm->GetVehicleList())
 	//	{
 	//		if ((position - _vehicle->GetPosition()).Length() <= collideRadius)
 	//		{

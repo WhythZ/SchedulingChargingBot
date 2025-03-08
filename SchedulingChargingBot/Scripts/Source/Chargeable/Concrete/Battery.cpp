@@ -1,7 +1,7 @@
 #include "../../../Header/Chargeable/Concrete/Battery.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ConfigManager.h"
-#include "../../../Header/Manager/Concrete/VehicleManager.h"
+#include "../../../Header/Manager/Concrete/ChargeableManager.h"
 
 Battery::Battery()
 {
@@ -21,7 +21,7 @@ Battery::Battery()
 void Battery::OnUpdate(double _delta)
 {
 	#pragma region Discharging
-	static VehicleManager* _vm = VehicleManager::Instance();
+	static ChargeableManager* _cm = ChargeableManager::Instance();
 	//在车辆附近放电
 	//if ()
 	#pragma endregion

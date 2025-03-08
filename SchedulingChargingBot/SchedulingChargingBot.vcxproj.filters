@@ -102,13 +102,7 @@
     <ClCompile Include="Scripts\Source\Chargeable\Concrete\Vehicle.cpp">
       <Filter>源文件\Chargeable\Concrete</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Manager\Concrete\BatteryManager.cpp">
-      <Filter>源文件\Manager\Concrete</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Source\Manager\Concrete\RobotManager.cpp">
-      <Filter>源文件\Manager\Concrete</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleManager.cpp">
+    <ClCompile Include="Scripts\Source\Manager\Concrete\ChargeableManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp">
@@ -152,13 +146,7 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\ConfigManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\Manager\Concrete\BatteryManager.h">
-      <Filter>头文件\Manager\Concrete</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Header\Manager\Concrete\RobotManager.h">
-      <Filter>头文件\Manager\Concrete</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleManager.h">
+    <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h">
@@ -187,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\UI\LinkUI.h">
       <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Chargeable\ChargeableType.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

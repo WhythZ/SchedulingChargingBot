@@ -6,9 +6,7 @@
 #include "../../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/UIManager.h"
-#include "../../../Header/Manager/Concrete/RobotManager.h"
-#include "../../../Header/Manager/Concrete/VehicleManager.h"
-#include "../../../Header/Manager/Concrete/BatteryManager.h"
+#include "../../../Header/Manager/Concrete/ChargeableManager.h"
 
 GameManager::GameManager()
 {
@@ -56,14 +54,14 @@ GameManager::GameManager()
 	#pragma endregion
 
 	//测试实例化
-	RobotManager::Instance()->SpawnAt({ 2,0 });
-	RobotManager::Instance()->SpawnAt({ 4,0 });
-	BatteryManager::Instance()->SpawnAt({ 15,0 });
-	BatteryManager::Instance()->SpawnAt({ 17,0 });
-	VehicleManager::Instance()->SpawnAt({ 8,5 });
-	VehicleManager::Instance()->SpawnAt({ 11,5 });
-	VehicleManager::Instance()->SpawnAt({ 8,8 });
-	VehicleManager::Instance()->SpawnAt({ 11,8 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { 2,0 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { 4,0 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Battery, { 15,0 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Battery, { 17,0 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 8,5 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 11,5 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 8,8 });
+	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 11,8 });
 }
 
 GameManager::~GameManager()
@@ -171,9 +169,7 @@ void GameManager::OnUpdate(double _delta)
 {
 	//更新各管理器数据
 	UIManager::Instance()->OnUpdate(renderer);
-	RobotManager::Instance()->OnUpdate(_delta);
-	VehicleManager::Instance()->OnUpdate(_delta);
-	BatteryManager::Instance()->OnUpdate(_delta);
+	ChargeableManager::Instance()->OnUpdate(_delta);
 }
 
 void GameManager::OnRender()
@@ -183,9 +179,7 @@ void GameManager::OnRender()
 	SDL_RenderCopy(renderer, mapTexture, nullptr, &ConfigManager::Instance()->mapRect);
 	#pragma endregion
 
-	RobotManager::Instance()->OnRender(renderer);
-	VehicleManager::Instance()->OnRender(renderer);
-	BatteryManager::Instance()->OnRender(renderer);
+	ChargeableManager::Instance()->OnRender(renderer);
 	//UI应当最后渲染的以保证始终在最上层
 	UIManager::Instance()->OnRender(renderer);
 }

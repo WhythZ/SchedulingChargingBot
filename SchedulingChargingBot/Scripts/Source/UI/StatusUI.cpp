@@ -4,9 +4,7 @@
 #include "../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../Header/Manager/Concrete/UIManager.h"
-#include "../../Header/Manager/Concrete/RobotManager.h"
-#include "../../Header/Manager/Concrete/VehicleManager.h"
-#include "../../Header/Manager/Concrete/BatteryManager.h"
+#include "../../Header/Manager/Concrete/ChargeableManager.h"
 
 void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 {
@@ -22,11 +20,11 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 
 	//先将文本以特定字体加载到内存中
 	static TTF_Font* _font = ResourceManager::Instance()->GetFontPool().find(FontResID::VonwaonBitmap16)->second;
+	static ChargeableManager* _cm = ChargeableManager::Instance();
 
 	#pragma region RobotNumText
-	//拿到场上机器人数量，强转为整形后转化为字符串
-	static RobotManager* _rm = RobotManager::Instance();
-	std::string _robotNumStr = "RobotNum=" + std::to_string((int)_rm->GetRobotList().size());
+	//转化为字符串
+	std::string _robotNumStr = "RobotNum=" + std::to_string(_cm->GetRobotList().size());
 	SDL_Surface* _robotTextSurface = TTF_RenderText_Blended(_font, _robotNumStr.c_str(), textColor);
 	//获取转化后的图片的长宽
 	robotNumTextSize = { _robotTextSurface->w, _robotTextSurface->h };
@@ -37,8 +35,7 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	#pragma endregion
 
 	#pragma region VehicleNumText
-	static VehicleManager* _vm = VehicleManager::Instance();
-	std::string _vehicleNumStr = "VehicleNum=" + std::to_string((int)_vm->GetVehicleList().size());
+	std::string _vehicleNumStr = "VehicleNum=" + std::to_string(_cm->GetVehicleList().size());
 	SDL_Surface* _vehicleTextSurface = TTF_RenderText_Blended(_font, _vehicleNumStr.c_str(), textColor);
 	vehicleNumTextSize = { _vehicleTextSurface->w, _vehicleTextSurface->h };
 	vehicleNumTextTexture = SDL_CreateTextureFromSurface(_renderer, _vehicleTextSurface);
@@ -46,8 +43,7 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	#pragma endregion
 
 	#pragma region BatteryNumText
-	static BatteryManager* _bm = BatteryManager::Instance();
-	std::string _batteryNumStr = "BatteryNum=" + std::to_string((int)_bm->GetBatteryList().size());
+	std::string _batteryNumStr = "BatteryNum=" + std::to_string(_cm->GetBatteryList().size());
 	SDL_Surface* _batteryTextSurface = TTF_RenderText_Blended(_font, _batteryNumStr.c_str(), textColor);
 	batteryNumTextSize = { _batteryTextSurface->w, _batteryTextSurface->h };
 	batteryNumTextTexture = SDL_CreateTextureFromSurface(_renderer, _batteryTextSurface);
