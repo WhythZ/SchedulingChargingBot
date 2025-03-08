@@ -87,12 +87,20 @@ void Chargeable::OnRender(SDL_Renderer* _renderer)
 	#pragma region ElectricityBar
 	//电量条渲染在底层，从下往上代表电量，传入左上顶点（y值乘上比例）和右下顶点，然后是颜色
 	static SDL_Rect _barRect;
+	//渲染电量背景颜色
+	_barRect.w = size.x / 2;
+	_barRect.h = size.y;
+	_barRect.x = (int)(position.x);
+	_barRect.y = (int)(position.y - size.y / 2);
+	boxRGBA(_renderer, _barRect.x, _barRect.y, _barRect.x + _barRect.w, _barRect.y + _barRect.h,
+		barBackgroundColor.r, barBackgroundColor.g, barBackgroundColor.b, barBackgroundColor.a);
+	//渲染电量内容颜色
 	_barRect.w = size.x / 2;
 	_barRect.h = (int)(size.y * currentElectricityRatio);
 	_barRect.x = (int)(position.x);
 	_barRect.y = (int)(position.y + size.y / 2 - _barRect.h);
 	boxRGBA(_renderer, _barRect.x, _barRect.y, _barRect.x + _barRect.w, _barRect.y + _barRect.h,
-		barColor.r, barColor.g, barColor.b, barColor.a);
+		barContentColor.r, barContentColor.g, barContentColor.b, barContentColor.a);
 	#pragma endregion
 
 	//然后再渲染纹理，以覆盖在电量条上

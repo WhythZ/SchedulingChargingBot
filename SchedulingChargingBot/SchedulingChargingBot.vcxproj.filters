@@ -177,7 +177,7 @@
       <Filter>头文件\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\Chargeable\ChargeableType.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Chargeable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
