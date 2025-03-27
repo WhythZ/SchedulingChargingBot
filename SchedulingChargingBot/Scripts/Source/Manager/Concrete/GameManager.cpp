@@ -7,6 +7,7 @@
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/UIManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
+#include "../../../Header/Manager/Concrete/SchedulingManager.h"
 
 GameManager::GameManager()
 {
@@ -168,8 +169,9 @@ void GameManager::OnInput()
 void GameManager::OnUpdate(double _delta)
 {
 	//更新各管理器数据
-	UIManager::Instance()->OnUpdate(renderer);
 	ChargeableManager::Instance()->OnUpdate(_delta);
+	SchedulingManager::Instance()->OnUpdate(_delta);
+	UIManager::Instance()->OnUpdate(renderer);
 }
 
 void GameManager::OnRender()
@@ -180,6 +182,7 @@ void GameManager::OnRender()
 	#pragma endregion
 
 	ChargeableManager::Instance()->OnRender(renderer);
+	SchedulingManager::Instance()->OnRender(renderer);
 	//UI应当最后渲染的以保证始终在最上层
 	UIManager::Instance()->OnRender(renderer);
 }

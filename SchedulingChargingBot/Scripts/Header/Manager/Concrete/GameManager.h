@@ -36,7 +36,7 @@ private:
 	void OnUpdate(double);                     //主循环内逐帧检测数据的更新
 	void OnRender();                           //主循环内渲染绘图的具体过程
 	
-	bool GenerateTilemapTexture();               //生成场景地图纹理
+	bool GenerateTilemapTexture();             //生成场景地图纹理
 };
 
 #endif

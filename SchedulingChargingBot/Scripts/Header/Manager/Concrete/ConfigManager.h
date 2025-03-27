@@ -33,7 +33,6 @@ public:
 	SDL_Rect mapRect = { 0 };
 	#pragma endregion
 
-
 public:
 	bool LoadConfig(const std::string&);
 	bool LoadMap(const std::string&);
