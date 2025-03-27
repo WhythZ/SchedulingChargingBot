@@ -117,6 +117,9 @@
     <ClCompile Include="Scripts\Source\UI\LinkUI.cpp">
       <Filter>源文件\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\SchedulingManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Chargeable\ChargeableType.h">
       <Filter>头文件\Chargeable</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\SchedulingManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
