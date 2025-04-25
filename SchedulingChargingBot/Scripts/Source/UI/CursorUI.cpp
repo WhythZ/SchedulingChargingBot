@@ -4,6 +4,7 @@
 #include "../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../Header/Manager/Concrete/UIManager.h"
 #include "../../Header/Manager/Concrete/ChargeableManager.h"
+#include "../../Header/Manager/Concrete/SceneManager.h"
 
 void CursorUI::OnInput(const SDL_Event& _event)
 {
@@ -115,8 +116,8 @@ void CursorUI::OnInput(const SDL_Event& _event)
 
 void CursorUI::OnUpdate(SDL_Renderer* _renderer)
 {
-	static GameManager* _gm = GameManager::Instance();
-	SDL_Point _tileIdx = _gm->GetCursorTileIdx();
+	static SceneManager* _sm = SceneManager::Instance();
+	SDL_Point _tileIdx = _sm->GetCursorTileIdx();
 
 	//计算目标瓦片的中心点位置
 	cursorTilePosition = { _tileIdx.x * TILE_SIZE + TILE_SIZE / 2,_tileIdx.y * TILE_SIZE + TILE_SIZE / 2 };
@@ -131,7 +132,7 @@ void CursorUI::OnRender(SDL_Renderer* _renderer)
 	static SDL_Point _positionLeftUp = { 0,0 };
 
 	//地图Rect
-	static SDL_Rect _mapRect = ConfigManager::Instance()->mapRect;
+	static SDL_Rect _mapRect = SceneManager::Instance()->mapRect;
 
 	#pragma region CursorHover
 	//例外情况，不渲染悬停框

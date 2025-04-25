@@ -1,8 +1,9 @@
 #include "../../Header/Chargeable/Chargeable.h"
 #include <SDL2_gfxPrimitives.h>
 #include "../../Header/Tilemap/Tile.h"
-#include "../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../Header/Manager/Concrete/GameManager.h"
+#include "../../Header/Manager/Concrete/ConfigManager.h"
+#include "../../Header/Manager/Concrete/SceneManager.h"
 
 Chargeable::Chargeable()
 {
@@ -62,19 +63,23 @@ void Chargeable::OnUpdate(double _delta)
 		UpdateIdling(_delta);
 	#pragma endregion
 
+	#pragma region Electricity
+
+	#pragma endregion
+
 	#pragma region Position
 	//若未被拖拽，则依据速度更新其位置
-	static GameManager* _gm = GameManager::Instance();
+	static SceneManager* _sm = SceneManager::Instance();
 	if (isCursorDragging)
 	{
-		position.x = (double)(_gm->GetCursorPosition().x);
-		position.y = (double)(_gm->GetCursorPosition().y);
+		position.x = (double)(_sm->GetCursorPosition().x);
+		position.y = (double)(_sm->GetCursorPosition().y);
 	}
 	else
 		position += velocity * _delta;
 
 	//防止跑出地图边界
-	static SDL_Rect _mapRect = ConfigManager::Instance()->mapRect;
+	static SDL_Rect _mapRect = _sm->mapRect;
 	if (position.x <= _mapRect.x) position.x = _mapRect.x;
 	if (position.x >= _mapRect.x + _mapRect.w) position.x = _mapRect.x + _mapRect.w;
 	if (position.y <= _mapRect.y) position.y = _mapRect.y;
@@ -88,16 +93,16 @@ void Chargeable::OnRender(SDL_Renderer* _renderer)
 	//电量条渲染在底层，从下往上代表电量，传入左上顶点（y值乘上比例）和右下顶点，然后是颜色
 	static SDL_Rect _barRect;
 	//渲染电量背景颜色
-	_barRect.w = size.x / 2;
+	_barRect.w = size.x;
 	_barRect.h = size.y;
-	_barRect.x = (int)(position.x);
+	_barRect.x = (int)(position.x - size.x / 2);
 	_barRect.y = (int)(position.y - size.y / 2);
 	boxRGBA(_renderer, _barRect.x, _barRect.y, _barRect.x + _barRect.w, _barRect.y + _barRect.h,
 		barBackgroundColor.r, barBackgroundColor.g, barBackgroundColor.b, barBackgroundColor.a);
 	//渲染电量内容颜色
-	_barRect.w = size.x / 2;
+	_barRect.w = size.x;
 	_barRect.h = (int)(size.y * currentElectricityRatio);
-	_barRect.x = (int)(position.x);
+	_barRect.x = (int)(position.x - size.x / 2);
 	_barRect.y = (int)(position.y + size.y / 2 - _barRect.h);
 	boxRGBA(_renderer, _barRect.x, _barRect.y, _barRect.x + _barRect.w, _barRect.y + _barRect.h,
 		barContentColor.r, barContentColor.g, barContentColor.b, barContentColor.a);

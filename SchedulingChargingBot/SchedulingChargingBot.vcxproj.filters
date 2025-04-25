@@ -120,6 +120,9 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\SchedulingManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -183,6 +186,9 @@
       <Filter>头文件\Chargeable</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\SchedulingManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
   </ItemGroup>

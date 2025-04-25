@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include "../../../Header/Manager/Concrete/SceneManager.h"
 
 bool ConfigManager::LoadConfig(const std::string& _path)
 {
@@ -33,7 +34,7 @@ bool ConfigManager::LoadConfig(const std::string& _path)
 
 bool ConfigManager::LoadMap(const std::string& _csvPath)
 {
-	return map.Load(_csvPath);
+	return SceneManager::Instance()->map.Load(_csvPath);
 }
 
 bool ConfigManager::ParseBasicConfigPrefab(BasicConfigPrefab& _prefab, cJSON* _jsonRoot)

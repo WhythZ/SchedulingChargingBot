@@ -16,16 +16,9 @@ private:
 	SDL_Event event;                           //用于调用SDL事件，根据不同的事件类型做出相应的反应
 	bool isQuit = false;                       //决定游戏主循环是否结束
 	int fps = 60;                              //需要维持的游戏帧率，即每秒刷新的帧数
-	
-	SDL_Texture* mapTexture = nullptr;         //存储被渲染成一整张SDL_Texture*纹理图片的瓦片地图
-	
-	SDL_Point cursorPosition = { 0,0 };        //存储鼠标指针位置，其位置在事件检测更新中被刷新
 
 public:
 	int Run(int, char**);
-
-	SDL_Point GetCursorPosition() const;       //获取鼠标位置
-	SDL_Point GetCursorTileIdx() const;        //获取鼠标位置所在的瓦片索引
 
 private:
 	GameManager();                   
@@ -35,8 +28,6 @@ private:
 	void OnInput();                            //主循环内检测输入事件并作出相应的反应
 	void OnUpdate(double);                     //主循环内逐帧检测数据的更新
 	void OnRender();                           //主循环内渲染绘图的具体过程
-	
-	bool GenerateTilemapTexture();             //生成场景地图纹理
 };
 
 #endif

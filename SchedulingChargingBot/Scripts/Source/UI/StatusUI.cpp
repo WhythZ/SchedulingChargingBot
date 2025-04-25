@@ -5,6 +5,7 @@
 #include "../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../Header/Manager/Concrete/UIManager.h"
 #include "../../Header/Manager/Concrete/ChargeableManager.h"
+#include "../../Header/Manager/Concrete/SceneManager.h"
 
 void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 {
@@ -60,7 +61,7 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 	static SDL_Point _positionLeftUp = { 0,0 };
 
 	//地图Rect
-	static SDL_Rect _mapRect = ConfigManager::Instance()->mapRect;
+	static SDL_Rect _mapRect = SceneManager::Instance()->mapRect;
 
 	#pragma region RobotNumText
 	//渲染在屏幕中上

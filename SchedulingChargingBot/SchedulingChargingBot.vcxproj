@@ -147,6 +147,7 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\ConfigManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\GameManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ResourceManager.cpp" />
+    <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\SchedulingManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ChargeableManager.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\ConfigManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\GameManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ResourceManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\SchedulingManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h" />
