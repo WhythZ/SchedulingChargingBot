@@ -69,12 +69,12 @@ TileMap Map::GetTileMap() const
 	return tileMap;
 }
 
-std::unordered_map<size_t, SDL_Point> Map::GetStationIdxPool() const
+std::map<size_t, SDL_Point> Map::GetStationIdxPool() const
 {
 	return stationIdxPool;
 }
 
-std::unordered_map<size_t, SDL_Point> Map::GetVehicleIdxPool() const
+std::map<size_t, SDL_Point> Map::GetVehicleIdxPool() const
 {
 	return vehicleIdxPool;
 }

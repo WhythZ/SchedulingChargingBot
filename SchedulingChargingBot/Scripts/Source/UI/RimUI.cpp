@@ -2,16 +2,19 @@
 #include "../../Header/Manager/Concrete/UIManager.h"
 #include "../../Header/Manager/Concrete/SceneManager.h"
 
+#include <iostream>
+
 RimUI::RimUI()
 {
 	const Map& _map = SceneManager::Instance()->map;
 	
 	#pragma region Stations
-	std::unordered_map<size_t, SDL_Point> _stations = _map.GetStationIdxPool();
+	std::map<size_t, SDL_Point> _stations = _map.GetStationIdxPool();
+	std::cout << _stations.size() << std::endl;
 	//注意充电桩的索引从1开始，0是无效值
-	for (int i = 1; i < _stations.size(); i++)
+	for (auto _elem : _stations)
 	{
-		SDL_Point _point = _stations.find(i)->second;
+		SDL_Point _point = _elem.second;
 		
 		//计算对应位置瓦片中心点位置
 		int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
@@ -29,10 +32,11 @@ RimUI::RimUI()
 	#pragma endregion
 
 	#pragma region Vehicles
-	std::unordered_map<size_t, SDL_Point> _vehicles = _map.GetVehicleIdxPool();
-	for (int i = 1; i < _vehicles.size(); i++)
+	std::map<size_t, SDL_Point> _vehicles = _map.GetVehicleIdxPool();
+	std::cout << _vehicles.size() << std::endl;
+	for (auto _elem : _vehicles)
 	{
-		SDL_Point _point = _vehicles.find(i)->second;
+		SDL_Point _point = _elem.second;
 
 		//计算对应位置瓦片中心点位置
 		int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
