@@ -69,6 +69,16 @@ TileMap Map::GetTileMap() const
 	return tileMap;
 }
 
+std::unordered_map<size_t, SDL_Point> Map::GetStationIdxPool() const
+{
+	return stationIdxPool;
+}
+
+std::unordered_map<size_t, SDL_Point> Map::GetVehicleIdxPool() const
+{
+	return vehicleIdxPool;
+}
+
 size_t Map::GetHeightTileNum() const
 {
 	if (tileMap.empty())
@@ -138,7 +148,7 @@ void Map::LoadTileFromString(const std::string _tileBuf, Tile& _tile)
 	//检测数组尺寸，空的话表示数据缺失；地形层的值小于0无意义，等于0表示取Tileset中首个纹理
 	_tile.tilesetIdx = (_values.size() < 1 || _values[0] < 0) ? 0 : _values[0];
 	//数组尺寸为1的话，说明功能层的数据缺失，否则等于0表无功能，正数生成车辆，负数充电桩
-	_tile.functionFlag = (_values.size() < 2 || _values[1] == 0) ? 0 : _values[1];
+	_tile.functionFlag = (_values.size() < 2) ? 0 : _values[1];
 }
 
 void Map::GenerateMapCache()

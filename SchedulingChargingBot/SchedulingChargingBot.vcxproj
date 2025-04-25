@@ -153,6 +153,7 @@
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp" />
     <ClCompile Include="Scripts\Source\UI\CursorUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\LinkUI.cpp" />
+    <ClCompile Include="Scripts\Source\UI\RimUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\StatusUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +177,7 @@
     <ClInclude Include="Scripts\Header\Tilemap\Map.h" />
     <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
     <ClInclude Include="Scripts\Header\UI\LinkUI.h" />
+    <ClInclude Include="Scripts\Header\UI\RimUI.h" />
     <ClInclude Include="Scripts\Header\UI\StatusUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

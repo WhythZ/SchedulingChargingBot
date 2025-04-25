@@ -4,16 +4,8 @@
 
 bool SceneManager::Init(SDL_Renderer* _renderer)
 {
-	bool _flag = true;
-
 	//烘焙瓦片地图纹理
-	_flag = GenerateTilemapTexture(_renderer);
-
-	//记录机器人充电点位置
-
-	//记录机器人放电点位置（给汽车充电的位置）
-
-	return _flag;
+	return GenerateTilemapTexture(_renderer);
 }
 
 void SceneManager::OnInput(const SDL_Event& _event)

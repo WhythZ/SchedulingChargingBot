@@ -10,8 +10,8 @@ class Map
 {
 private:
 	TileMap tileMap;                                       //记录瓦片地图
-	std::unordered_map<size_t, SDL_Point> vehicleIdxPool;  //记录车辆生成点坐标
 	std::unordered_map<size_t, SDL_Point> stationIdxPool;  //记录充电桩坐标
+	std::unordered_map<size_t, SDL_Point> vehicleIdxPool;  //记录车辆生成点坐标
 
 public:
 	Map() = default;
@@ -20,6 +20,8 @@ public:
 	bool Load(const std::string&);
 
 	TileMap GetTileMap() const;
+	std::unordered_map<size_t, SDL_Point> GetStationIdxPool() const;
+	std::unordered_map<size_t, SDL_Point> GetVehicleIdxPool() const;
 	size_t GetWidthTileNum() const;
 	size_t GetHeightTileNum() const;
 

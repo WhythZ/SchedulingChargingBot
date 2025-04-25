@@ -6,6 +6,7 @@
 #include "ResourceManager.h"
 #include "../../UI/StatusUI.h"
 #include "../../UI/CursorUI.h"
+#include "../../UI/RimUI.h"
 
 class UIManager :public Manager<UIManager>
 {
@@ -14,6 +15,7 @@ class UIManager :public Manager<UIManager>
 private:
 	StatusUI* statusUI;
 	CursorUI* cursorUI;
+	RimUI* rimUI;
 
 public:
 	void OnInput(const SDL_Event&);

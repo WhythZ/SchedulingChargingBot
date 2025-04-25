@@ -7,12 +7,14 @@ UIManager::UIManager()
 {
 	statusUI = new StatusUI();
 	cursorUI = new CursorUI();
+	rimUI = new RimUI();
 }
 
 UIManager::~UIManager()
 {
 	delete statusUI;
 	delete cursorUI;
+	delete rimUI;
 }
 
 void UIManager::OnInput(const SDL_Event& _event)
@@ -24,12 +26,14 @@ void UIManager::OnUpdate(SDL_Renderer* _renderer)
 {
 	statusUI->OnUpdate(_renderer);
 	cursorUI->OnUpdate(_renderer);
+	//rimUI->OnUpdate(_renderer);
 }
 
 void UIManager::OnRender(SDL_Renderer* _renderer)
 {
 	statusUI->OnRender(_renderer);
 	cursorUI->OnRender(_renderer);
+	rimUI->OnRender(_renderer);
 }
 
 void UIManager::DrawTexture(SDL_Renderer* _renderer, SDL_Texture* _texture, const SDL_Point& _LeftUpPosition, const SDL_Point& _size)

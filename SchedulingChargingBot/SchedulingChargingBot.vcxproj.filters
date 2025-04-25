@@ -120,6 +120,9 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\UI\RimUI.cpp">
+      <Filter>源文件\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\UI\RimUI.h">
+      <Filter>头文件\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
