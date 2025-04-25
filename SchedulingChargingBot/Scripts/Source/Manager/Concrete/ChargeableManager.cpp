@@ -7,8 +7,6 @@ ChargeableManager::~ChargeableManager()
 		delete _robot;
 	for (Chargeable* _vehicle : vehicleList)
 		delete _vehicle;
-	for (Chargeable* _battery : batteryList)
-		delete _battery;
 }
 
 void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point)
@@ -26,10 +24,6 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 	case ChargeableType::Vehicle:
 		_new = new Vehicle();
 		vehicleList.push_back(_new);
-		break;
-	case ChargeableType::Battery:
-		_new = new Battery();
-		batteryList.push_back(_new);
 		break;
 	default:
 		break;
@@ -51,8 +45,6 @@ void ChargeableManager::OnUpdate(double _delta)
 		_robot->OnUpdate(_delta);
 	for (Chargeable* _vehicle : vehicleList)
 		_vehicle->OnUpdate(_delta);
-	for (Chargeable* _battery : batteryList)
-		_battery->OnUpdate(_delta);
 }
 
 void ChargeableManager::OnRender(SDL_Renderer* _renderer)
@@ -61,8 +53,6 @@ void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 		_robot->OnRender(_renderer);
 	for (Chargeable* _vehicle : vehicleList)
 		_vehicle->OnRender(_renderer);
-	for (Chargeable* _battery : batteryList)
-		_battery->OnRender(_renderer);
 }
 
 std::vector<Chargeable*> ChargeableManager::GetRobotList() const
@@ -73,11 +63,6 @@ std::vector<Chargeable*> ChargeableManager::GetRobotList() const
 std::vector<Chargeable*> ChargeableManager::GetVehicleList() const
 {
 	return vehicleList;
-}
-
-std::vector<Chargeable*> ChargeableManager::GetBatteryList() const
-{
-	return batteryList;
 }
 
 void ChargeableManager::RemoveInvalid()
@@ -112,20 +97,5 @@ void ChargeableManager::RemoveInvalid()
 
 	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
 	vehicleList.erase(_beginR, vehicleList.end());
-	#pragma endregion
-
-	#pragma region RemoveInvalidBattery
-	auto _beginB = std::remove_if(batteryList.begin(), batteryList.end(),
-		[](const Chargeable* _battery)
-		{
-			if (!_battery->IsValid())
-			{
-				delete _battery;
-				return true;
-			}
-			return false;
-		});
-
-	batteryList.erase(_beginB, batteryList.end());
 	#pragma endregion
 }

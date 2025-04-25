@@ -90,9 +90,6 @@
     <ClCompile Include="..\Dependencies\cJSON\cJSON.c">
       <Filter>源文件\_Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Battery.cpp">
-      <Filter>源文件\Chargeable\Concrete</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\Source\Chargeable\Chargeable.cpp">
       <Filter>源文件\Chargeable</Filter>
     </ClCompile>
@@ -154,9 +151,6 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h">
-      <Filter>头文件\Chargeable\Concrete</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Robot.h">
       <Filter>头文件\Chargeable\Concrete</Filter>

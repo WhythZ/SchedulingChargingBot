@@ -17,7 +17,6 @@ private:
 	#pragma region TextSize
 	SDL_Point robotNumTextSize = { 0 };
 	SDL_Point vehicleNumTextSize = { 0 };
-	SDL_Point batteryNumTextSize = { 0 };
 
 	double textZoomRate = 2;
 	#pragma endregion
@@ -25,7 +24,6 @@ private:
 	#pragma region TextTexture
 	SDL_Texture* robotNumTextTexture = nullptr;
 	SDL_Texture* vehicleNumTextTexture = nullptr;
-	SDL_Texture* batteryNumTextTexture = nullptr;
 	#pragma endregion
 
 public:

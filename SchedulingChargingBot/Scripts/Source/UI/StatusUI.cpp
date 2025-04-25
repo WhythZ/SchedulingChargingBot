@@ -15,8 +15,6 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	robotNumTextTexture = nullptr;
 	SDL_DestroyTexture(vehicleNumTextTexture);
 	vehicleNumTextTexture = nullptr;
-	SDL_DestroyTexture(batteryNumTextTexture);
-	batteryNumTextTexture = nullptr;
 	#pragma endregion
 
 	//先将文本以特定字体加载到内存中
@@ -41,14 +39,6 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	vehicleNumTextSize = { _vehicleTextSurface->w, _vehicleTextSurface->h };
 	vehicleNumTextTexture = SDL_CreateTextureFromSurface(_renderer, _vehicleTextSurface);
 	SDL_FreeSurface(_vehicleTextSurface);
-	#pragma endregion
-
-	#pragma region BatteryNumText
-	std::string _batteryNumStr = "BatteryNum=" + std::to_string(_cm->GetBatteryList().size());
-	SDL_Surface* _batteryTextSurface = TTF_RenderText_Blended(_font, _batteryNumStr.c_str(), textColor);
-	batteryNumTextSize = { _batteryTextSurface->w, _batteryTextSurface->h };
-	batteryNumTextTexture = SDL_CreateTextureFromSurface(_renderer, _batteryTextSurface);
-	SDL_FreeSurface(_batteryTextSurface);
 	#pragma endregion
 }
 
@@ -79,14 +69,5 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 	vehicleNumTextSize.x = (int)(vehicleNumTextSize.x * textZoomRate);
 	vehicleNumTextSize.y = (int)(vehicleNumTextSize.y * textZoomRate);
 	_ui->DrawTexture(_renderer, vehicleNumTextTexture, _positionLeftUp, vehicleNumTextSize);
-	#pragma endregion
-
-	#pragma region BatteryNumText
-	//渲染在屏幕中下
-	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - batteryNumTextSize.x / 2;
-	_positionLeftUp.y = _mapRect.y + robotNumTextSize.y + rowDistance + vehicleNumTextSize.y + rowDistance;
-	batteryNumTextSize.x = (int)(batteryNumTextSize.x * textZoomRate);
-	batteryNumTextSize.y = (int)(batteryNumTextSize.y * textZoomRate);
-	_ui->DrawTexture(_renderer, batteryNumTextTexture, _positionLeftUp, batteryNumTextSize);
 	#pragma endregion
 }

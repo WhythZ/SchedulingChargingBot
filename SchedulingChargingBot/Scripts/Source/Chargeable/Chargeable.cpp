@@ -7,46 +7,29 @@
 
 Chargeable::Chargeable()
 {
-	//初始化当前电量为最大电量百分比
-	currentElectricityRatio = 1;
-
 	//初始化当前动画为闲置动画
-	animCurrent = &animIdling;
+	animCurrent = &animIdle;
 
 	#pragma region SetTimer
 	//计时器需要持续更新以充电/放电，每次对当前电量做出一定数量改变
-	chargingTimer.SetOneShot(false);
-	chargingTimer.SetTimeOutTrigger(
+	chargedTimer.SetOneShot(false);
+	chargedTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricityRatio += chargingIntensity;
+			currentElectricityRatio += chargedIntensity;
 			currentElectricityRatio = (currentElectricityRatio >= 1) ? 1 : currentElectricityRatio;
 		}
 	);
 
-	dischargingTimer.SetOneShot(false);
-	dischargingTimer.SetTimeOutTrigger(
+	chargerTimer.SetOneShot(false);
+	chargerTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricityRatio -= dischargingIntensity;
+			currentElectricityRatio -= chargerIntensity;
 			currentElectricityRatio = (currentElectricityRatio < 0) ? 0 : currentElectricityRatio;
 		}
 	);
 	#pragma endregion
-
-	//设定碰撞半径
-	collideRadius = TILE_SIZE;
-}
-
-void Chargeable::SetPosition(int _x, int _y)
-{
-	position.x = _x;
-	position.y = _y;
-}
-
-void Chargeable::SetVelocity(Vector2 _velocity)
-{
-	velocity = _velocity;
 }
 
 void Chargeable::OnUpdate(double _delta)
@@ -55,16 +38,12 @@ void Chargeable::OnUpdate(double _delta)
 
 	#pragma region Animation
 	//放电优先
-	if (isDischarging)
-		UpdateDischarging(_delta);
-	else if (isCharging)
-		UpdateCharging(_delta);
+	if (isCharger)
+		UpdateCharger(_delta);
+	else if (isCharged)
+		UpdateCharged(_delta);
 	else
 		UpdateIdling(_delta);
-	#pragma endregion
-
-	#pragma region Electricity
-
 	#pragma endregion
 
 	#pragma region Position
@@ -115,6 +94,17 @@ void Chargeable::OnRender(SDL_Renderer* _renderer)
 	animCurrent->OnRender(_renderer, _point);
 }
 
+void Chargeable::SetPosition(int _x, int _y)
+{
+	position.x = _x;
+	position.y = _y;
+}
+
+void Chargeable::SetVelocity(Vector2 _velocity)
+{
+	velocity = _velocity;
+}
+
 void Chargeable::Invalidate()
 {
 	isValid = false;
@@ -133,23 +123,23 @@ Vector2 Chargeable::GetPosition() const
 void Chargeable::UpdateIdling(double _delta)
 {
 	//更新为闲置时动画
-	animCurrent = &animIdling;
+	animCurrent = &animIdle;
 }
 
-void Chargeable::UpdateCharging(double _delta)
+void Chargeable::UpdateCharged(double _delta)
 {
 	//更新充电时计时器
-	chargingTimer.OnUpdate(_delta);
+	chargedTimer.OnUpdate(_delta);
 
 	//更新为充电时动画
-	animCurrent = &animCharging;
+	animCurrent = &animCharged;
 }
 
-void Chargeable::UpdateDischarging(double _delta)
+void Chargeable::UpdateCharger(double _delta)
 {
 	//更新放电时计时器
-	dischargingTimer.OnUpdate(_delta);
+	chargerTimer.OnUpdate(_delta);
 
 	//更新为放电时动画
-	animCurrent = &animDischarging;
+	animCurrent = &animCharger;
 }

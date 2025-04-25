@@ -57,8 +57,6 @@ GameManager::GameManager()
 	//²âÊÔÊµÀý»¯
 	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { 2,0 });
 	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { 4,0 });
-	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Battery, { 15,0 });
-	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Battery, { 17,0 });
 	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 8,5 });
 	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 11,5 });
 	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 8,8 });

@@ -36,21 +36,6 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			else
 				isTouchChargeable = false;
 		}
-		for (Chargeable* _battery : _cm->GetBatteryList())
-		{
-			static SDL_Rect _batteryRect;
-			_batteryRect.x = (int)(_battery->GetPosition().x - TILE_SIZE / 2);
-			_batteryRect.y = (int)(_battery->GetPosition().y - TILE_SIZE / 2);
-			_batteryRect.w = TILE_SIZE;
-			_batteryRect.h = TILE_SIZE;
-			if (SDL_PointInRect(&cursorPosition, &_batteryRect))
-			{
-				isTouchChargeable = true;
-				return;
-			}
-			else
-				isTouchChargeable = false;
-		}
 	}
 	case SDL_MOUSEBUTTONDOWN:
 	{
@@ -70,21 +55,6 @@ void CursorUI::OnInput(const SDL_Event& _event)
 				return;
 			}
 		}
-		for (Chargeable* _battery : _cm->GetBatteryList())
-		{
-			static SDL_Rect _batteryRect;
-			_batteryRect.x = (int)(_battery->GetPosition().x - TILE_SIZE / 2);
-			_batteryRect.y = (int)(_battery->GetPosition().y - TILE_SIZE / 2);
-			_batteryRect.w = TILE_SIZE;
-			_batteryRect.h = TILE_SIZE;
-			if (SDL_PointInRect(&cursorPosition, &_batteryRect))
-			{
-				_battery->isCursorDragging = true;
-				return;
-			}
-			else
-				isTouchChargeable = false;
-		}
 	}
 	break;
 	case SDL_MOUSEBUTTONUP:
@@ -96,15 +66,6 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			{
 				_robot->isCursorDragging = false;
 				_robot->SetPosition(cursorTilePosition.x, cursorTilePosition.y);
-				return;
-			}
-		}
-		for (Chargeable* _battery : _cm->GetBatteryList())
-		{
-			if (_battery->isCursorDragging)
-			{
-				_battery->isCursorDragging = false;
-				_battery->SetPosition(cursorTilePosition.x, cursorTilePosition.y);
 				return;
 			}
 		}
