@@ -69,12 +69,12 @@ TileMap Map::GetTileMap() const
 	return tileMap;
 }
 
-std::map<size_t, SDL_Point> Map::GetStationIdxPool() const
+const std::map<size_t, SDL_Point>& Map::GetStationIdxPool() const
 {
 	return stationIdxPool;
 }
 
-std::map<size_t, SDL_Point> Map::GetVehicleIdxPool() const
+const std::map<size_t, SDL_Point>& Map::GetVehicleIdxPool() const
 {
 	return vehicleIdxPool;
 }
@@ -93,6 +93,16 @@ size_t Map::GetWidthTileNum() const
 		return 0;
 	//即返回第一行的列数
 	return tileMap[0].size();
+}
+
+const std::vector<SDL_Rect>& Map::GetStationRects() const
+{
+	return stationRects;
+}
+
+const std::vector<SDL_Rect>& Map::GetVehicleRects() const
+{
+	return vehicleRects;
 }
 
 std::string Map::TrimString(const std::string _str)
@@ -154,10 +164,11 @@ void Map::LoadTileFromString(const std::string _tileBuf, Tile& _tile)
 void Map::GenerateMapCache()
 //这种在编译阶段缓存（TileMap中存储的）静态数据的方法称为烘培
 {
+	#pragma region StationsAndVehiclesTile
 	//可复用的局部静态点
 	static SDL_Point _pt;
 
-	//遍历地图的每一个瓦片单元格
+	//遍历地图的每一个瓦片单元格，记录特殊瓦片
 	for (int y = 0; y < GetHeightTileNum(); y++)
 	{
 		for (int x = 0; x < GetWidthTileNum(); x++)
@@ -176,4 +187,43 @@ void Map::GenerateMapCache()
 				stationIdxPool[-_tile.functionFlag] = { x,y };
 		}
 	}
+	#pragma endregion
+
+	#pragma region StationsAndVehiclesArea
+	//生成各充电桩、各车辆生成点的作用范围，注意索引从1开始，0是无效值
+	for (auto _elem : stationIdxPool)
+	{
+		SDL_Point _point = _elem.second;
+
+		//计算对应位置瓦片中心点位置
+		int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
+		int _y = _point.y * TILE_SIZE + TILE_SIZE / 2;
+		//以该瓦片为中心，周围3x3的矩形范围是可触发范围（充电桩给机器人充电、车辆可以触发被充电）
+		SDL_Rect _rect =
+		{
+			_x - (TILE_SIZE / 2 + TILE_SIZE),
+			_y - (TILE_SIZE / 2 + TILE_SIZE),
+			TILE_SIZE * 3,
+			TILE_SIZE * 3
+		};
+		stationRects.emplace_back(_rect);
+	}
+	for (auto _elem : vehicleIdxPool)
+	{
+		SDL_Point _point = _elem.second;
+
+		//计算对应位置瓦片中心点位置
+		int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
+		int _y = _point.y * TILE_SIZE + TILE_SIZE / 2;
+		//以该瓦片为中心，周围3x3的矩形范围是可触发范围（充电桩给机器人充电、车辆可以触发被充电）
+		SDL_Rect _rect =
+		{
+			_x - (TILE_SIZE / 2 + TILE_SIZE),
+			_y - (TILE_SIZE / 2 + TILE_SIZE),
+			TILE_SIZE * 3,
+			TILE_SIZE * 3
+		};
+		vehicleRects.emplace_back(_rect);
+	}
+	#pragma endregion
 }

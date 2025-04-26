@@ -6,12 +6,8 @@
 
 class RimUI
 {
-private:
-	std::vector<SDL_Rect> stationRects;
-	std::vector<SDL_Rect> vehicleRects;
-
 public:
-	RimUI();
+	RimUI() = default;
 	~RimUI() = default;
 
 	//void OnUpdate(SDL_Renderer*);
