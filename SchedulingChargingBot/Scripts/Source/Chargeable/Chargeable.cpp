@@ -13,6 +13,7 @@ Chargeable::Chargeable()
 	#pragma region SetTimer
 	//计时器需要持续更新以充电/放电，每次对当前电量做出一定数量改变
 	chargedTimer.SetOneShot(false);
+	chargedTimer.SetWaitTime(chargedCooldown);
 	chargedTimer.SetTimeOutTrigger(
 		[&]()
 		{
@@ -22,6 +23,7 @@ Chargeable::Chargeable()
 	);
 
 	chargerTimer.SetOneShot(false);
+	chargerTimer.SetWaitTime(chargerCooldown);
 	chargerTimer.SetTimeOutTrigger(
 		[&]()
 		{
@@ -35,6 +37,9 @@ Chargeable::Chargeable()
 void Chargeable::OnUpdate(double _delta)
 {
 	animCurrent->OnUpdate(_delta);
+
+	//更新充放电状态
+	UpdateState(_delta);
 
 	#pragma region Animation
 	//放电优先
@@ -118,6 +123,23 @@ bool Chargeable::IsValid() const
 Vector2 Chargeable::GetPosition() const
 {
 	return position;
+}
+
+bool Chargeable::IsInRectsArea(const std::map<size_t, SDL_Rect>& _rects) const
+{
+	bool _flag = false;
+	//size_t _idx = 0;
+	for (const auto& _iter : _rects)
+	{
+		const SDL_Rect& _rect = _iter.second;
+		if (position.x >= _rect.x && position.x <= _rect.x + _rect.w &&
+			position.y >= _rect.y && position.y <= _rect.y + _rect.h)
+		{
+			_flag = true;
+			break;
+		}
+	}
+	return _flag;
 }
 
 void Chargeable::UpdateIdling(double _delta)

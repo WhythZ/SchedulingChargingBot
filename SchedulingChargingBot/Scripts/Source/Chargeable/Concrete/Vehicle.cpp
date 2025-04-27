@@ -1,6 +1,7 @@
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
+#include "../../../Header/Manager/Concrete/SceneManager.h"
 
 Vehicle::Vehicle()
 {
@@ -22,9 +23,9 @@ Vehicle::Vehicle()
 
 void Vehicle::OnUpdate(double _delta)
 {
-	#pragma region Charged
-	static ChargeableManager* _cm = ChargeableManager::Instance();
-	#pragma endregion
-
 	Chargeable::OnUpdate(_delta);
+}
+
+void Vehicle::UpdateState(double _delta)
+{
 }

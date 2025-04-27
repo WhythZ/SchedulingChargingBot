@@ -158,8 +158,9 @@ void GameManager::OnRender()
 {
 	//场景地图的渲染
 	SceneManager::Instance()->OnRender(renderer);
-	ChargeableManager::Instance()->OnRender(renderer);
 	SchedulingManager::Instance()->OnRender(renderer);
 	//UI应当最后渲染的以保证始终在最上层
 	UIManager::Instance()->OnRender(renderer);
+	//我不想让RimUI遮住ChargeableManager的渲染
+	ChargeableManager::Instance()->OnRender(renderer);
 }

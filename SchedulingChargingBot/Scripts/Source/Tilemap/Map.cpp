@@ -60,7 +60,8 @@ bool Map::Load(const std::string& _csvPath)
 	tileMap = _tileMapTemp;
 
 	//在地图被加载完成后，生成地图缓存，并返回true结束函数
-	GenerateMapCache();
+	if (!GenerateMapCache())
+		return false;
 	return true;
 }
 
@@ -95,12 +96,12 @@ size_t Map::GetWidthTileNum() const
 	return tileMap[0].size();
 }
 
-const std::vector<SDL_Rect>& Map::GetStationRects() const
+const std::map<size_t, SDL_Rect>& Map::GetStationRects() const
 {
 	return stationRects;
 }
 
-const std::vector<SDL_Rect>& Map::GetVehicleRects() const
+const std::map<size_t, SDL_Rect>& Map::GetVehicleRects() const
 {
 	return vehicleRects;
 }
@@ -161,7 +162,7 @@ void Map::LoadTileFromString(const std::string _tileBuf, Tile& _tile)
 	_tile.functionFlag = (_values.size() < 2) ? 0 : _values[1];
 }
 
-void Map::GenerateMapCache()
+bool Map::GenerateMapCache()
 //这种在编译阶段缓存（TileMap中存储的）静态数据的方法称为烘培
 {
 	#pragma region StationsAndVehiclesTile
@@ -189,11 +190,15 @@ void Map::GenerateMapCache()
 	}
 	#pragma endregion
 
-	#pragma region StationsAndVehiclesArea
+	#pragma region StationsAndVehiclesRect
 	//生成各充电桩、各车辆生成点的作用范围，注意索引从1开始，0是无效值
-	for (auto _elem : stationIdxPool)
+	for (size_t _no = 1; _no <= stationIdxPool.size(); _no++)
 	{
-		SDL_Point _point = _elem.second;
+		SDL_Point _point;
+		if (stationIdxPool.count(_no))
+			_point = stationIdxPool[_no];
+		else
+			return false;
 
 		//计算对应位置瓦片中心点位置
 		int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
@@ -206,11 +211,15 @@ void Map::GenerateMapCache()
 			TILE_SIZE * 3,
 			TILE_SIZE * 3
 		};
-		stationRects.emplace_back(_rect);
+		stationRects[_no] = _rect;
 	}
-	for (auto _elem : vehicleIdxPool)
+	for (size_t _no = 1; _no <= vehicleIdxPool.size(); _no++)
 	{
-		SDL_Point _point = _elem.second;
+		SDL_Point _point;
+		if (vehicleIdxPool.count(_no))
+			_point = vehicleIdxPool[_no];
+		else
+			return false;
 
 		//计算对应位置瓦片中心点位置
 		int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
@@ -223,7 +232,9 @@ void Map::GenerateMapCache()
 			TILE_SIZE * 3,
 			TILE_SIZE * 3
 		};
-		vehicleRects.emplace_back(_rect);
+		vehicleRects[_no] = _rect;
 	}
 	#pragma endregion
+
+	return true;
 }

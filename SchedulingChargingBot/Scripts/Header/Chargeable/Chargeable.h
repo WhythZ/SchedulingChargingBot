@@ -2,6 +2,7 @@
 #define _CHARGEABLE_H_
 
 #include <SDL.h>
+#include <map>
 #include "../Infrastructure/Vector2.h"
 #include "../Infrastructure/Timer.h"
 #include "../Infrastructure/Animation.h"
@@ -65,9 +66,13 @@ public:
 	Vector2 GetPosition() const;                        //获取中心位置
 
 protected:
+	virtual void UpdateState(double) = 0;               //更新当前状态
 	void UpdateIdling(double);                          //更新闲置时数据
 	void UpdateCharged(double);                         //更新（被动）充电时数据
 	void UpdateCharger(double);                         //更新（主动）放电时数据
+
+	//检测是否在区域内
+	bool IsInRectsArea(const std::map<size_t, SDL_Rect>&) const;
 };
 
 #endif

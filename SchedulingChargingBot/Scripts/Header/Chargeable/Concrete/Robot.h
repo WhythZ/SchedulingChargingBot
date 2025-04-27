@@ -10,6 +10,9 @@ public:
 	~Robot() = default;
 
 	void OnUpdate(double) override;
+
+private:
+	void UpdateState(double) override;
 };
 
 #endif
