@@ -11,8 +11,7 @@ public:
 
 	void OnUpdate(double) override;
 
-private:
-	void UpdateState(double) override;
+	void ChangeState(std::string) override;
 };
 
 #endif

@@ -15,7 +15,6 @@ private:
 	std::map<size_t, SDL_Point> vehicleIdxPool;            //记录车辆生成点坐标
 
 	std::map<size_t, SDL_Rect> stationRects;               //记录各充电桩作用范围
-	std::map<size_t, SDL_Rect> vehicleRects;               //记录各车辆生成点作用范围
 
 public:
 	Map() = default;
@@ -29,7 +28,6 @@ public:
 	size_t GetWidthTileNum() const;
 	size_t GetHeightTileNum() const;
 	const std::map<size_t, SDL_Rect>& GetStationRects() const;
-	const std::map<size_t, SDL_Rect>& GetVehicleRects() const;
 
 private:
 	std::string TrimString(const std::string);             //剪切瓦片字符串以保证格式的统一以便读取

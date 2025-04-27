@@ -19,7 +19,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 		cursorPosition.y = _event.motion.y;
 
 		//检测鼠标指针是否在实例范围内
-		for (Chargeable* _robot : _cm->GetRobotList())
+		for (Robot* _robot : _cm->GetRobotList())
 		{
 			//记录当前机器人的Rect
 			static SDL_Rect _robotRect;
@@ -39,7 +39,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 	}
 	case SDL_MOUSEBUTTONDOWN:
 	{
-		for (Chargeable* _robot : _cm->GetRobotList())
+		for (Robot* _robot : _cm->GetRobotList())
 		{
 			//记录当前机器人的Rect
 			static SDL_Rect _robotRect;
@@ -60,7 +60,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 	case SDL_MOUSEBUTTONUP:
 	{
 		//遍历所有实例找到被拖拽的那个，取消拖拽，并将其归正对齐到鼠标所在瓦片位置
-		for (Chargeable* _robot : _cm->GetRobotList())
+		for (Robot* _robot : _cm->GetRobotList())
 		{
 			if (_robot->isCursorDragging)
 			{

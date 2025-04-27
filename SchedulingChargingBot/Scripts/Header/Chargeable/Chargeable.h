@@ -61,18 +61,19 @@ public:
 	void SetPosition(int, int);                         //设置具体到像素的位置
 	void SetVelocity(Vector2);                          //更新运动速度
 	void Invalidate();                                  //设置为不合法，等待管理器清除
+	virtual void ChangeState(std::string) = 0;          //更新当前状态
 
 	bool IsValid() const;                               //查询合法状态
 	Vector2 GetPosition() const;                        //获取中心位置
+	bool HaveElectricity() const;
+	bool NeedElectricity() const;
+	bool IsInRectArea(const SDL_Rect&) const;           //检测是否在区域内
+	bool IsInRectsArea(const std::map<size_t, SDL_Rect>&) const;
 
 protected:
-	virtual void UpdateState(double) = 0;               //更新当前状态
 	void UpdateIdling(double);                          //更新闲置时数据
 	void UpdateCharged(double);                         //更新（被动）充电时数据
 	void UpdateCharger(double);                         //更新（主动）放电时数据
-
-	//检测是否在区域内
-	bool IsInRectsArea(const std::map<size_t, SDL_Rect>&) const;
 };
 
 #endif

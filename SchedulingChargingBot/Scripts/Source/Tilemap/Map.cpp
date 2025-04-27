@@ -101,11 +101,6 @@ const std::map<size_t, SDL_Rect>& Map::GetStationRects() const
 	return stationRects;
 }
 
-const std::map<size_t, SDL_Rect>& Map::GetVehicleRects() const
-{
-	return vehicleRects;
-}
-
 std::string Map::TrimString(const std::string _str)
 //若字符串的首尾出现了空格，会很难被发现，所以提供一个剪切操作以统一，如"   x\x,y\y   "被剪切后得到"x\x,y\y"
 {
@@ -165,7 +160,7 @@ void Map::LoadTileFromString(const std::string _tileBuf, Tile& _tile)
 bool Map::GenerateMapCache()
 //这种在编译阶段缓存（TileMap中存储的）静态数据的方法称为烘培
 {
-	#pragma region StationsAndVehiclesTile
+	#pragma region Tiles
 	//可复用的局部静态点
 	static SDL_Point _pt;
 
@@ -190,8 +185,8 @@ bool Map::GenerateMapCache()
 	}
 	#pragma endregion
 
-	#pragma region StationsAndVehiclesRect
-	//生成各充电桩、各车辆生成点的作用范围，注意索引从1开始，0是无效值
+	#pragma region Rects
+	//生成各充电桩作用范围，注意索引从1开始，0是无效值
 	for (size_t _no = 1; _no <= stationIdxPool.size(); _no++)
 	{
 		SDL_Point _point;
@@ -212,27 +207,6 @@ bool Map::GenerateMapCache()
 			TILE_SIZE * 3
 		};
 		stationRects[_no] = _rect;
-	}
-	for (size_t _no = 1; _no <= vehicleIdxPool.size(); _no++)
-	{
-		SDL_Point _point;
-		if (vehicleIdxPool.count(_no))
-			_point = vehicleIdxPool[_no];
-		else
-			return false;
-
-		//计算对应位置瓦片中心点位置
-		int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
-		int _y = _point.y * TILE_SIZE + TILE_SIZE / 2;
-		//以该瓦片为中心，周围3x3的矩形范围是可触发范围（充电桩给机器人充电、车辆可以触发被充电）
-		SDL_Rect _rect =
-		{
-			_x - (TILE_SIZE / 2 + TILE_SIZE),
-			_y - (TILE_SIZE / 2 + TILE_SIZE),
-			TILE_SIZE * 3,
-			TILE_SIZE * 3
-		};
-		vehicleRects[_no] = _rect;
 	}
 	#pragma endregion
 

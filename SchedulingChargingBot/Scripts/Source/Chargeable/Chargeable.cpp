@@ -38,9 +38,6 @@ void Chargeable::OnUpdate(double _delta)
 {
 	animCurrent->OnUpdate(_delta);
 
-	//更新充放电状态
-	UpdateState(_delta);
-
 	#pragma region Animation
 	//放电优先
 	if (isCharger)
@@ -125,6 +122,24 @@ Vector2 Chargeable::GetPosition() const
 	return position;
 }
 
+bool Chargeable::HaveElectricity() const
+{
+	return currentElectricityRatio > 0.005;
+}
+
+bool Chargeable::NeedElectricity() const
+{
+	return currentElectricityRatio < 0.995;
+}
+
+bool Chargeable::IsInRectArea(const SDL_Rect& _rect) const
+{
+	if (position.x >= _rect.x && position.x <= _rect.x + _rect.w &&
+		position.y >= _rect.y && position.y <= _rect.y + _rect.h)
+		return true;
+	return false;
+}
+
 bool Chargeable::IsInRectsArea(const std::map<size_t, SDL_Rect>& _rects) const
 {
 	bool _flag = false;
@@ -132,8 +147,7 @@ bool Chargeable::IsInRectsArea(const std::map<size_t, SDL_Rect>& _rects) const
 	for (const auto& _iter : _rects)
 	{
 		const SDL_Rect& _rect = _iter.second;
-		if (position.x >= _rect.x && position.x <= _rect.x + _rect.w &&
-			position.y >= _rect.y && position.y <= _rect.y + _rect.h)
+		if (IsInRectArea(_rect))
 		{
 			_flag = true;
 			break;

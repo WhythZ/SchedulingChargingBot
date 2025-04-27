@@ -1,5 +1,5 @@
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
-#include "../../../Header/Tilemap/Tile.h"
+#include "../../../Header/Manager/Concrete/SceneManager.h"
 
 ChargeableManager::~ChargeableManager()
 {
@@ -19,11 +19,12 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 		break;
 	case ChargeableType::Robot:
 		_new = new Robot();
-		robotList.push_back(_new);
+		//此处不能使用push_back
+		robotList.emplace_back((Robot*)_new);
 		break;
 	case ChargeableType::Vehicle:
 		_new = new Vehicle();
-		vehicleList.push_back(_new);
+		vehicleList.emplace_back((Vehicle*)_new);
 		break;
 	default:
 		break;
@@ -38,29 +39,32 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 
 void ChargeableManager::OnUpdate(double _delta)
 {
+	//更新实体状态
+	HandleStates();
+
 	//移除非法实例
 	RemoveInvalid();
 
-	for (Chargeable* _robot : robotList)
+	for (Robot* _robot : robotList)
 		_robot->OnUpdate(_delta);
-	for (Chargeable* _vehicle : vehicleList)
+	for (Vehicle* _vehicle : vehicleList)
 		_vehicle->OnUpdate(_delta);
 }
 
 void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 {
-	for (Chargeable* _robot : robotList)
+	for (Robot* _robot : robotList)
 		_robot->OnRender(_renderer);
-	for (Chargeable* _vehicle : vehicleList)
+	for (Vehicle* _vehicle : vehicleList)
 		_vehicle->OnRender(_renderer);
 }
 
-std::vector<Chargeable*> ChargeableManager::GetRobotList() const
+std::vector<Robot*> ChargeableManager::GetRobotList() const
 {
 	return robotList;
 }
 
-std::vector<Chargeable*> ChargeableManager::GetVehicleList() const
+std::vector<Vehicle*> ChargeableManager::GetVehicleList() const
 {
 	return vehicleList;
 }
@@ -69,7 +73,7 @@ void ChargeableManager::RemoveInvalid()
 {
 	#pragma region RemoveInvalidRobot
 	auto _beginV = std::remove_if(robotList.begin(), robotList.end(),
-		[](const Chargeable* _robot)
+		[](const Robot* _robot)
 		{
 			if (!_robot->IsValid())
 			{
@@ -85,11 +89,11 @@ void ChargeableManager::RemoveInvalid()
 	#pragma region RemoveInvalidVehicle
 	//函数remove_if遍历列表，按照Lambda的返回的bool，将true的元素统统放入列表容器的末尾，并将返回一个指向第一个true的元素的迭代器
 	auto _beginR = std::remove_if(vehicleList.begin(), vehicleList.end(),
-		[](const Chargeable* _bullet)
+		[](const Vehicle* _vehicle)
 		{
-			if (!_bullet->IsValid())
+			if (!_vehicle->IsValid())
 			{
-				delete _bullet;
+				delete _vehicle;
 				return true;
 			}
 			return false;
@@ -98,4 +102,44 @@ void ChargeableManager::RemoveInvalid()
 	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
 	vehicleList.erase(_beginR, vehicleList.end());
 	#pragma endregion
+}
+
+void ChargeableManager::HandleStates()
+{
+	static const Map& _map = SceneManager::Instance()->map;
+	std::map<size_t, SDL_Rect> _stationRects = _map.GetStationRects();
+	//若处于充电桩范围内则充电
+	for (Robot* _robot : robotList)
+	{
+		//若处于充电桩区域则充电
+		if (_robot->IsInRectsArea(_stationRects))
+			_robot->ChangeState("Charged");
+		else
+		{
+			for (Vehicle* _vehicle : vehicleList)
+			{
+				//若处于车辆范围内则放电
+				const SDL_Rect& _rect = _vehicle->chargedRect;
+				if (_robot->IsInRectArea(_rect))
+				{
+					//缺电才需放
+					if (_vehicle->NeedElectricity())
+						_robot->ChangeState("Charger");
+					else
+						_robot->ChangeState("Idle");
+					//有电才能冲
+					if (_robot->HaveElectricity())
+						_vehicle->ChangeState("Charged");
+					else
+						_vehicle->ChangeState("Idle");
+					break;
+				}
+				else
+				{
+					_robot->ChangeState("Idle");
+					_vehicle->ChangeState("Idle");
+				}
+			}
+		}
+	}
 }

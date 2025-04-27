@@ -12,8 +12,8 @@ class ChargeableManager :public Manager<ChargeableManager>
 	friend class Manager<ChargeableManager>;
 
 private:
-	std::vector<Chargeable*> robotList;
-	std::vector<Chargeable*> vehicleList;
+	std::vector<Robot*> robotList;
+	std::vector<Vehicle*> vehicleList;
 
 public:
 	void SpawnChargeableAt(ChargeableType, SDL_Point);  //以瓦片地图的瓦片索引间接实例化某类机器
@@ -21,14 +21,15 @@ public:
 	void OnUpdate(double);
 	void OnRender(SDL_Renderer*);
 
-	std::vector<Chargeable*> GetRobotList() const;      //获取机器人实例列表
-	std::vector<Chargeable*> GetVehicleList() const;    //获取车辆实例列表
+	std::vector<Robot*> GetRobotList() const;           //获取机器人实例列表
+	std::vector<Vehicle*> GetVehicleList() const;       //获取车辆实例列表
 
 private:
 	ChargeableManager() = default;
 	~ChargeableManager();
 
 	void RemoveInvalid();                               //移除非法实例
+	void HandleStates();                                //处理充电的双向通知
 };
 
 #endif

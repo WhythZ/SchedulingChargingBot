@@ -1,7 +1,6 @@
 #include "../../../Header/Chargeable/Concrete/Robot.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
-#include "../../../Header/Manager/Concrete/SceneManager.h"
 
 Robot::Robot()
 {
@@ -26,26 +25,21 @@ void Robot::OnUpdate(double _delta)
 	Chargeable::OnUpdate(_delta);
 }
 
-void Robot::UpdateState(double _delta)
+void Robot::ChangeState(std::string _stateName)
 {
-	static const Map& _map = SceneManager::Instance()->map;
-	std::map<size_t, SDL_Rect> _stationRects = _map.GetStationRects();
-	std::map<size_t, SDL_Rect> _vehicleRects = _map.GetVehicleRects();
-
-	//若处于充电桩区域则充电
-	if (IsInRectsArea(_stationRects))
+	if (_stateName == "Idle")
+	{
+		isCharged = false;
+		isCharger = false;
+	}
+	else if (_stateName == "Charged")
 	{
 		isCharged = true;
 		isCharger = false;
 	}
-	else
-		isCharged = false;
-	//若处于车辆范围内则放电
-	if (IsInRectsArea(_vehicleRects))
+	else if (_stateName == "Charger")
 	{
 		isCharged = false;
 		isCharger = true;
 	}
-	else
-		isCharger = false;
 }

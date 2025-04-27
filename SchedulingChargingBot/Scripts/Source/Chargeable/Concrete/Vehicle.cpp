@@ -1,7 +1,6 @@
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
-#include "../../../Header/Manager/Concrete/SceneManager.h"
 
 Vehicle::Vehicle()
 {
@@ -24,8 +23,20 @@ Vehicle::Vehicle()
 void Vehicle::OnUpdate(double _delta)
 {
 	Chargeable::OnUpdate(_delta);
+
+	#pragma region ChargedRect
+	//车可以被触发充电的作用区域为以车为中心的3x3瓦片区域
+	chargedRect.x = (int)(position.x - (TILE_SIZE + TILE_SIZE / 2));
+	chargedRect.y = (int)(position.y - (TILE_SIZE + TILE_SIZE / 2));
+	chargedRect.w = TILE_SIZE * 3;
+	chargedRect.h = TILE_SIZE * 3;
+	#pragma endregion
 }
 
-void Vehicle::UpdateState(double _delta)
+void Vehicle::ChangeState(std::string _stateName)
 {
+	if (_stateName == "Idle")
+		isCharged = false;
+	else if (_stateName == "Charged")
+		isCharged = true;
 }
