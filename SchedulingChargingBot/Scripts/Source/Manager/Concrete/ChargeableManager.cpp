@@ -39,9 +39,6 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 
 void ChargeableManager::OnUpdate(double _delta)
 {
-	//更新实体状态
-	HandleStates();
-
 	//移除非法实例
 	RemoveInvalid();
 
@@ -57,6 +54,32 @@ void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 		_robot->OnRender(_renderer);
 	for (Vehicle* _vehicle : vehicleList)
 		_vehicle->OnRender(_renderer);
+}
+
+void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
+{
+	if (((Robot*)_robot)->charged != nullptr || ((Vehicle*)_vehicle)->charger != nullptr)
+		std::cout << "Tie Wrong\n";
+	else
+	{
+		((Robot*)_robot)->charged = _vehicle;
+		((Robot*)_robot)->ChangeState("Charger");
+		((Vehicle*)_vehicle)->charger = _robot;
+		((Vehicle*)_vehicle)->ChangeState("Charged");
+	}
+}
+
+void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
+{
+	if (((Robot*)_robot)->charged == nullptr || ((Vehicle*)_vehicle)->charger == nullptr)
+		std::cout << "Untie Wrong\n";
+	else
+	{
+		((Robot*)_robot)->charged = nullptr;
+		((Robot*)_robot)->ChangeState("Idle");
+		((Vehicle*)_vehicle)->charger = nullptr;
+		((Vehicle*)_vehicle)->ChangeState("Idle");
+	}
 }
 
 std::vector<Robot*> ChargeableManager::GetRobotList() const
@@ -102,44 +125,4 @@ void ChargeableManager::RemoveInvalid()
 	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
 	vehicleList.erase(_beginR, vehicleList.end());
 	#pragma endregion
-}
-
-void ChargeableManager::HandleStates()
-{
-	static const Map& _map = SceneManager::Instance()->map;
-	std::map<size_t, SDL_Rect> _stationRects = _map.GetStationRects();
-	//若处于充电桩范围内则充电
-	for (Robot* _robot : robotList)
-	{
-		//若处于充电桩区域则充电
-		if (_robot->IsInRectsArea(_stationRects))
-			_robot->ChangeState("Charged");
-		else
-		{
-			for (Vehicle* _vehicle : vehicleList)
-			{
-				//若处于车辆范围内则放电
-				const SDL_Rect& _rect = _vehicle->chargedRect;
-				if (_robot->IsInRectArea(_rect))
-				{
-					//缺电才需放
-					if (_vehicle->NeedElectricity())
-						_robot->ChangeState("Charger");
-					else
-						_robot->ChangeState("Idle");
-					//有电才能冲
-					if (_robot->HaveElectricity())
-						_vehicle->ChangeState("Charged");
-					else
-						_vehicle->ChangeState("Idle");
-					break;
-				}
-				else
-				{
-					_robot->ChangeState("Idle");
-					_vehicle->ChangeState("Idle");
-				}
-			}
-		}
-	}
 }

@@ -17,8 +17,8 @@ Chargeable::Chargeable()
 	chargedTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricityRatio += chargedIntensity;
-			currentElectricityRatio = (currentElectricityRatio >= 1) ? 1 : currentElectricityRatio;
+			currentElectricity += chargedIntensity;
+			currentElectricity = (currentElectricity >= 100) ? 100 : currentElectricity;
 		}
 	);
 
@@ -27,8 +27,8 @@ Chargeable::Chargeable()
 	chargerTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricityRatio -= chargerIntensity;
-			currentElectricityRatio = (currentElectricityRatio < 0) ? 0 : currentElectricityRatio;
+			currentElectricity -= chargerIntensity;
+			currentElectricity = (currentElectricity < 0) ? 0 : currentElectricity;
 		}
 	);
 	#pragma endregion
@@ -38,7 +38,7 @@ void Chargeable::OnUpdate(double _delta)
 {
 	animCurrent->OnUpdate(_delta);
 
-	#pragma region Animation
+	#pragma region State
 	//放电优先
 	if (isCharger)
 		UpdateCharger(_delta);
@@ -80,9 +80,9 @@ void Chargeable::OnRender(SDL_Renderer* _renderer)
 	_barRect.y = (int)(position.y - size.y / 2);
 	boxRGBA(_renderer, _barRect.x, _barRect.y, _barRect.x + _barRect.w, _barRect.y + _barRect.h,
 		barBackgroundColor.r, barBackgroundColor.g, barBackgroundColor.b, barBackgroundColor.a);
-	//渲染电量内容颜色
+	//渲染电量内容颜色，注意浮点数100.0
 	_barRect.w = size.x;
-	_barRect.h = (int)(size.y * currentElectricityRatio);
+	_barRect.h = (int)(size.y * (currentElectricity / 100.0));
 	_barRect.x = (int)(position.x - size.x / 2);
 	_barRect.y = (int)(position.y + size.y / 2 - _barRect.h);
 	boxRGBA(_renderer, _barRect.x, _barRect.y, _barRect.x + _barRect.w, _barRect.y + _barRect.h,
@@ -122,14 +122,14 @@ Vector2 Chargeable::GetPosition() const
 	return position;
 }
 
-bool Chargeable::HaveElectricity() const
+bool Chargeable::HasElectricity() const
 {
-	return currentElectricityRatio > 0.005;
+	return currentElectricity > 0;
 }
 
 bool Chargeable::NeedElectricity() const
 {
-	return currentElectricityRatio < 0.995;
+	return currentElectricity < 100;
 }
 
 bool Chargeable::IsInRectArea(const SDL_Rect& _rect) const

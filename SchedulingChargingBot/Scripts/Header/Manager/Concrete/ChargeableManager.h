@@ -21,6 +21,9 @@ public:
 	void OnUpdate(double);
 	void OnRender(SDL_Renderer*);
 
+	void TieRobotAndVehicle(Chargeable*, Chargeable*);
+	void UntieRobotAndVehicle(Chargeable*, Chargeable*);
+
 	std::vector<Robot*> GetRobotList() const;           //获取机器人实例列表
 	std::vector<Vehicle*> GetVehicleList() const;       //获取车辆实例列表
 
@@ -29,7 +32,6 @@ private:
 	~ChargeableManager();
 
 	void RemoveInvalid();                               //移除非法实例
-	void HandleStates();                                //处理充电的双向通知
 };
 
 #endif

@@ -17,7 +17,7 @@ Vehicle::Vehicle()
 	speed = 0;
 
 	//初始化当前电量为0
-	currentElectricityRatio = 0;
+	currentElectricity = 0;
 }
 
 void Vehicle::OnUpdate(double _delta)
@@ -39,4 +39,9 @@ void Vehicle::ChangeState(std::string _stateName)
 		isCharged = false;
 	else if (_stateName == "Charged")
 		isCharged = true;
+}
+
+bool Vehicle::IsBusy() const
+{
+	return (charger != nullptr);
 }

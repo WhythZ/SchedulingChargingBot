@@ -8,6 +8,7 @@ class Vehicle :public Chargeable
 {
 public:
 	SDL_Rect chargedRect = {};            //触发充电的有效区域
+	Chargeable* charger = nullptr;
 
 public:
 	Vehicle();
@@ -16,6 +17,8 @@ public:
 	void OnUpdate(double) override;
 
 	void ChangeState(std::string) override;
+
+	bool IsBusy() const override;
 };
 
 #endif
