@@ -20,7 +20,11 @@ private:
 	std::vector<Vehicle*> vehicleList;
 	#pragma endregion
 
-	#pragma region Strategy
+	#pragma region VehicleGeneration
+
+	#pragma endregion
+
+	#pragma region RobotStrategy
 	StrategyA strategyA;                                 //存储用作Robot的某种实际策略
 	StrategyB strategyB;
 	Strategy* currentStrategy = &strategyA;              //当前策略类型，默认为A

@@ -115,6 +115,7 @@ void CursorUI::OnInput(const SDL_Event& _event)
 	default:
 		break;
 	}
+	//case SDL_MOUSEWHEEL
 }
 
 void CursorUI::OnUpdate(SDL_Renderer* _renderer)

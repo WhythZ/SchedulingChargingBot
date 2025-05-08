@@ -43,5 +43,5 @@ void Vehicle::ChangeState(std::string _stateName)
 
 bool Vehicle::IsBusy() const
 {
-	return (charger != nullptr);
+	return (isCharged);
 }

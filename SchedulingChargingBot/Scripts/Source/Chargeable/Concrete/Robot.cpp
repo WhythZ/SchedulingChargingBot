@@ -25,12 +25,16 @@ void Robot::OnUpdate(double _delta)
 {
 	Chargeable::OnUpdate(_delta);
 
-	#pragma region LinkVehicle
-	static ChargeableManager* _cm = ChargeableManager::Instance();
+	//受策略控制进行移动
+	strategy->UpdateMovement(this);
 
-	//处理与载具的链接
+	#pragma region ChangeState
+	static ChargeableManager* _cm = ChargeableManager::Instance();
+	static const std::map<size_t, SDL_Rect>& _stationRects = SceneManager::Instance()->map.GetStationRects();
+	//不繁忙（正在给载具充电或正在被充电桩充电）
 	if (!IsBusy())
 	{
+		#pragma region LinkVehicle
 		//有电才充电
 		if (HasElectricity())
 		{
@@ -45,37 +49,50 @@ void Robot::OnUpdate(double _delta)
 					{
 						//与载具链接
 						_cm->TieRobotAndVehicle(this, _vehicle);
-						break;
+						//无需进行后续判断
+						return;
 					}
 				}
 			}
 		}
-	}
+		#pragma endregion
 
-	//处理与载具的分离
-	if (IsBusy())
-	{
-		//若自己没电了，或对方满电了，或脱离区域，则分离
-		if (!HasElectricity() || !((Vehicle*)charged)->NeedElectricity() || !IsInRectArea(((Vehicle*)charged)->chargedRect))
-			_cm->UntieRobotAndVehicle(this, charged);
-	}
-	#pragma endregion
-
-	#pragma region LinkStation
-	static const std::map<size_t, SDL_Rect>& _stationRects = SceneManager::Instance()->map.GetStationRects();
-	
-	//只有在未处于繁忙状态时（未与载具链接），处理与充电桩的链接与分离
-	if (!IsBusy())
-	{
-		if (IsInRectsArea(_stationRects))
+		#pragma region LinkStation
+		//电量不满，或不范围内，才需充电
+		if (IsInRectsArea(_stationRects) && NeedElectricity())
 			ChangeState("Charged");
-		else
-			ChangeState("Idle");
+		#pragma endregion
+	}
+	//繁忙时（需分类讨论因何而繁忙）
+	else
+	{
+		#pragma region LinkVehicle
+		//若正在给载具充电
+		if (isCharger)
+		{
+			//若自己没电了，或对方满电了，或脱离区域，则分离
+			if (!HasElectricity()
+				|| !((Vehicle*)charged)->NeedElectricity()
+				|| !IsInRectArea(((Vehicle*)charged)->chargedRect))
+			{
+				_cm->UntieRobotAndVehicle(this, charged);
+				//无需进行后续判断
+				return;
+			}
+		}
+		#pragma endregion
+
+		#pragma region LinkStation
+		//若正在被充电桩充电
+		if (isCharged)
+		{
+			//若脱离区域，或满电了，则进入Idle状态
+			if (!IsInRectsArea(_stationRects) || !NeedElectricity())
+				ChangeState("Idle");
+		}
+		#pragma endregion
 	}
 	#pragma endregion
-
-	//受策略控制进行移动
-	strategy->UpdateMovement(this);
 }
 
 void Robot::ChangeState(std::string _stateName)
@@ -104,5 +121,5 @@ void Robot::ChangeStrategy(Strategy* _strategy)
 
 bool Robot::IsBusy() const
 {
-	return (charged != nullptr);
+	return (isCharger || isCharged);
 }

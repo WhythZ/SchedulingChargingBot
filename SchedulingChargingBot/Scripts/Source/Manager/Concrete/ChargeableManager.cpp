@@ -61,12 +61,16 @@ void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 
 void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
 {
-	if (((Robot*)_robot)->charged != nullptr || ((Vehicle*)_vehicle)->charger != nullptr)
-		std::cout << "Tie Wrong\n";
-	else
+	//if (((Robot*)_robot)->charged != nullptr || ((Vehicle*)_vehicle)->charger != nullptr)
+	//	std::cout << "Tie Wrong\n";
+
+	if (_robot != nullptr)
 	{
 		((Robot*)_robot)->charged = _vehicle;
 		((Robot*)_robot)->ChangeState("Charger");
+	}	
+	if (_vehicle != nullptr)
+	{
 		((Vehicle*)_vehicle)->charger = _robot;
 		((Vehicle*)_vehicle)->ChangeState("Charged");
 	}
@@ -74,12 +78,16 @@ void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehi
 
 void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
 {
-	if (((Robot*)_robot)->charged == nullptr || ((Vehicle*)_vehicle)->charger == nullptr)
-		std::cout << "Untie Wrong\n";
-	else
+	//if (((Robot*)_robot)->charged == nullptr || ((Vehicle*)_vehicle)->charger == nullptr)
+	//	std::cout << "Untie Wrong\n";
+	
+	if (_robot != nullptr)
 	{
 		((Robot*)_robot)->charged = nullptr;
 		((Robot*)_robot)->ChangeState("Idle");
+	}
+	if (_vehicle != nullptr)
+	{
 		((Vehicle*)_vehicle)->charger = nullptr;
 		((Vehicle*)_vehicle)->ChangeState("Idle");
 	}

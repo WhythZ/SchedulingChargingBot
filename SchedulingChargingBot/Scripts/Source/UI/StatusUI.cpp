@@ -54,20 +54,22 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 	static SDL_Rect _mapRect = SceneManager::Instance()->mapRect;
 
 	#pragma region RobotNumText
+	//缩放文本大小
+	robotNumTextSize.x = (int)(robotNumTextSize.x * textZoomRate);
+	robotNumTextSize.y = (int)(robotNumTextSize.y * textZoomRate);
 	//渲染在屏幕中上
 	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - robotNumTextSize.x / 2;
 	_positionLeftUp.y = _mapRect.y;
-	robotNumTextSize.x = (int)(robotNumTextSize.x * textZoomRate);
-	robotNumTextSize.y = (int)(robotNumTextSize.y * textZoomRate);
 	_ui->DrawTexture(_renderer, robotNumTextTexture, _positionLeftUp, robotNumTextSize);
 	#pragma endregion
 
 	#pragma region VehicleNumText
-	//渲染在屏幕中中
-	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - vehicleNumTextSize.x / 2;
-	_positionLeftUp.y = _mapRect.y + robotNumTextSize.y + rowDistance;
+	//缩放文本大小
 	vehicleNumTextSize.x = (int)(vehicleNumTextSize.x * textZoomRate);
 	vehicleNumTextSize.y = (int)(vehicleNumTextSize.y * textZoomRate);
+	//渲染在机器人文本下方
+	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - vehicleNumTextSize.x / 2;
+	_positionLeftUp.y = _mapRect.y + robotNumTextSize.y + rowDistance;
 	_ui->DrawTexture(_renderer, vehicleNumTextTexture, _positionLeftUp, vehicleNumTextSize);
 	#pragma endregion
 }
