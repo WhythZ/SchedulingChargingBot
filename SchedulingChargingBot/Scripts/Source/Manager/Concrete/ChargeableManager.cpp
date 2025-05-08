@@ -93,6 +93,34 @@ void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _ve
 	}
 }
 
+void ChargeableManager::ChangeStrategy(StrategyType _type)
+{
+	//更新策略类型
+	switch (_type)
+	{
+	case StrategyType::A:
+		for (Robot* _robot : robotList)
+			_robot->ChangeStrategy(&strategyA);
+		currentStrategy = &strategyA;
+		currentStrategyType = StrategyType::A;
+		break;
+	case StrategyType::B:
+		for (Robot* _robot : robotList)
+			_robot->ChangeStrategy(&strategyB);
+		currentStrategy = &strategyB;
+		currentStrategyType = StrategyType::B;
+		break;
+	case StrategyType::C:
+		for (Robot* _robot : robotList)
+			_robot->ChangeStrategy(&strategyC);
+		currentStrategy = &strategyC;
+		currentStrategyType = StrategyType::C;
+		break;
+	default:
+		break;
+	}
+}
+
 std::vector<Robot*> ChargeableManager::GetRobotList() const
 {
 	return robotList;
@@ -101,6 +129,11 @@ std::vector<Robot*> ChargeableManager::GetRobotList() const
 std::vector<Vehicle*> ChargeableManager::GetVehicleList() const
 {
 	return vehicleList;
+}
+
+StrategyType ChargeableManager::GetRobotStrategyType() const
+{
+	return currentStrategyType;
 }
 
 void ChargeableManager::RemoveInvalid()
@@ -136,24 +169,4 @@ void ChargeableManager::RemoveInvalid()
 	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
 	vehicleList.erase(_beginR, vehicleList.end());
 	#pragma endregion
-}
-
-void ChargeableManager::ChangeStrategy(StrategyType _type)
-{
-	//更新策略类型
-	switch (_type)
-	{
-	case StrategyType::A:
-		for (Robot* _robot : robotList)
-			_robot->ChangeStrategy(&strategyA);
-		currentStrategy = &strategyA;
-		break;
-	case StrategyType::B:
-		for (Robot* _robot : robotList)
-			_robot->ChangeStrategy(&strategyB);
-		currentStrategy = &strategyB;
-		break;
-	default:
-		break;
-	}
 }

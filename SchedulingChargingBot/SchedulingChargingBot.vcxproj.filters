@@ -123,9 +123,6 @@
     <ClCompile Include="Scripts\Source\UI\CursorUI.cpp">
       <Filter>源文件\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\UI\LinkUI.cpp">
-      <Filter>源文件\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
@@ -136,6 +133,12 @@
       <Filter>源文件\Strategy\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyB.cpp">
+      <Filter>源文件\Strategy\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\UI\ButtonUI.cpp">
+      <Filter>源文件\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyC.cpp">
       <Filter>源文件\Strategy\Concrete</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,9 +194,6 @@
     <ClInclude Include="Scripts\Header\UI\CursorUI.h">
       <Filter>头文件\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\UI\LinkUI.h">
-      <Filter>头文件\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\Header\Chargeable\ChargeableType.h">
       <Filter>头文件\Chargeable</Filter>
     </ClInclude>
@@ -214,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Strategy\StrategyType.h">
       <Filter>头文件\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\UI\ButtonUI.h">
+      <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyC.h">
+      <Filter>头文件\Strategy\Concrete</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

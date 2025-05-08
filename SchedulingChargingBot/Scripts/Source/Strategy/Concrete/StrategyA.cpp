@@ -2,5 +2,5 @@
 
 void StrategyA::UpdateMovement(Chargeable* _robot)
 {
-	_robot->SetVelocity({ 50,50 });
+	_robot->SetVelocity({ 0,0 });
 }

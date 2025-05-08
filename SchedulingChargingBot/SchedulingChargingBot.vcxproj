@@ -151,9 +151,10 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\ChargeableManager.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyA.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyB.cpp" />
+    <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyC.cpp" />
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp" />
+    <ClCompile Include="Scripts\Source\UI\ButtonUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\CursorUI.cpp" />
-    <ClCompile Include="Scripts\Source\UI\LinkUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\RimUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\StatusUI.cpp" />
   </ItemGroup>
@@ -175,12 +176,13 @@
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp" />
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyA.h" />
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyB.h" />
+    <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyC.h" />
     <ClInclude Include="Scripts\Header\Strategy\Strategy.h" />
     <ClInclude Include="Scripts\Header\Strategy\StrategyType.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Tile.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Map.h" />
+    <ClInclude Include="Scripts\Header\UI\ButtonUI.h" />
     <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
-    <ClInclude Include="Scripts\Header\UI\LinkUI.h" />
     <ClInclude Include="Scripts\Header\UI\RimUI.h" />
     <ClInclude Include="Scripts\Header\UI\StatusUI.h" />
   </ItemGroup>

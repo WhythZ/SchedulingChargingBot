@@ -5,10 +5,6 @@
 
 #include <iostream>
 
-//void RimUI::OnUpdate(SDL_Renderer* _renderer)
-//{
-//}
-
 void RimUI::OnRender(SDL_Renderer* _renderer)
 {
 	static const Map& _map = SceneManager::Instance()->map;

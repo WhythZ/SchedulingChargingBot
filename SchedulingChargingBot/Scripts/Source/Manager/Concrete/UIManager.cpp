@@ -5,35 +5,53 @@
 
 UIManager::UIManager()
 {
-	statusUI = new StatusUI();
-	cursorUI = new CursorUI();
 	rimUI = new RimUI();
+	cursorUI = new CursorUI();
+	statusUI = new StatusUI();
+	buttonUI = new ButtonUI();
 }
 
 UIManager::~UIManager()
 {
-	delete statusUI;
-	delete cursorUI;
 	delete rimUI;
+	delete cursorUI;
+	delete statusUI;
+	delete buttonUI;
 }
 
 void UIManager::OnInput(const SDL_Event& _event)
 {
+	#pragma region CursorPosition
+	switch (_event.type)
+	{
+	case SDL_MOUSEMOTION:
+	{
+		//获取实时鼠标指针位置
+		cursorPosition.x = _event.motion.x;
+		cursorPosition.y = _event.motion.y;
+	}
+	default:
+		break;
+	};
+	#pragma endregion
+
 	cursorUI->OnInput(_event);
+	buttonUI->OnInput(_event);
 }
 
 void UIManager::OnUpdate(SDL_Renderer* _renderer)
 {
-	statusUI->OnUpdate(_renderer);
 	cursorUI->OnUpdate(_renderer);
-	//rimUI->OnUpdate(_renderer);
+	statusUI->OnUpdate(_renderer);
+	buttonUI->OnUpdate(_renderer);
 }
 
 void UIManager::OnRender(SDL_Renderer* _renderer)
 {
-	statusUI->OnRender(_renderer);
-	cursorUI->OnRender(_renderer);
 	rimUI->OnRender(_renderer);
+	cursorUI->OnRender(_renderer);
+	statusUI->OnRender(_renderer);
+	buttonUI->OnRender(_renderer);
 }
 
 void UIManager::DrawTexture(SDL_Renderer* _renderer, SDL_Texture* _texture, const SDL_Point& _LeftUpPosition, const SDL_Point& _size)
@@ -94,6 +112,12 @@ void UIManager::DrawCircle(SDL_Renderer* _renderer, const SDL_Point& _LeftUpPosi
 	//绘制圆边框
 	aacircleRGBA(_renderer, _LeftUpPosition.x, _LeftUpPosition.y, (Sint16)_radius,
 		_borderColor.r, _borderColor.g, _borderColor.b, _borderColor.a);
+}
+
+void UIManager::DrawBox(SDL_Renderer* _renderer, const SDL_Rect& _rect, const SDL_Color& _color)
+{
+	boxRGBA(_renderer, _rect.x, _rect.y, _rect.x + _rect.w, _rect.y + _rect.h,
+		_color.r, _color.g, _color.b, _color.a);
 }
 
 void UIManager::DrawBox(SDL_Renderer* _renderer, const SDL_Point& _LeftUpPosition, const SDL_Point& _size, const SDL_Color& _color)

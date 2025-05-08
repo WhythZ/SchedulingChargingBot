@@ -10,7 +10,6 @@ public:
 	RimUI() = default;
 	~RimUI() = default;
 
-	//void OnUpdate(SDL_Renderer*);
 	void OnRender(SDL_Renderer*);
 };
 

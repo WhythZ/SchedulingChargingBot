@@ -52,13 +52,6 @@ GameManager::GameManager()
 	//生成场景纹理
 	InitAssert(SceneManager::Instance()->Init(renderer), u8"Failed To Init SceneManager");
 	#pragma endregion
-
-	//测试实例化
-	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { 2,0 });
-	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 8,5 });
-	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 11,5 });
-	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 8,8 });
-	ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Vehicle, { 11,8 });
 }
 
 GameManager::~GameManager()

@@ -9,25 +9,24 @@
 #include "../../Strategy/StrategyType.h"
 #include "../../Strategy/Concrete/StrategyA.h"
 #include "../../Strategy/Concrete/StrategyB.h"
+#include "../../Strategy/Concrete/StrategyC.h"
 
 class ChargeableManager :public Manager<ChargeableManager>
 {
 	friend class Manager<ChargeableManager>;
 
 private:
-	#pragma region Objects
+	#pragma region ObjectList
 	std::vector<Robot*> robotList;
 	std::vector<Vehicle*> vehicleList;
 	#pragma endregion
 
-	#pragma region VehicleGeneration
-
-	#pragma endregion
-
 	#pragma region RobotStrategy
-	StrategyA strategyA;                                 //存储用作Robot的某种实际策略
-	StrategyB strategyB;
-	Strategy* currentStrategy = &strategyA;              //当前策略类型，默认为A
+	StrategyA strategyA;                                 //用作Robot的策略A
+	StrategyB strategyB;                                 //用作Robot的策略B
+	StrategyC strategyC;                                 //用作Robot的策略C
+	Strategy* currentStrategy = &strategyA;              //当前策略类型，初始为A
+	StrategyType currentStrategyType = StrategyType::A;  //当前策略类型枚举
 	#pragma endregion
 
 public:
@@ -38,16 +37,17 @@ public:
 
 	void TieRobotAndVehicle(Chargeable*, Chargeable*);
 	void UntieRobotAndVehicle(Chargeable*, Chargeable*);
+	void ChangeStrategy(StrategyType);                   //更新所有Robot的策略
 
 	std::vector<Robot*> GetRobotList() const;            //获取机器人实例列表
 	std::vector<Vehicle*> GetVehicleList() const;        //获取车辆实例列表
+	StrategyType GetRobotStrategyType() const;           //获取当前的机器人策略类型枚举
 
 private:
 	ChargeableManager() = default;
 	~ChargeableManager();
 
 	void RemoveInvalid();                                //移除非法实例
-	void ChangeStrategy(StrategyType);                   //更新所有Robot的策略
 };
 
 #endif

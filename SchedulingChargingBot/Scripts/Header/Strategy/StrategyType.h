@@ -4,7 +4,8 @@
 enum class StrategyType
 {
 	A,
-	B
+	B,
+	C
 };
 
 #endif

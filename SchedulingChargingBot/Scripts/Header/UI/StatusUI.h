@@ -7,7 +7,7 @@ class StatusUI
 {
 private:
 	#pragma region Color
-	SDL_Color textColor = { 255,255,255,255 };
+	SDL_Color textColor = { 0,0,0,0 };
 	#pragma endregion
 
 	#pragma region Distance
@@ -17,8 +17,6 @@ private:
 	#pragma region TextSize
 	SDL_Point robotNumTextSize = { 0 };
 	SDL_Point vehicleNumTextSize = { 0 };
-
-	double textZoomRate = 2;
 	#pragma endregion
 
 	#pragma region TextTexture

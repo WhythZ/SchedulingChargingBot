@@ -46,6 +46,7 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 {
 	//引入纹理渲染相关方法
 	static UIManager* _ui = UIManager::Instance();
+	static double _textZoomRate = _ui->textZoomRate;
 
 	//复用的左上顶点坐标
 	static SDL_Point _positionLeftUp = { 0,0 };
@@ -55,8 +56,8 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 
 	#pragma region RobotNumText
 	//缩放文本大小
-	robotNumTextSize.x = (int)(robotNumTextSize.x * textZoomRate);
-	robotNumTextSize.y = (int)(robotNumTextSize.y * textZoomRate);
+	robotNumTextSize.x = (int)(robotNumTextSize.x * _textZoomRate);
+	robotNumTextSize.y = (int)(robotNumTextSize.y * _textZoomRate);
 	//渲染在屏幕中上
 	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - robotNumTextSize.x / 2;
 	_positionLeftUp.y = _mapRect.y;
@@ -65,8 +66,8 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 
 	#pragma region VehicleNumText
 	//缩放文本大小
-	vehicleNumTextSize.x = (int)(vehicleNumTextSize.x * textZoomRate);
-	vehicleNumTextSize.y = (int)(vehicleNumTextSize.y * textZoomRate);
+	vehicleNumTextSize.x = (int)(vehicleNumTextSize.x * _textZoomRate);
+	vehicleNumTextSize.y = (int)(vehicleNumTextSize.y * _textZoomRate);
 	//渲染在机器人文本下方
 	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - vehicleNumTextSize.x / 2;
 	_positionLeftUp.y = _mapRect.y + robotNumTextSize.y + rowDistance;
