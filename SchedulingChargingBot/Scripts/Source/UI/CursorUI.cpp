@@ -36,6 +36,23 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			else
 				isTouchChargeable = false;
 		}
+		for (Vehicle* _vehicle : _cm->GetVehicleList())
+		{
+			//记录当前载具的Rect
+			static SDL_Rect _vehicleRect;
+			_vehicleRect.x = (int)(_vehicle->GetPosition().x - TILE_SIZE / 2);
+			_vehicleRect.y = (int)(_vehicle->GetPosition().y - TILE_SIZE / 2);
+			_vehicleRect.w = TILE_SIZE;
+			_vehicleRect.h = TILE_SIZE;
+			if (SDL_PointInRect(&cursorPosition, &_vehicleRect))
+			{
+				isTouchChargeable = true;
+				//局部代码块，内部用return跳出
+				return;
+			}
+			else
+				isTouchChargeable = false;
+		}
 	}
 	case SDL_MOUSEBUTTONDOWN:
 	{
@@ -55,6 +72,22 @@ void CursorUI::OnInput(const SDL_Event& _event)
 				return;
 			}
 		}
+		for (Vehicle* _vehicle : _cm->GetVehicleList())
+		{
+			//记录当前载具的Rect
+			static SDL_Rect _vehicleRect;
+			_vehicleRect.x = (int)(_vehicle->GetPosition().x - TILE_SIZE / 2);
+			_vehicleRect.y = (int)(_vehicle->GetPosition().y - TILE_SIZE / 2);
+			_vehicleRect.w = TILE_SIZE;
+			_vehicleRect.h = TILE_SIZE;
+			//如果鼠标处于该Rect内，则选取当前这个（一次最多选取一个）
+			if (SDL_PointInRect(&cursorPosition, &_vehicleRect))
+			{
+				_vehicle->isCursorDragging = true;
+				//跳出switch语句该case内的局部区域，防止选中多个
+				return;
+			}
+		}
 	}
 	break;
 	case SDL_MOUSEBUTTONUP:
@@ -66,6 +99,15 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			{
 				_robot->isCursorDragging = false;
 				_robot->SetPosition(cursorTilePosition.x, cursorTilePosition.y);
+				return;
+			}
+		}
+		for (Vehicle* _vehicle : _cm->GetVehicleList())
+		{
+			if (_vehicle->isCursorDragging)
+			{
+				_vehicle->isCursorDragging = false;
+				_vehicle->SetPosition(cursorTilePosition.x, cursorTilePosition.y);
 				return;
 			}
 		}

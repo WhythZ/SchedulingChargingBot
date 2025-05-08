@@ -73,6 +73,9 @@ void Robot::OnUpdate(double _delta)
 			ChangeState("Idle");
 	}
 	#pragma endregion
+
+	//受策略控制进行移动
+	strategy->UpdateMovement(this);
 }
 
 void Robot::ChangeState(std::string _stateName)
@@ -92,6 +95,11 @@ void Robot::ChangeState(std::string _stateName)
 		isCharged = false;
 		isCharger = true;
 	}
+}
+
+void Robot::ChangeStrategy(Strategy* _strategy)
+{
+	strategy = _strategy;
 }
 
 bool Robot::IsBusy() const

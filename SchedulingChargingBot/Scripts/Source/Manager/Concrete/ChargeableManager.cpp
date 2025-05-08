@@ -19,7 +19,9 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 		break;
 	case ChargeableType::Robot:
 		_new = new Robot();
-		//此处不能使用push_back
+		//采取当前策略类型
+		((Robot*)_new)->ChangeStrategy(currentStrategy);
+		//强转为Robot*再塞入
 		robotList.emplace_back((Robot*)_new);
 		break;
 	case ChargeableType::Vehicle:
@@ -42,6 +44,7 @@ void ChargeableManager::OnUpdate(double _delta)
 	//移除非法实例
 	RemoveInvalid();
 
+	//更新所有实例
 	for (Robot* _robot : robotList)
 		_robot->OnUpdate(_delta);
 	for (Vehicle* _vehicle : vehicleList)
@@ -125,4 +128,24 @@ void ChargeableManager::RemoveInvalid()
 	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
 	vehicleList.erase(_beginR, vehicleList.end());
 	#pragma endregion
+}
+
+void ChargeableManager::ChangeStrategy(StrategyType _type)
+{
+	//更新策略类型
+	switch (_type)
+	{
+	case StrategyType::A:
+		for (Robot* _robot : robotList)
+			_robot->ChangeStrategy(&strategyA);
+		currentStrategy = &strategyA;
+		break;
+	case StrategyType::B:
+		for (Robot* _robot : robotList)
+			_robot->ChangeStrategy(&strategyB);
+		currentStrategy = &strategyB;
+		break;
+	default:
+		break;
+	}
 }

@@ -58,6 +58,18 @@
     <Filter Include="源文件\UI">
       <UniqueIdentifier>{e03b64bb-ce42-436d-b2e9-14fd0ec61375}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Strategy">
+      <UniqueIdentifier>{af8c36ef-e3ec-468f-bc4b-ee6fd3b3e0c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Strategy\Concrete">
+      <UniqueIdentifier>{c455c01d-74ea-4f65-834a-78adde012fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Strategy">
+      <UniqueIdentifier>{c4933051-e9ec-4ffd-9248-3174418ebc42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Strategy\Concrete">
+      <UniqueIdentifier>{15ca8d93-79f6-44cf-bba9-9145449d9cc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scripts\Source\Main.cpp">
@@ -114,14 +126,17 @@
     <ClCompile Include="Scripts\Source\UI\LinkUI.cpp">
       <Filter>源文件\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Manager\Concrete\SchedulingManager.cpp">
-      <Filter>源文件\Manager\Concrete</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Source\UI\RimUI.cpp">
       <Filter>源文件\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyA.cpp">
+      <Filter>源文件\Strategy\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyB.cpp">
+      <Filter>源文件\Strategy\Concrete</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,14 +197,23 @@
     <ClInclude Include="Scripts\Header\Chargeable\ChargeableType.h">
       <Filter>头文件\Chargeable</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\Manager\Concrete\SchedulingManager.h">
-      <Filter>头文件\Manager\Concrete</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\UI\RimUI.h">
       <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyA.h">
+      <Filter>头文件\Strategy\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyB.h">
+      <Filter>头文件\Strategy\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Strategy\Strategy.h">
+      <Filter>头文件\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Strategy\StrategyType.h">
+      <Filter>头文件\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,7 +2,6 @@
 #define _VEHICLE_H_
 
 #include "../Chargeable.h"
-#include "Robot.h"
 
 class Vehicle :public Chargeable
 {

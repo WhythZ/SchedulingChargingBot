@@ -38,7 +38,7 @@ void Chargeable::OnUpdate(double _delta)
 {
 	animCurrent->OnUpdate(_delta);
 
-	#pragma region State
+	#pragma region UpdateByState
 	//放电优先
 	if (isCharger)
 		UpdateCharger(_delta);
@@ -48,7 +48,7 @@ void Chargeable::OnUpdate(double _delta)
 		UpdateIdling(_delta);
 	#pragma endregion
 
-	#pragma region Position
+	#pragma region DragMovement
 	//若未被拖拽，则依据速度更新其位置
 	static SceneManager* _sm = SceneManager::Instance();
 	if (isCursorDragging)

@@ -147,9 +147,10 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\GameManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ResourceManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp" />
-    <ClCompile Include="Scripts\Source\Manager\Concrete\SchedulingManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ChargeableManager.cpp" />
+    <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyA.cpp" />
+    <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyB.cpp" />
     <ClCompile Include="Scripts\Source\Tilemap\Map.cpp" />
     <ClCompile Include="Scripts\Source\UI\CursorUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\LinkUI.cpp" />
@@ -169,10 +170,13 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\GameManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ResourceManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h" />
-    <ClInclude Include="Scripts\Header\Manager\Concrete\SchedulingManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp" />
+    <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyA.h" />
+    <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyB.h" />
+    <ClInclude Include="Scripts\Header\Strategy\Strategy.h" />
+    <ClInclude Include="Scripts\Header\Strategy\StrategyType.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Tile.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Map.h" />
     <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
