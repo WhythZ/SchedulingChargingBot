@@ -28,6 +28,10 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 		_new = new Vehicle();
 		vehicleList.emplace_back((Vehicle*)_new);
 		break;
+	case ChargeableType::Battery:
+		_new = new Battery();
+		batteryList.emplace_back((Battery*)_new);
+		break;
 	default:
 		break;
 	}
@@ -49,6 +53,8 @@ void ChargeableManager::OnUpdate(double _delta)
 		_robot->OnUpdate(_delta);
 	for (Vehicle* _vehicle : vehicleList)
 		_vehicle->OnUpdate(_delta);
+	for (Battery* _battery : batteryList)
+		_battery->OnUpdate(_delta);
 }
 
 void ChargeableManager::OnRender(SDL_Renderer* _renderer)
@@ -57,12 +63,15 @@ void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 		_robot->OnRender(_renderer);
 	for (Vehicle* _vehicle : vehicleList)
 		_vehicle->OnRender(_renderer);
+	for (Battery* _battery : batteryList)
+		_battery->OnRender(_renderer);
 }
 
 void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
 {
 	//if (((Robot*)_robot)->charged != nullptr || ((Vehicle*)_vehicle)->charger != nullptr)
 	//	std::cout << "Tie Wrong\n";
+
 	if (_robot != nullptr)
 	{
 		((Robot*)_robot)->charged = _vehicle;
@@ -133,6 +142,11 @@ std::vector<Vehicle*> ChargeableManager::GetVehicleList() const
 	return vehicleList;
 }
 
+std::vector<Battery*> ChargeableManager::GetBatteryList() const
+{
+	return batteryList;
+}
+
 StrategyType ChargeableManager::GetRobotStrategyType() const
 {
 	return currentStrategyType;
@@ -141,7 +155,7 @@ StrategyType ChargeableManager::GetRobotStrategyType() const
 void ChargeableManager::RemoveInvalid()
 {
 	#pragma region RemoveInvalidRobot
-	auto _beginV = std::remove_if(robotList.begin(), robotList.end(),
+	auto _beginR = std::remove_if(robotList.begin(), robotList.end(),
 		[](const Robot* _robot)
 		{
 			if (!_robot->IsValid())
@@ -152,12 +166,12 @@ void ChargeableManager::RemoveInvalid()
 			return false;
 		});
 
-	robotList.erase(_beginV, robotList.end());
+	robotList.erase(_beginR, robotList.end());
 	#pragma endregion
 
 	#pragma region RemoveInvalidVehicle
 	//函数remove_if遍历列表，按照Lambda的返回的bool，将true的元素统统放入列表容器的末尾，并将返回一个指向第一个true的元素的迭代器
-	auto _beginR = std::remove_if(vehicleList.begin(), vehicleList.end(),
+	auto _beginV = std::remove_if(vehicleList.begin(), vehicleList.end(),
 		[](const Vehicle* _vehicle)
 		{
 			if (!_vehicle->IsValid())
@@ -169,6 +183,23 @@ void ChargeableManager::RemoveInvalid()
 		});
 
 	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
-	vehicleList.erase(_beginR, vehicleList.end());
+	vehicleList.erase(_beginV, vehicleList.end());
+	#pragma endregion
+
+	#pragma region RemoveInvalidBattery
+	//函数remove_if遍历列表，按照Lambda的返回的bool，将true的元素统统放入列表容器的末尾，并将返回一个指向第一个true的元素的迭代器
+	auto _beginB = std::remove_if(batteryList.begin(), batteryList.end(),
+		[](const Battery* _battery)
+		{
+			if (!_battery->IsValid())
+			{
+				delete _battery;
+				return true;
+			}
+			return false;
+		});
+
+	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
+	batteryList.erase(_beginB, batteryList.end());
 	#pragma endregion
 }

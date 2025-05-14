@@ -6,6 +6,7 @@
 #include "../../Chargeable/ChargeableType.h"
 #include "../../Chargeable/Concrete/Robot.h"
 #include "../../Chargeable/Concrete/Vehicle.h"
+#include "../../Chargeable/Concrete/Battery.h"
 #include "../../Strategy/StrategyType.h"
 #include "../../Strategy/Concrete/StrategyA.h"
 #include "../../Strategy/Concrete/StrategyB.h"
@@ -19,6 +20,7 @@ private:
 	#pragma region ObjectList
 	std::vector<Robot*> robotList;
 	std::vector<Vehicle*> vehicleList;
+	std::vector<Battery*> batteryList;
 	#pragma endregion
 
 	#pragma region RobotStrategy
@@ -41,6 +43,7 @@ public:
 
 	std::vector<Robot*> GetRobotList() const;            //获取机器人实例列表
 	std::vector<Vehicle*> GetVehicleList() const;        //获取车辆实例列表
+	std::vector<Battery*> GetBatteryList() const;        //获取电池实例列表
 	StrategyType GetRobotStrategyType() const;           //获取当前的机器人策略类型枚举
 
 private:

@@ -91,6 +91,22 @@ void CursorUI::OnInput(const SDL_Event& _event)
 					return;
 				}
 			}
+			for (Battery* _battery : _cm->GetBatteryList())
+			{
+				//记录当前载具的Rect
+				static SDL_Rect _batteryRect;
+				_batteryRect.x = (int)(_battery->GetPosition().x - TILE_SIZE / 2);
+				_batteryRect.y = (int)(_battery->GetPosition().y - TILE_SIZE / 2);
+				_batteryRect.w = TILE_SIZE;
+				_batteryRect.h = TILE_SIZE;
+				//如果鼠标处于该Rect内，则选取当前这个（一次最多选取一个）
+				if (SDL_PointInRect(&_cursorPosition, &_batteryRect))
+				{
+					_battery->isCursorDragging = true;
+					//跳出switch语句该case内的局部区域，防止选中多个
+					return;
+				}
+			}
 		}
 	}
 	break;
@@ -118,6 +134,15 @@ void CursorUI::OnInput(const SDL_Event& _event)
 					return;
 				}
 			}
+			for (Battery* _battery : _cm->GetBatteryList())
+			{
+				if (_battery->isCursorDragging)
+				{
+					_battery->isCursorDragging = false;
+					_battery->SetPosition(cursorTilePosition.x, cursorTilePosition.y);
+					return;
+				}
+			}
 		}
 	}
 	break;
@@ -134,6 +159,11 @@ void CursorUI::OnInput(const SDL_Event& _event)
 		case SDLK_2:
 			//按下2键在鼠标所在瓦片位置生成一个Vehicle
 			_cm->SpawnChargeableAt(ChargeableType::Vehicle,
+				{ cursorTilePosition.x / TILE_SIZE, cursorTilePosition.y / TILE_SIZE });
+			break;
+		case SDLK_3:
+			//按下3键在鼠标所在瓦片位置生成一个Vehicle
+			_cm->SpawnChargeableAt(ChargeableType::Battery,
 				{ cursorTilePosition.x / TILE_SIZE, cursorTilePosition.y / TILE_SIZE });
 			break;
 		}

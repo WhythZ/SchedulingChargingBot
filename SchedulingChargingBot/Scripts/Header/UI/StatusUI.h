@@ -17,11 +17,13 @@ private:
 	#pragma region TextSize
 	SDL_Point robotNumTextSize = { 0 };
 	SDL_Point vehicleNumTextSize = { 0 };
+	SDL_Point batteryNumTextSize = { 0 };
 	#pragma endregion
 
 	#pragma region TextTexture
 	SDL_Texture* robotNumTextTexture = nullptr;
 	SDL_Texture* vehicleNumTextTexture = nullptr;
+	SDL_Texture* batteryNumTextTexture = nullptr;
 	#pragma endregion
 
 public:

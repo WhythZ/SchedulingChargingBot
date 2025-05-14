@@ -1,6 +1,8 @@
 #include "../../../Header/Strategy/Concrete/StrategyB.h"
-
-void StrategyB::UpdateMovement(Chargeable* _robot)
+#include "../../../Header/Manager/Concrete/ChargeableManager.h"
+#include "../../../Header/Manager/Concrete/SceneManager.h"
+#include "../../../Header/Chargeable/Concrete/Robot.h"
+#include "../../../Header/Chargeable/Concrete/Vehicle.h"
+void StrategyB::UpdateMovement(Chargeable* _chargeable)
 {
-	_robot->SetVelocity({ 100,100 });
 }

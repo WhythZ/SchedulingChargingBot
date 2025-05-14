@@ -5,7 +5,8 @@ enum class ChargeableType
 {
 	None,
 	Robot,
-	Vehicle
+	Vehicle,
+	Battery
 };
 
 #endif

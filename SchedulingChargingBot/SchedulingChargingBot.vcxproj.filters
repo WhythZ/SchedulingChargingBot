@@ -141,6 +141,9 @@
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyC.cpp">
       <Filter>源文件\Strategy\Concrete</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\Chargeable\Concrete\Battery.cpp">
+      <Filter>源文件\Chargeable\Concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyC.h">
       <Filter>头文件\Strategy\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h">
+      <Filter>头文件\Chargeable\Concrete</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
