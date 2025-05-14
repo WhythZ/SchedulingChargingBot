@@ -17,8 +17,13 @@ Chargeable::Chargeable()
 	chargedTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricity += chargedIntensity;
-			currentElectricity = (currentElectricity >= 100) ? 100 : currentElectricity;
+			double minIntensity = 0.5;
+			double maxIntensity = 1.0;
+			double ratio = currentElectricity / 100.0;
+			double intensity = maxIntensity - (maxIntensity - minIntensity) * ratio;
+
+			currentElectricity += intensity;
+			if (currentElectricity > 100.0) currentElectricity = 100.0;
 		}
 	);
 
@@ -27,8 +32,13 @@ Chargeable::Chargeable()
 	chargerTimer.SetTimeOutTrigger(
 		[&]()
 		{
-			currentElectricity -= chargerIntensity;
-			currentElectricity = (currentElectricity < 0) ? 0 : currentElectricity;
+			double minIntensity = 0.5;
+			double maxIntensity = 1.0;
+			double ratio = currentElectricity / 100.0;
+			double intensity = maxIntensity - (maxIntensity - minIntensity) * ratio;
+
+			currentElectricity -= intensity;
+			if (currentElectricity < 0.0) currentElectricity = 0.0;
 		}
 	);
 	#pragma endregion
@@ -61,10 +71,10 @@ void Chargeable::OnUpdate(double _delta)
 
 	//·ÀÖ¹ÅÜ³öµØÍ¼±ß½ç
 	static SDL_Rect _mapRect = _sm->mapRect;
-	if (position.x <= _mapRect.x) position.x = _mapRect.x;
-	if (position.x >= _mapRect.x + _mapRect.w) position.x = _mapRect.x + _mapRect.w;
-	if (position.y <= _mapRect.y) position.y = _mapRect.y;
-	if (position.y >= _mapRect.y + _mapRect.h) position.y = _mapRect.y + _mapRect.h;
+	if (position.x - size.x / 2 <= _mapRect.x) position.x = _mapRect.x + size.x/2;
+	if (position.x + size.x / 2 >= _mapRect.x + _mapRect.w) position.x = _mapRect.x + _mapRect.w - size.x/2;
+	if (position.y - size.y / 2 <= _mapRect.y) position.y = _mapRect.y + size.y/2;
+	if (position.y + size.x / 2 >= _mapRect.y + _mapRect.h) position.y = _mapRect.y + _mapRect.h -size.y/2;
 	#pragma endregion
 }
 
@@ -130,6 +140,16 @@ bool Chargeable::HasElectricity() const
 bool Chargeable::NeedElectricity() const
 {
 	return currentElectricity < 100;
+}
+
+double Chargeable::GetCurrentElectricity() const
+{
+	return currentElectricity;
+}
+
+double Chargeable::GetSpeed() const
+{
+	return speed;
 }
 
 bool Chargeable::IsInRectArea(const SDL_Rect& _rect) const

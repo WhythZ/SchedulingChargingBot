@@ -26,14 +26,12 @@ protected:
 	SDL_Point size = { TILE_SIZE,TILE_SIZE };           //纹理图尺寸
 
 	#pragma region Electricity
-	size_t currentElectricity = 0;                      //当前电量[0,100]
+	double currentElectricity = 0.0;                      //当前电量[0,100]
 	
 	double chargedCooldown = 0.05;                      //每次（被动）充电的冷却间隔时间
-	size_t chargedIntensity = 1;                        //每次（被动）充入多少电量
 	Timer chargedTimer;                                 //实施（被动）充电间隔
 	
 	double chargerCooldown = 0.05;                      //每次（主动）放电的冷却间隔时间
-	size_t chargerIntensity = 1;                        //每次（主动）输出多少电量
 	Timer chargerTimer;                                 //实施（主动）放电间隔
 	#pragma endregion
 
@@ -68,6 +66,8 @@ public:
 	Vector2 GetPosition() const;                        //获取中心位置
 	bool HasElectricity() const;
 	bool NeedElectricity() const;
+	double GetCurrentElectricity() const;
+	double GetSpeed() const;
 	//检测是否在区域内
 	bool IsInRectArea(const SDL_Rect&) const;
 	bool IsInRectsArea(const std::map<size_t, SDL_Rect>&) const;

@@ -2,12 +2,15 @@
 #define _VEHICLE_H_
 
 #include "../Chargeable.h"
+#include <atomic>
 
 class Vehicle :public Chargeable
 {
 public:
 	SDL_Rect chargedRect = {};            //触发充电的有效区域
 	Chargeable* charger = nullptr;
+	std::atomic<Chargeable*> isTargeted = nullptr;
+	double TargetedDistance;
 
 public:
 	Vehicle();

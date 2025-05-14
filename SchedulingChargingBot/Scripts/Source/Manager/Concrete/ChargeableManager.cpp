@@ -34,7 +34,7 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 	if (_new == nullptr) return;
 
 	//根据传入的瓦片地图索引坐标，计算对应位置瓦片中心点位置
-	int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
+	int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;      // TILE_SIZE==64
 	int _y = _point.y * TILE_SIZE + TILE_SIZE / 2;
 	_new->SetPosition(_x, _y);
 }
@@ -63,11 +63,11 @@ void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehi
 {
 	//if (((Robot*)_robot)->charged != nullptr || ((Vehicle*)_vehicle)->charger != nullptr)
 	//	std::cout << "Tie Wrong\n";
-
 	if (_robot != nullptr)
 	{
 		((Robot*)_robot)->charged = _vehicle;
 		((Robot*)_robot)->ChangeState("Charger");
+		((Robot*)_robot)->SetVelocity({ 0, 0 });
 	}	
 	if (_vehicle != nullptr)
 	{
@@ -85,11 +85,13 @@ void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _ve
 	{
 		((Robot*)_robot)->charged = nullptr;
 		((Robot*)_robot)->ChangeState("Idle");
+		((Robot*)_robot)->bestTarget = nullptr;
 	}
 	if (_vehicle != nullptr)
 	{
 		((Vehicle*)_vehicle)->charger = nullptr;
 		((Vehicle*)_vehicle)->ChangeState("Idle");
+		((Vehicle*)_vehicle)->isTargeted = nullptr;
 	}
 }
 

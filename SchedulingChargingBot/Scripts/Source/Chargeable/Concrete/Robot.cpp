@@ -15,15 +15,32 @@ Robot::Robot()
 	#pragma endregion
 
 	//只有机器人会主动移动，故设置速率大小为正数
-	speed = 1;
+	speed = 100;
 
 	//初始化当前电量为最大电量
-	currentElectricity = 100;
+	currentElectricity = 100.0;
+
+	#pragma region MovementDrainTimer
+	movingDrainTimer.SetOneShot(false);
+	movingDrainTimer.SetWaitTime(0.05); // 每 0.05 秒触发一次
+	movingDrainTimer.SetTimeOutTrigger(
+	[&]()
+	{
+		if (velocity.Length() > 0.0) // 仅当正在移动
+		{
+			currentElectricity -= 0.25;
+			if (currentElectricity < 0.0)
+				currentElectricity = 0.0;
+		}
+	});
+	#pragma endregion
+
 }
 
 void Robot::OnUpdate(double _delta)
 {
 	Chargeable::OnUpdate(_delta);
+	movingDrainTimer.OnUpdate(_delta);
 
 	//受策略控制进行移动
 	strategy->UpdateMovement(this);
@@ -36,7 +53,7 @@ void Robot::OnUpdate(double _delta)
 	{
 		#pragma region LinkVehicle
 		//有电才充电
-		if (HasElectricity())
+		if (HasElectricity() && enoughElectricity())
 		{
 			//遍历所有载具
 			for (Vehicle* _vehicle : _cm->GetVehicleList())
@@ -73,7 +90,8 @@ void Robot::OnUpdate(double _delta)
 			//若自己没电了，或对方满电了，或脱离区域，则分离
 			if (!HasElectricity()
 				|| !((Vehicle*)charged)->NeedElectricity()
-				|| !IsInRectArea(((Vehicle*)charged)->chargedRect))
+				|| !IsInRectArea(((Vehicle*)charged)->chargedRect)
+				|| !enoughElectricity())
 			{
 				_cm->UntieRobotAndVehicle(this, charged);
 				//无需进行后续判断
@@ -88,7 +106,9 @@ void Robot::OnUpdate(double _delta)
 		{
 			//若脱离区域，或满电了，则进入Idle状态
 			if (!IsInRectsArea(_stationRects) || !NeedElectricity())
+			{
 				ChangeState("Idle");
+			}
 		}
 		#pragma endregion
 	}
@@ -122,4 +142,9 @@ void Robot::ChangeStrategy(Strategy* _strategy)
 bool Robot::IsBusy() const
 {
 	return (isCharger || isCharged);
+}
+
+bool Robot::enoughElectricity() const
+{
+	return (currentElectricity >= lowestElectricity);
 }
