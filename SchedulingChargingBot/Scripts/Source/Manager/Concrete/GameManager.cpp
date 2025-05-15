@@ -7,6 +7,7 @@
 #include "../../../Header/Manager/Concrete/SceneManager.h"
 #include "../../../Header/Manager/Concrete/UIManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
+#include "../../../Header/Manager/Concrete/ScoreManager.h"
 
 GameManager::GameManager()
 {
@@ -111,6 +112,10 @@ int GameManager::Run(int _argc, char** _argv)
 		//将渲染的内容更新到窗口缓冲区上
 		SDL_RenderPresent(renderer);
 		#pragma endregion
+
+		ScoreManager scmgr;
+		double output_time = scmgr.score_timer();
+
 	}
 
 	return 0;

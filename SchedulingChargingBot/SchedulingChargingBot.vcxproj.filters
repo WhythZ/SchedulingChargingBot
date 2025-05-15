@@ -147,6 +147,9 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleSpawner.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\ScoreManager.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">

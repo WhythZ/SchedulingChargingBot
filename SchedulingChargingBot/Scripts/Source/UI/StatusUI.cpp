@@ -6,6 +6,7 @@
 #include "../../Header/Manager/Concrete/UIManager.h"
 #include "../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../Header/Manager/Concrete/SceneManager.h"
+#include "../../Header/Manager/Concrete/ScoreManager.h"
 
 void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 {
@@ -22,6 +23,8 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	//先将文本以特定字体加载到内存中
 	static TTF_Font* _font = ResourceManager::Instance()->GetFontPool().find(FontResID::VonwaonBitmap16)->second;
 	static ChargeableManager* _cm = ChargeableManager::Instance();
+	static ScoreManager* _sm = ScoreManager::Instance();
+
 
 	#pragma region RobotNumText
 	//转化为字符串
@@ -49,6 +52,14 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	batteryNumTextSize = { _batteryTextSurface->w, _batteryTextSurface->h };
 	batteryNumTextTexture = SDL_CreateTextureFromSurface(_renderer, _batteryTextSurface);
 	SDL_FreeSurface(_batteryTextSurface);
+	#pragma endregion
+
+	#pragma region TimeText
+	std::string _timestr = "Time:" + std::to_string(_sm->score_timer());
+	SDL_Surface* _timeTextSurface = TTF_RenderText_Blended(_font, _timestr.c_str(), textColor);
+	timeTextSize = { _timeTextSurface->w, _timeTextSurface->h };
+	timeTextTexture = SDL_CreateTextureFromSurface(_renderer, _timeTextSurface);
+	SDL_FreeSurface(_timeTextSurface);
 	#pragma endregion
 }
 
@@ -93,4 +104,15 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 	_positionLeftUp.y = _mapRect.y + robotNumTextSize.y + vehicleNumTextSize.y + 2 * rowDistance;
 	_ui->DrawTexture(_renderer, batteryNumTextTexture, _positionLeftUp, batteryNumTextSize);
 	#pragma endregion
+
+	#pragma region TimeText
+	//缩放文本大小
+	timeTextSize.x = (int)(timeTextSize.x * _textZoomRate);
+	timeTextSize.y = (int)(timeTextSize.y * _textZoomRate);
+	//渲染在电池文本下方
+	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - timeTextSize.x / 2;
+	_positionLeftUp.y = _mapRect.y + robotNumTextSize.y + vehicleNumTextSize.y + batteryNumTextSize.y + 3 * rowDistance;
+	_ui->DrawTexture(_renderer, timeTextTexture, _positionLeftUp, timeTextSize);
+	#pragma endregion
+
 }

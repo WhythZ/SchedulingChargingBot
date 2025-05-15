@@ -6,6 +6,7 @@
 #include "../../Tilemap/Map.h"
 #include "../../../Header/Manager/Concrete/VehicleSpawner.h"
 
+
 //游戏主管理器
 class GameManager :public Manager<GameManager>
 {
