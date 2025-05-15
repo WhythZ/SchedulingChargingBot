@@ -51,6 +51,23 @@ void CursorUI::OnInput(const SDL_Event& _event)
 			else
 				isTouchChargeable = false;
 		}
+		for (Battery* _battery : _cm->GetBatteryList())
+		{
+			//记录当前载具的Rect
+			static SDL_Rect _batteryRect;
+			_batteryRect.x = (int)(_battery->GetPosition().x - TILE_SIZE / 2);
+			_batteryRect.y = (int)(_battery->GetPosition().y - TILE_SIZE / 2);
+			_batteryRect.w = TILE_SIZE;
+			_batteryRect.h = TILE_SIZE;
+			if (SDL_PointInRect(&_cursorPosition, &_batteryRect))
+			{
+				isTouchChargeable = true;
+				//局部代码块，内部用return跳出
+				return;
+			}
+			else
+				isTouchChargeable = false;
+		}
 	}
 	//注意此处没有break，否则鼠标的移动会阻塞其它操作，这是不合理的
 	case SDL_MOUSEBUTTONDOWN:

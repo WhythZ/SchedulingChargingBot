@@ -4,7 +4,6 @@
 #include "../../Header/Manager/Concrete/GameManager.h"
 #include "../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../Header/Manager/Concrete/SceneManager.h"
-
 Chargeable::Chargeable()
 {
 	//初始化当前动画为闲置动画
