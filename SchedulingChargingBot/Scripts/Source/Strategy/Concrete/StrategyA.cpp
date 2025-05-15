@@ -67,7 +67,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         }
     }
 
-    if (bT)
+    if (bT)       //bT为Vehicle
     {
         if (!bT->isTargeted || (bT->TargetedDistance > minDistance))
         {
