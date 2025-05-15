@@ -4,44 +4,72 @@
 
 Vehicle::Vehicle()
 {
-	#pragma region SetAnimation
-	//获取纹理数据
-	static SDL_Texture* _sheet = ResourceManager::Instance()->GetTexturePool().find(TextureResID::Vehicle)->second;
+#pragma region SetAnimation
+    // 获取静态资源中的车辆动画图集
+    static SDL_Texture* _sheet = ResourceManager::Instance()->GetTexturePool().find(TextureResID::Vehicle)->second;
 
-	animIdle.SetLoop(true); animIdle.SetAnimFrames(_sheet, 3, 1, { 0 });
-	animCharged.SetLoop(true); animCharged.SetAnimFrames(_sheet, 3, 1, { 1 });
-	animCharger.SetLoop(true); animCharger.SetAnimFrames(_sheet, 3, 1, { 2 });
-	#pragma endregion
+    // 设置三种动画状态
+    animIdle.SetLoop(true);    animIdle.SetAnimFrames(_sheet, 3, 1, { 0 });
+    animCharged.SetLoop(true); animCharged.SetAnimFrames(_sheet, 3, 1, { 1 });
+    animCharger.SetLoop(true); animCharger.SetAnimFrames(_sheet, 3, 1, { 2 });
+#pragma endregion
 
-	//无法主动移动
-	speed = 0;
-
-	//初始化当前电量为0
-	currentElectricity = 0;
+    speed = 0;                 // 车辆为静态，不移动
+    currentElectricity = 0;   // 初始电量为0
 }
 
 void Vehicle::OnUpdate(double _delta)
 {
-	Chargeable::OnUpdate(_delta);
+    Chargeable::OnUpdate(_delta);
 
-	#pragma region ChargedRect
-	//车可以被触发充电的作用区域为以车为中心的3x3瓦片区域
-	chargedRect.x = (int)(position.x - (TILE_SIZE + TILE_SIZE / 2));
-	chargedRect.y = (int)(position.y - (TILE_SIZE + TILE_SIZE / 2));
-	chargedRect.w = TILE_SIZE * 3;
-	chargedRect.h = TILE_SIZE * 3;
-	#pragma endregion
+#pragma region ChargedRect
+    // 可被充电的区域是以车辆为中心的3x3瓦片
+    chargedRect.x = (int)(position.x - (TILE_SIZE + TILE_SIZE / 2));
+    chargedRect.y = (int)(position.y - (TILE_SIZE + TILE_SIZE / 2));
+    chargedRect.w = TILE_SIZE * 3;
+    chargedRect.h = TILE_SIZE * 3;
+#pragma endregion
 }
 
 void Vehicle::ChangeState(std::string _stateName)
 {
-	if (_stateName == "Idle")
-		isCharged = false;
-	else if (_stateName == "Charged")
-		isCharged = true;
+    if (_stateName == "Idle")
+        isCharged = false;
+    else if (_stateName == "Charged")
+        isCharged = true;
 }
 
 bool Vehicle::IsBusy() const
 {
-	return (isCharged);
+    return isCharged;
+}
+
+void Vehicle::SetElectricity(size_t e)
+{
+    currentElectricity = e;
+}
+
+size_t Vehicle::GetElectricity() const
+{
+    return currentElectricity;
+}
+
+void Vehicle::SetTargetElectricity(size_t e)
+{
+    targetElectricity = e;
+}
+
+size_t Vehicle::GetTargetElectricity() const
+{
+    return targetElectricity;
+}
+
+void Vehicle::SetLeaveTime(double t)
+{
+    leaveTime = t;
+}
+
+double Vehicle::GetLeaveTime() const
+{
+    return leaveTime;
 }

@@ -150,6 +150,7 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ChargeableManager.cpp" />
+    <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleSpawner.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyA.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyB.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyC.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleSpawner.h" />
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp" />
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyA.h" />
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyB.h" />

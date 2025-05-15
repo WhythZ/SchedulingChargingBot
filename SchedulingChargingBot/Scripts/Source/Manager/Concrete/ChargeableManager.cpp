@@ -1,5 +1,8 @@
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
+#include "../../../Header/Chargeable/Concrete/Vehicle.h"
+#include "../../../Header/Chargeable/Concrete/Robot.h"
+#include "../../../Header/Chargeable/Concrete/Battery.h"
 
 ChargeableManager::~ChargeableManager()
 {
@@ -45,8 +48,15 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 
 void ChargeableManager::OnUpdate(double _delta)
 {
+
 	//移除非法实例
 	RemoveInvalid();
+
+	for (auto* v : vehicleList) {
+		if (!v->isOnline) continue;  // 尚未上线的车不处理
+		v->OnUpdate(_delta);
+
+	}
 
 	//更新所有实例
 	for (Robot* _robot : robotList)
@@ -202,4 +212,17 @@ void ChargeableManager::RemoveInvalid()
 	//删除所有无效实例，此时的列表在remove_if的排列下，所有无效的实例指针均在列表末尾
 	batteryList.erase(_beginB, batteryList.end());
 	#pragma endregion
+}
+
+void ChargeableManager::AddChargeable(Chargeable* c)
+{
+	if (Vehicle* v = dynamic_cast<Vehicle*>(c)) {
+		vehicleList.emplace_back(v);
+	}
+	else if (Robot* r = dynamic_cast<Robot*>(c)) {
+		robotList.emplace_back(r);
+	}
+	else if (Battery* b = dynamic_cast<Battery*>(c)) {
+		batteryList.emplace_back(b);
+	}
 }
