@@ -92,9 +92,11 @@ void VehicleSpawner::OnUpdate(double delta)
             v->isOnline = true;
             ChargeableManager::Instance()->AddChargeable(v);
 
-            printf("[ARRIVE] Vehicle at (%.0f, %.0f), elec=%zu%%, needs=%zu%%, leave=%.0fs\n",
+            printf("[ARRIVE] Vehicle at (%.0f, %.0f), elec=%.0f%%, needs=%.0f%%, leave=%.0fs\n",
                 v->GetPosition().x, v->GetPosition().y,
-                v->GetElectricity(), v->GetTargetElectricity(), v->GetLeaveTime());
+                v->GetElectricity(),    // 使用 %.0f 格式化为无小数位的double
+                v->GetTargetElectricity(),
+                v->GetLeaveTime());
         }
         else {
             // 还没到达 → 继续留在等待队列中

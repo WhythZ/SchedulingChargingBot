@@ -54,7 +54,7 @@ public:
 	virtual ~Chargeable() = default;
 
 	virtual void OnUpdate(double);                      //每帧更新数据
-	virtual void OnRender(SDL_Renderer*);                       //每帧渲染动画
+	virtual void OnRender(SDL_Renderer*);               //每帧渲染动画
 
 	void SetPosition(int, int);                         //设置具体到像素的位置
 	void SetVelocity(Vector2);                          //更新运动速度

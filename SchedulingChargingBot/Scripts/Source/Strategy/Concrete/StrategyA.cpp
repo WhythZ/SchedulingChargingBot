@@ -20,7 +20,8 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
     PilePos.y = robotPos.y >= 448 ? 896 : 0;
     Vector2 returnPath = PilePos - robotPos;
 
-    std::cout << returnPath.Length() << std::endl;
+    //std::cout << returnPath.Length() << std::endl;
+
     if(!robot->IsBusy())
     {
         Vector2 PileVelocity;

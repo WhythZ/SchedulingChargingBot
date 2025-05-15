@@ -9,8 +9,8 @@
 struct VehicleSpawnTask {
     double spawnTime;             // 到达园区时间（秒）
     Vector2 position;             // 初始生成位置（像素坐标）
-    size_t initialElectricity;    // 初始电量（0-100）
-    size_t requiredElectricity;   // 离开前需要电量
+    double initialElectricity;    // 初始电量（0-100）
+    double requiredElectricity;   // 离开前需要电量
     double leaveTime;             // 离开园区时间（秒）
 };
 
