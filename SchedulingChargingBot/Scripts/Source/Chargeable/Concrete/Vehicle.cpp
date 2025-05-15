@@ -24,16 +24,6 @@ void Vehicle::OnUpdate(double _delta)
 {
     Chargeable::OnUpdate(_delta);
 
-    #pragma region FullToRemove
-    //当车充满电后，就将其移除
-    if (!NeedElectricity())
-    {
-        isValid = false;
-        
-        //此处可以再加一些离开后的逻辑，比如记录离开的时刻，用作某些分析
-    }
-    #pragma endregion
-
     #pragma region ChargedRect
     //可被充电的区域是以车辆为中心的3x3瓦片
     chargedRect.x = (int)(position.x - (TILE_SIZE + TILE_SIZE / 2));

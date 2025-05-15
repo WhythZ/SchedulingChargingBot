@@ -18,13 +18,13 @@ public:
 
 public:
     Vehicle();
-    ~Vehicle() override = default;
+    ~Vehicle() = default;
 
     //每帧更新
-    void OnUpdate(double delta) override;
+    void OnUpdate(double) override;
 
     //更改动画状态
-    void ChangeState(std::string stateName) override;
+    void ChangeState(std::string) override;
 
     //是否正被充电（用于调度判断）
     bool IsBusy() const override;

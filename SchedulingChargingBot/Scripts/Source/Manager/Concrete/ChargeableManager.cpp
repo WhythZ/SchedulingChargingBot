@@ -52,17 +52,14 @@ void ChargeableManager::OnUpdate(double _delta)
 	//移除非法实例
 	RemoveInvalid();
 
-	for (auto* v : vehicleList) {
-		if (!v->isOnline) continue;  // 尚未上线的车不处理
-		v->OnUpdate(_delta);
-
-	}
-
 	//更新所有实例
+	for (Vehicle* _v : vehicleList)
+	{
+		if (_v->isOnline)
+			_v->OnUpdate(_delta);
+	}
 	for (Robot* _robot : robotList)
 		_robot->OnUpdate(_delta);
-	for (Vehicle* _vehicle : vehicleList)
-		_vehicle->OnUpdate(_delta);
 	for (Battery* _battery : batteryList)
 		_battery->OnUpdate(_delta);
 }
@@ -79,38 +76,35 @@ void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 
 void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
 {
-	//if (((Robot*)_robot)->charged != nullptr || ((Vehicle*)_vehicle)->charger != nullptr)
-	//	std::cout << "Tie Wrong\n";
-
-	if (_robot != nullptr)
+	if (_robot != nullptr && _vehicle != nullptr)
 	{
 		((Robot*)_robot)->charged = _vehicle;
 		((Robot*)_robot)->ChangeState("Charger");
 		((Robot*)_robot)->SetVelocity({ 0, 0 });
-	}	
-	if (_vehicle != nullptr)
-	{
+	
 		((Vehicle*)_vehicle)->charger = _robot;
 		((Vehicle*)_vehicle)->ChangeState("Charged");
 	}
 }
 
 void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
-{
-	//if (((Robot*)_robot)->charged == nullptr || ((Vehicle*)_vehicle)->charger == nullptr)
-	//	std::cout << "Untie Wrong\n";
-	
-	if (_robot != nullptr)
+{	
+	if (_robot != nullptr && _vehicle != nullptr)
 	{
-		((Robot*)_robot)->charged = nullptr;
 		((Robot*)_robot)->ChangeState("Idle");
+		((Robot*)_robot)->charged = nullptr;
 		((Robot*)_robot)->bestTarget = nullptr;
-	}
-	if (_vehicle != nullptr)
-	{
-		((Vehicle*)_vehicle)->charger = nullptr;
+
 		((Vehicle*)_vehicle)->ChangeState("Idle");
+		((Vehicle*)_vehicle)->charger = nullptr;
 		((Vehicle*)_vehicle)->isTargeted = nullptr;
+
+		//若满电，则在解绑时清除
+		if (!_vehicle->NeedElectricity())
+		{
+			_vehicle->Invalidate();
+			std::cout << "Veicle Leave\n";
+		}
 	}
 }
 

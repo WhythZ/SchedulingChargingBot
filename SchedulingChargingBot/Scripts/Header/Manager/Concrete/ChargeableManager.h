@@ -38,7 +38,7 @@ public:
 	void OnRender(SDL_Renderer*);
 
 	void TieRobotAndVehicle(Chargeable*, Chargeable*);
-	void UntieRobotAndVehicle(Chargeable*, Chargeable*);
+	void UntieRobotAndVehicle(Chargeable*, Chargeable*); //注意顺序，第一参数机器人，第二参数载具
 	void ChangeStrategy(StrategyType);                   //更新所有Robot的策略
 
 	std::vector<Robot*> GetRobotList() const;            //获取机器人实例列表

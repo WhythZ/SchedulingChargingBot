@@ -93,6 +93,7 @@ void Robot::OnUpdate(double _delta)
 				|| !IsInRectArea(((Vehicle*)charged)->chargedRect)
 				|| !enoughElectricity())
 			{
+				//将二者解绑
 				_cm->UntieRobotAndVehicle(this, charged);
 				//无需进行后续判断
 				return;
@@ -106,9 +107,7 @@ void Robot::OnUpdate(double _delta)
 		{
 			//若脱离区域，或满电了，则进入Idle状态
 			if (!IsInRectsArea(_stationRects) || !NeedElectricity())
-			{
 				ChangeState("Idle");
-			}
 		}
 		#pragma endregion
 	}
