@@ -34,11 +34,11 @@ void Battery::OnUpdate(double _delta)
 	#pragma endregion
 
 	#pragma region ChargedRect
-	//可以换电的区域大小是1*1瓦片区域。
+	//可以换电的区域大小是2*2瓦片区域。
 	chargedRect.x = (int)(position.x - (TILE_SIZE + TILE_SIZE / 2));
 	chargedRect.y = (int)(position.y - (TILE_SIZE + TILE_SIZE / 2));
-	chargedRect.w = TILE_SIZE * 1;
-	chargedRect.h = TILE_SIZE * 1;
+	chargedRect.w = TILE_SIZE * 2;
+	chargedRect.h = TILE_SIZE * 2;
 	#pragma endregion
 }
 

@@ -64,6 +64,7 @@ public:
 	virtual bool IsBusy() const = 0;                    //查询繁忙状态
 	bool IsValid() const;                               //查询合法状态
 	Vector2 GetPosition() const;                        //获取中心位置
+	void SetElectricity(double e);						//用于设置电量。
 	bool HasElectricity() const;
 	bool NeedElectricity() const;
 	double GetCurrentElectricity() const;

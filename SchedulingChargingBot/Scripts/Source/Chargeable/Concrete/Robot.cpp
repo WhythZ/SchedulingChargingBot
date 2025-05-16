@@ -120,6 +120,17 @@ void Robot::OnUpdate(double _delta)
 		#pragma endregion
 	}
 	#pragma endregion
+
+	#pragma region ChangeBattery
+
+	for(Battery* _battery : _cm->GetBatteryList())
+		{
+		if(IsInRectArea(_battery->chargedRect) && (this->GetCurrentElectricity() < _battery->GetCurrentElectricity()))//在电池附近且电量少于电池。
+			{
+				_cm->SwitchElectricity_RobotAndBattery(this, _battery);//交换电量。
+			}
+		}
+	#pragma endregion
 }
 
 void Robot::ChangeState(std::string _stateName)

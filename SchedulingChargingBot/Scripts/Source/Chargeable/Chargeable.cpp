@@ -131,6 +131,11 @@ Vector2 Chargeable::GetPosition() const
 	return position;
 }
 
+void Chargeable::SetElectricity(double e)
+{
+	this->currentElectricity = e;
+}
+
 bool Chargeable::HasElectricity() const
 {
 	return currentElectricity > 0;

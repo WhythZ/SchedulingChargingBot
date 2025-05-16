@@ -40,6 +40,7 @@ public:
 	void TieRobotAndVehicle(Chargeable*, Chargeable*);
 	void UntieRobotAndVehicle(Chargeable*, Chargeable*); //注意顺序，第一参数机器人，第二参数载具
 	void ChangeStrategy(StrategyType);                   //更新所有Robot的策略
+	void SwitchElectricity_RobotAndBattery(Chargeable*,Chargeable*); //先robot后battery
 
 	std::vector<Robot*> GetRobotList() const;            //获取机器人实例列表
 	std::vector<Vehicle*> GetVehicleList() const;        //获取车辆实例列表

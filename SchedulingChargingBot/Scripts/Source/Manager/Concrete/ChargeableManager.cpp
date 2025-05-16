@@ -108,6 +108,17 @@ void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _ve
 	}
 }
 
+void ChargeableManager::SwitchElectricity_RobotAndBattery(Chargeable* _r, Chargeable* _b)
+{
+	if (_r != nullptr && _b != nullptr)
+	{
+		double cur = 0;
+		cur = ((Robot*)_r)->GetCurrentElectricity();
+		((Robot*)_r)->SetElectricity(((Battery*)_b)->GetCurrentElectricity());
+		((Battery*)_b)->SetElectricity(cur);//和电池交换电量的逻辑。
+	}
+}
+
 void ChargeableManager::ChangeStrategy(StrategyType _type)
 {
 	//更新策略类型
