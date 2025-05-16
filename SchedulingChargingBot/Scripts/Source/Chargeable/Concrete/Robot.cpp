@@ -95,6 +95,14 @@ void Robot::OnUpdate(double _delta)
 			{
 				//将二者解绑
 				_cm->UntieRobotAndVehicle(this, charged);
+
+				if (!enoughElectricity())
+				{
+					this->bestTarget = nullptr;
+					if(charged != nullptr)
+						((Vehicle*)charged)->isTargeted = nullptr;
+				}
+
 				//无需进行后续判断
 				return;
 			}

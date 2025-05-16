@@ -7,5 +7,6 @@
 
 int main(int _argc, char** _argv)
 {
+	srand(static_cast<unsigned int>(time(NULL)));
 	return GameManager::Instance()->Run(_argc, _argv);
 }

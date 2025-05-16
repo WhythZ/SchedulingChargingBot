@@ -67,11 +67,24 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         }
     }
 
-    if (bT)       //bT为Vehicle
+    if (bT)
     {
-        if (!bT->isTargeted || (bT->TargetedDistance > minDistance))
+        if (!bT->isTargeted)
         {
             bT->isTargeted = robot;
+            bT->TargetedDistance = minDistance;
+            if (((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
+                ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;
+            robot->bestTarget = bT;
+            robot->lowestElectricity = rD / 20;
+        }
+        else if (bT->isTargeted && (bT->TargetedDistance > minDistance))
+        {
+            if(bT->isTargeted != robot)
+            {
+				((Robot*)(bT->isTargeted))->bestTarget = nullptr;
+                bT->isTargeted = robot;
+            }
             bT->TargetedDistance = minDistance;
             if(((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
                 ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;

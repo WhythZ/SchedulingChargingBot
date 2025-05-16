@@ -2,7 +2,6 @@
 #define _VEHICLE_H_
 
 #include "../Chargeable.h"
-#include <atomic>
 
 // 表示一辆可被充电的静止车辆（由 Robot 移动前来充电）
 class Vehicle : public Chargeable
@@ -10,7 +9,7 @@ class Vehicle : public Chargeable
 public:
     SDL_Rect chargedRect = {};                     // 可被充电的有效区域（3x3瓦片）
     Chargeable* charger = nullptr;                 // 当前为它充电的机器人
-    std::atomic<Chargeable*> isTargeted = nullptr; // 被哪个机器人锁定
+    Chargeable* isTargeted = nullptr;              // 被哪个机器人锁定
     double TargetedDistance = 0.0;                 // 被锁定时的距离
 
     bool isOnline = false;                         // 是否正式“上线”并可调度

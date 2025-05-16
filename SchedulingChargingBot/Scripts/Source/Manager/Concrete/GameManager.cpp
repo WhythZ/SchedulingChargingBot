@@ -2,6 +2,7 @@
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <ctime>
 #include "../../../Header/Manager/Concrete/ConfigManager.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
