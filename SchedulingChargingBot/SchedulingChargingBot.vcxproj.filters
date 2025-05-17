@@ -150,6 +150,9 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\ScoreManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Source\Manager\Concrete\RobotSpawner.cpp">
+      <Filter>源文件\Manager\Concrete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Header\Manager\Concrete\AudioManager.h">
@@ -236,5 +239,16 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleSpawner.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\RobotSpawner.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SchedulingChargingBot.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

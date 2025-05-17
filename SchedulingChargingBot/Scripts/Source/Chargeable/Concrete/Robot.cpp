@@ -39,6 +39,7 @@ Robot::Robot()
 
 void Robot::OnUpdate(double _delta)
 {
+    
 	Chargeable::OnUpdate(_delta);
 	movingDrainTimer.OnUpdate(_delta);
 
@@ -131,6 +132,7 @@ void Robot::OnUpdate(double _delta)
 			}
 		}
 	#pragma endregion
+    
 }
 
 void Robot::ChangeState(std::string _stateName)

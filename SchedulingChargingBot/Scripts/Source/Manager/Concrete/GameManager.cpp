@@ -10,6 +10,7 @@
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/ScoreManager.h"
 
+
 GameManager::GameManager()
 {
 	#pragma region SDL
@@ -72,6 +73,7 @@ int GameManager::Run(int _argc, char** _argv)
 {
 	//设置规模
 	vehicleSpawner.LoadScenario(0);  // 可设置为 0=小，1=中，2=大
+    robotSpawner.CreateRobot(0);
 
 	#pragma region LimitFPS
 	//此函数获取一个高性能（精度较高）计时器，函数返回的值（计时器跳的总数）作为计时器的起点，通过作差后除以频率才有意义
