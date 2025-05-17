@@ -16,7 +16,7 @@ public:
 
 	bool isCharged = false;                             //是否正在（被动）充电
 	bool isCharger = false;                             //是否正在（主动）放电
-
+	bool IsTouchingMapBorder = false;					//是否在离开时触及边界
 protected:
 	bool isValid = true;                                //管理器通过该变量管理实例是否应当处于场景中
 
@@ -66,7 +66,7 @@ public:
 	Vector2 GetPosition() const;                        //获取中心位置
 	void SetElectricity(double e);						//用于设置电量。
 	bool HasElectricity() const;
-	bool NeedElectricity() const;
+	virtual bool NeedElectricity() const;				//多态，vehicle类需要灵活调整目标电量
 	double GetCurrentElectricity() const;
 	double GetSpeed() const;
 	//检测是否在区域内
