@@ -128,6 +128,8 @@ void VehicleSpawner::OnUpdate(double delta)
     size_t pendingqueueSize = pendingQueue.size();
     if (pendingqueueSize) for (size_t i = 0; i < pendingqueueSize; ++i) {
         Vehicle* v = pendingQueue.front();
+        v->isMoving = true;//设置为正在移动，防止机器人来充电。
+        pendingQueue.pop();
         if (v->arriveTime <= elapsedTime) {
             // 到达时间满足 → 加入调度系统
             v->isOnline = true;
@@ -139,14 +141,15 @@ void VehicleSpawner::OnUpdate(double delta)
                 v->GetElectricity(),    // 使用 %.0f 格式化为无小数位的double
                 v->GetTargetElectricity(),
                 v->GetLeaveTime());
-            pendingQueue.pop();//弹出待刷新队列
             comingQueue.push(v);//加入正在来的车辆队列
         }
+        else pendingQueue.push(v);//如果不满足，则再从队尾加入队列
     }
     size_t comingQueueSize = comingQueue.size();
     if (comingQueueSize) for (size_t i = 0; i < comingQueueSize; ++i) {
         Vehicle* v = comingQueue.front();
-        std::cout << "comingQueueSize：" << comingQueueSize << std::endl;
+        comingQueue.pop();
+        //std::cout << "comingQueueSize：" << comingQueueSize << std::endl;
         v->IsTouchingMapBorder = false;//防止生成车辆时的误判
         int index = 0;
         for (; index < tasks.size(); ++index)
@@ -157,14 +160,16 @@ void VehicleSpawner::OnUpdate(double delta)
         //std::cout << "v->GetPosition().x" << v->GetPosition().x << std::endl << "tasks[index].position.x" << tasks[index].position.x << std::endl;
         if ((int)v->GetPosition().x == (int)tasks[index].position.x || (int)v->GetPosition().y == (int)tasks[index].position.y) {//判断是不是到了目标位置，这里可以更完善，但现在先偷个懒（
             v->SetVelocity({ 0,0 });
-            comingQueue.pop();
             workingQueue.push(v);
         }
+        else comingQueue.push(v);
     }
     size_t workingQueueSize = workingQueue.size();
     if (workingQueueSize) for (size_t i = 0; i < workingQueueSize; ++i) {
         Vehicle* v = workingQueue.front();
-        std::cout << "workingQueueSize：" << workingQueueSize << std::endl;
+        v->isMoving = false;//设置为不在移动中，让机器人来充电。
+        workingQueue.pop();
+        //std::cout << "workingQueueSize：" << workingQueueSize << std::endl;
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
@@ -176,24 +181,30 @@ void VehicleSpawner::OnUpdate(double delta)
             endDirection.x = (tasks[index].position_leave.x - tasks[index].position.x);
             endDirection.y = (tasks[index].position_leave.y - tasks[index].position.y);
             //上面是设置离开时方向。
-            //v->SetVelocity(endDirection.Normalized() * 100);//向离开的位置奔去
-            std::cout << "向夜晚奔去" << std::endl;
-            workingQueue.pop();
+            v->SetVelocity(endDirection.Normalized() * 100);//向离开的位置奔去
+            std::cout << "going for the night." << std::endl;
+
             leavingQueue.push(v);
         }
+        else workingQueue.push(v);
     }
     size_t leavingQueueSize = leavingQueue.size();
     if (leavingQueueSize) for (size_t i = 0; i < leavingQueueSize; ++i) {
+        std::cout << "leavingQueueSize:" << leavingQueueSize << std::endl;
         Vehicle* v = leavingQueue.front();
+        v->isMoving = true;//设置为正在移动，防止潜在问题。
+        leavingQueue.pop();
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
             if (tasks[index].VehicleTaskNo == v->VehicleNo)
                 break;//当index使得task和vehicle对应的时候跳出。
         }
+        //std::cout << "触及边界？" << v->IsTouchingMapBorder << std::endl;
         if (v->IsTouchingMapBorder == true) {
-            leavingQueue.pop();
             v->Invalidate();//设置为invalid，等待manager清除。
+            std::cout << "Invalidated vehicle:" << v->VehicleNo << std::endl;
         }
+        else leavingQueue.push(v);
     }
 }

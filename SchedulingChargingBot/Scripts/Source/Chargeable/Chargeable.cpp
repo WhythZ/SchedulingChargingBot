@@ -159,6 +159,11 @@ bool Chargeable::NeedElectricity() const
 	return currentElectricity < 100;
 }
 
+bool Chargeable::rtisMoving() const
+{
+	return isMoving;
+}
+
 double Chargeable::GetCurrentElectricity() const
 {
 	return currentElectricity;

@@ -62,7 +62,7 @@ void Robot::OnUpdate(double _delta)
 				if (IsInRectArea(_vehicle->chargedRect))
 				{
 					//对方不处于繁忙状态，且需要充电时，才给他充电
-					if (!_vehicle->IsBusy() && _vehicle->NeedElectricity())
+					if (!_vehicle->IsBusy() && _vehicle->NeedElectricity() && !_vehicle->rtisMoving())
 					{
 						//与载具链接
 						_cm->TieRobotAndVehicle(this, _vehicle);
@@ -149,6 +149,12 @@ void Robot::ChangeState(std::string _stateName)
 	{
 		isCharged = false;
 		isCharger = true;
+	}
+	else if (_stateName == "Moving")
+	{
+		isCharged = false;
+		isCharger = false;
+		isMoving = true;
 	}
 }
 
