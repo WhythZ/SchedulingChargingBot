@@ -11,6 +11,7 @@ public:
     Chargeable* charger = nullptr;                 // 当前为它充电的机器人
     Chargeable* isTargeted = nullptr;              // 被哪个机器人锁定
     double TargetedDistance = 0.0;                 // 被锁定时的距离
+	double TargetedValue = 0.0;                    // 被锁定时的最大价值
 
     bool isOnline = false;                         // 是否正式“上线”并可调度
     double arriveTime = 0;                         // 车辆到达园区时间（秒）

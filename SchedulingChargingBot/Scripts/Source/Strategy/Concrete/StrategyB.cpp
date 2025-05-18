@@ -37,10 +37,7 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
         Vector2 PileVelocity;
         PileVelocity.x = returnPath.x / returnPath.Length() * robot->GetSpeed();
         PileVelocity.y = returnPath.y / returnPath.Length() * robot->GetSpeed();
-        if (returnPath.Length() > 96)
-            robot->SetVelocity(PileVelocity);             //初始就设置Robot向充电桩跑
-        else
-            robot->SetVelocity({ 0,0 });
+        robot->SetVelocity(PileVelocity);             //初始就设置Robot向充电桩跑
     }
 
     // 如果电量为0，直接停止
@@ -75,32 +72,31 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
 
         // 计算价值
         double value = CalculateVehicleValue(v, sm->score_timer(), distanceToVehicle, distanceToCharger);
-
         if (value > maxValue) 
         {
             maxValue = value;
             bT = v;
             rD = distanceToCharger;
         }
-        std::cout << maxValue << std::endl;
+        //std::cout << maxValue << std::endl;
     }
 
     // 设置最佳目标
     if (bT) {
         if (!bT->isTargeted) {
             bT->isTargeted = robot;
-            bT->TargetedDistance = GetDistance(robotPos, bT->GetPosition());
+			bT->TargetedValue = maxValue;
             if (((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
                 ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;
             robot->bestTarget = bT;
             robot->lowestElectricity = rD / 20;
         }
-        else if (bT->isTargeted && (bT->TargetedDistance > GetDistance(robotPos, bT->GetPosition()))) {
+        else if (bT->isTargeted && (bT->TargetedValue < maxValue)) {
             if (bT->isTargeted != robot) {
                 ((Robot*)(bT->isTargeted))->bestTarget = nullptr;
                 bT->isTargeted = robot;
             }
-            bT->TargetedDistance = GetDistance(robotPos, bT->GetPosition());
+            bT->TargetedValue = maxValue;
             if (((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
                 ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;
             robot->bestTarget = bT;

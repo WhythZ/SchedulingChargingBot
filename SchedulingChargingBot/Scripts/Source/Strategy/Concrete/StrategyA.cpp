@@ -27,10 +27,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         Vector2 PileVelocity;
         PileVelocity.x = returnPath.x / returnPath.Length() * robot->GetSpeed();
         PileVelocity.y = returnPath.y / returnPath.Length() * robot->GetSpeed();
-        if (returnPath.Length() > 96)
-            robot->SetVelocity(PileVelocity);             //初始就设置Robot向充电桩跑
-        else
-            robot->SetVelocity({ 0,0 });
+        robot->SetVelocity(PileVelocity);             //初始就设置Robot向充电桩跑
     }
 
     // 如果电量为0，直接停止
