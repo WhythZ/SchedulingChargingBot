@@ -1,4 +1,4 @@
-#include "../../../Header/Manager/Concrete/VehicleSpawner.h"
+ï»¿#include "../../../Header/Manager/Concrete/VehicleSpawner.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
 #include "../../../Header/Tilemap/Tile.h"
@@ -8,65 +8,65 @@
 #include <cstdio>
 #include <iostream>
 
-// ÔØÈë²»Í¬³¡¾°µÈ¼¶¶ÔÓ¦µÄ³µÁ¾Éú³ÉÈÎÎñ
+// è½½å…¥ä¸åŒåœºæ™¯ç­‰çº§å¯¹åº”çš„è½¦è¾†ç”Ÿæˆä»»åŠ¡
 void VehicleSpawner::LoadScenario(int level)
 {
-    tasks.clear();       // Çå¿Õ¾ÉÈÎÎñ
-    nextIndex = 0;       // ÖØÖÃË÷Òı
-    elapsedTime = 0;     // ÖØÖÃ·ÂÕæÊ±¼ä
+    tasks.clear();       // æ¸…ç©ºæ—§ä»»åŠ¡
+    nextIndex = 0;       // é‡ç½®ç´¢å¼•
+    elapsedTime = 0;     // é‡ç½®ä»¿çœŸæ—¶é—´
 
-    while (!pendingQueue.empty()) pendingQueue.pop(); // Çå¿ÕµÈ´ı¶ÓÁĞ
+    while (!pendingQueue.empty()) pendingQueue.pop(); // æ¸…ç©ºç­‰å¾…é˜Ÿåˆ—
 
-    // ¸ù¾İÄÑ¶ÈµÈ¼¶¾ö¶¨ÒªÉú³ÉµÄ³µÁ¾ÊıÁ¿
+    // æ ¹æ®éš¾åº¦ç­‰çº§å†³å®šè¦ç”Ÿæˆçš„è½¦è¾†æ•°é‡
     int vehicleCount = (level == 0) ? 5 : (level == 1) ? 10 : 20;
 
-    // ¶¯Ì¬»ñÈ¡µØÍ¼µÄÍßÆ¬ÊıÁ¿£¨ĞĞÁĞÊı£©
+    // åŠ¨æ€è·å–åœ°å›¾çš„ç“¦ç‰‡æ•°é‡ï¼ˆè¡Œåˆ—æ•°ï¼‰
     int mapTilesX = SceneManager::Instance()->mapRect.w / TILE_SIZE;
     int mapTilesY = SceneManager::Instance()->mapRect.h / TILE_SIZE;
 
-    std::set<std::pair<int, int>> occupiedTiles;  // ¼ÇÂ¼ÒÑÓÃÍßÆ¬£¬±ÜÃâÖØ¸´Éú³É
+    std::set<std::pair<int, int>> occupiedTiles;  // è®°å½•å·²ç”¨ç“¦ç‰‡ï¼Œé¿å…é‡å¤ç”Ÿæˆ
 
     for (int i = 0; i < vehicleCount; ++i) {
         VehicleSpawnTask task;
-        task.VehicleTaskNo = i;//±ê¼Ç³µÁ¾±àºÅ£¬ÓÃÓÚ±æÊ¶Ã¿Ò»Á¾³µ¡£
+        task.VehicleTaskNo = i;//æ ‡è®°è½¦è¾†ç¼–å·ï¼Œç”¨äºè¾¨è¯†æ¯ä¸€è¾†è½¦ã€‚
 
-        // ÉèÖÃ³µÁ¾µ½´ïÊ±¼ä£ºÖğ³µÍÆ³Ù²¢¼ÓËæ»úÈÅ¶¯£¬±ÜÃâ¼¯ÖĞÉú³É
+        // è®¾ç½®è½¦è¾†åˆ°è¾¾æ—¶é—´ï¼šé€è½¦æ¨è¿Ÿå¹¶åŠ éšæœºæ‰°åŠ¨ï¼Œé¿å…é›†ä¸­ç”Ÿæˆ
         task.spawnTime = rand() % 10 + i * 3;
 
         int tileX, tileY;
         int tile_initX, tile_initY;
         int tile_endX, tile_endY;
-        // Ëæ»úÑ¡ÔñÎ´Õ¼ÓÃµÄÍßÆ¬£¬±Ü¿ªµØÍ¼±ßÔµ2¸ñ
-        //³õÊ¼Î»ÖÃºÍ×îÖÕÎ»ÖÃ¶¼ÊÇÔÚµØÍ¼±ßÔµ
+        // éšæœºé€‰æ‹©æœªå ç”¨çš„ç“¦ç‰‡ï¼Œé¿å¼€åœ°å›¾è¾¹ç¼˜2æ ¼
+        //åˆå§‹ä½ç½®å’Œæœ€ç»ˆä½ç½®éƒ½æ˜¯åœ¨åœ°å›¾è¾¹ç¼˜
         do {
             tileX = rand() % (mapTilesX - 4) + 2;
             tileY = rand() % (mapTilesY - 4) + 2;
 
-            // ÆğµãÉú³ÉÂß¼­
+            // èµ·ç‚¹ç”Ÿæˆé€»è¾‘
             tile_initX = rand() % mapTilesX;
             tile_initY = rand() % mapTilesY;
 
-            int a = rand() % 2; // Ñ¡ÔñÊÇ¿¿ X ±ß½ç »¹ÊÇ Y ±ß½ç
+            int a = rand() % 2; // é€‰æ‹©æ˜¯é  X è¾¹ç•Œ è¿˜æ˜¯ Y è¾¹ç•Œ
 
-            tile_initX = a ? (rand() % 2) * (mapTilesX - 1) : tile_initX; // X=0 »ò X=max
-            tile_initY = a ? tile_initY : (rand() % 2) * (mapTilesY - 1); // Y=0 »ò Y=max
+            tile_initX = a ? (rand() % 2) * (mapTilesX - 1) : tile_initX; // X=0 æˆ– X=max
+            tile_initY = a ? tile_initY : (rand() % 2) * (mapTilesY - 1); // Y=0 æˆ– Y=max
 
-            // ÖÕµãÉú³ÉÂß¼­
+            // ç»ˆç‚¹ç”Ÿæˆé€»è¾‘
             tile_endX = rand() % mapTilesX;
             tile_endY = rand() % mapTilesY;
 
-            int b = rand() % 2; // Ñ¡ÔñÊÇ¿¿ X ±ß½ç »¹ÊÇ Y ±ß½ç
+            int b = rand() % 2; // é€‰æ‹©æ˜¯é  X è¾¹ç•Œ è¿˜æ˜¯ Y è¾¹ç•Œ
 
             tile_endX = b ? (rand() % 2) * (mapTilesX - 1) : tile_endX;
             tile_endY = b ? tile_endY : (rand() % 2) * (mapTilesY - 1);
 
-        } while (occupiedTiles.count({ tileX, tileY }) && occupiedTiles.count({ tile_initX, tile_initY }) && occupiedTiles.count({ tile_endX, tile_endY }));  // È·±£²»ÖØ¸´
+        } while (occupiedTiles.count({ tileX, tileY }) && occupiedTiles.count({ tile_initX, tile_initY }) && occupiedTiles.count({ tile_endX, tile_endY }));  // ç¡®ä¿ä¸é‡å¤
 
-        occupiedTiles.insert({ tileX, tileY });  // ¼ÇÂ¼ÕâĞ©ÍßÆ¬ÒÑ±»Ê¹ÓÃ
+        occupiedTiles.insert({ tileX, tileY });  // è®°å½•è¿™äº›ç“¦ç‰‡å·²è¢«ä½¿ç”¨
         occupiedTiles.insert({ tile_initX, tile_initY });
         occupiedTiles.insert({ tile_endX, tile_endY });
 
-        // ÉèÖÃ³µÁ¾µÄÊµ¼ÊÎ»ÖÃ¡¢³õÊ¼Î»ÖÃºÍÀë¿ªÎ»ÖÃ£¨×ª»»ÎªÏñËØ×ø±ê£¬¾ÓÖĞÓÚÍßÆ¬£©
+        // è®¾ç½®è½¦è¾†çš„å®é™…ä½ç½®ã€åˆå§‹ä½ç½®å’Œç¦»å¼€ä½ç½®ï¼ˆè½¬æ¢ä¸ºåƒç´ åæ ‡ï¼Œå±…ä¸­äºç“¦ç‰‡ï¼‰
         task.position = {
             static_cast<double>(tileX * TILE_SIZE + TILE_SIZE / 2),
             static_cast<double>(tileY * TILE_SIZE + TILE_SIZE / 2)
@@ -82,26 +82,26 @@ void VehicleSpawner::LoadScenario(int level)
             static_cast<double>(tile_endY * TILE_SIZE + TILE_SIZE / 2)
         };
 
-        // ³õÊ¼µçÁ¿Îª 20%~59%
+        // åˆå§‹ç”µé‡ä¸º 20%~59%
         task.initialElectricity = rand() % 40 + 20;
 
-        // Àë¿ªÊ±ÒªÇóµÄµçÁ¿Îª 80%~100%
+        // ç¦»å¼€æ—¶è¦æ±‚çš„ç”µé‡ä¸º 80%~100%
         task.requiredElectricity = 80 + rand() % 21;
 
-        // Àë¿ªÊ±¼äÎªµ½´ïÊ±¼äºó 60~120 Ãë
+        // ç¦»å¼€æ—¶é—´ä¸ºåˆ°è¾¾æ—¶é—´å 60~120 ç§’
         task.leaveTime = task.spawnTime + 60 + rand() % 61;
 
-        tasks.push_back(task);  // ¼ÓÈëÈÎÎñÁĞ±í
+        tasks.push_back(task);  // åŠ å…¥ä»»åŠ¡åˆ—è¡¨
     }
 }
 
-// ÔÚÃ¿Ò»Ö¡¸üĞÂÊ±µ÷ÓÃ£¬´¦Àí³µÁ¾µ½´ïÓëÉÏÏß
-// ÕâÀïÊ¹ÓÃÁËËÄ¸ö¶ÓÁĞ£¬ÔÚVehicleSpawner.hÎÄ¼şÀïÓĞËµÃ÷¡£»òĞíÎÒ¸ÃĞ´¸ö#pragma region£¿ÏÈÕâÑù°É¡£
+// åœ¨æ¯ä¸€å¸§æ›´æ–°æ—¶è°ƒç”¨ï¼Œå¤„ç†è½¦è¾†åˆ°è¾¾ä¸ä¸Šçº¿
+// è¿™é‡Œä½¿ç”¨äº†å››ä¸ªé˜Ÿåˆ—ï¼Œåœ¨VehicleSpawner.hæ–‡ä»¶é‡Œæœ‰è¯´æ˜ã€‚æˆ–è®¸æˆ‘è¯¥å†™ä¸ª#pragma regionï¼Ÿå…ˆè¿™æ ·å§ã€‚
 void VehicleSpawner::OnUpdate(double delta)
 {
-    elapsedTime += delta;  // ÀÛ¼Ó·ÂÕæÊ±¼ä
+    elapsedTime += delta;  // ç´¯åŠ ä»¿çœŸæ—¶é—´
 
-    // °Ñ¡°µ½´ïÊ±¼äÒÑµ½¡±µÄÈÎÎñ±ä³É´ıÉÏÏß³µÁ¾
+    // æŠŠâ€œåˆ°è¾¾æ—¶é—´å·²åˆ°â€çš„ä»»åŠ¡å˜æˆå¾…ä¸Šçº¿è½¦è¾†
     while (nextIndex < tasks.size() && tasks[nextIndex].spawnTime <= elapsedTime) {
         const auto& t = tasks[nextIndex];
 
@@ -110,55 +110,70 @@ void VehicleSpawner::OnUpdate(double delta)
         v->SetElectricity(t.initialElectricity);
         v->SetTargetElectricity(t.requiredElectricity);
         v->SetLeaveTime(t.leaveTime);
-        v->VehicleNo = t.VehicleTaskNo;//½«taskºÍvehicle¶ÔÏóÒ»Ò»¶ÔÓ¦¡££¨ÂŞ×ÓµÄÉñÖ®Ò»ÊÖ£©
+        v->VehicleNo = t.VehicleTaskNo;//å°†taskå’Œvehicleå¯¹è±¡ä¸€ä¸€å¯¹åº”ã€‚ï¼ˆç½—å­çš„ç¥ä¹‹ä¸€æ‰‹ï¼‰
 
         Vector2 initDirection;
         initDirection.x = (t.position.x - t.position_spawn.x);
-        initDirection.y = (t.position.y - t.position_spawn.y);//ÉèÖÃÈë³¡Ê±·½Ïò¡£
+        initDirection.y = (t.position.y - t.position_spawn.y);//è®¾ç½®å…¥åœºæ—¶æ–¹å‘ã€‚
 
         v->SetVelocity(initDirection.Normalized() * 100);
 
-        v->isOnline = false;     // ¸Õµ½´ï£¬»¹Î´ÕıÊ½½øÈëµ÷¶È
+        v->isOnline = false;     // åˆšåˆ°è¾¾ï¼Œè¿˜æœªæ­£å¼è¿›å…¥è°ƒåº¦
         v->arriveTime = t.spawnTime;
 
-        pendingQueue.push(v);    // ·ÅÈëµÈ´ıÉÏÏß¶ÓÁĞ
+        pendingQueue.push(v);    // æ”¾å…¥ç­‰å¾…ä¸Šçº¿é˜Ÿåˆ—
         ++nextIndex;
     }
-    // ¼ì²é pendingQueue ÖĞÄÄĞ©³µ¿ÉÒÔÕıÊ½ÉÏÏß
+    // æ£€æŸ¥ pendingQueue ä¸­å“ªäº›è½¦å¯ä»¥æ­£å¼ä¸Šçº¿
     size_t pendingqueueSize = pendingQueue.size();
     if (pendingqueueSize) for (size_t i = 0; i < pendingqueueSize; ++i) {
         Vehicle* v = pendingQueue.front();
+<<<<<<< HEAD
         v->isMoving = true;//ÉèÖÃÎªÕıÔÚÒÆ¶¯£¬·ÀÖ¹»úÆ÷ÈËÀ´³äµç¡£
+=======
+        v->isMoving = true;//è®¾ç½®ä¸ºæ­£åœ¨ç§»åŠ¨ï¼Œé˜²æ­¢æœºå™¨äººæ¥å……ç”µã€‚
+>>>>>>> 1347a92 (å°†è§„æ¨¡åšäº†UIç•Œé¢ï¼ˆä½†æ˜¯é—®é¢˜æ˜¯å¦‚æœä»levelAåˆ‡æ¢åˆ°LevelBçš„æ—¶å€™ æˆ‘è§‰å¾—å·²ç»å†™å¥½äº†æ¸…ç©ºçš„é€»è¾‘ ä½†æ˜¯å°è¯•äº†å¾ˆä¹…éƒ½è¿˜æ˜¯æ¸…ç©ºä¸äº† å¦‚æœä¸€å¼€å§‹é€‰å¥½levelå°±æ²¡æœ‰ä»€ä¹ˆé—®é¢˜ï¼‰)
         pendingQueue.pop();
         if (v->arriveTime <= elapsedTime) {
-            // µ½´ïÊ±¼äÂú×ã ¡ú ¼ÓÈëµ÷¶ÈÏµÍ³
+            // åˆ°è¾¾æ—¶é—´æ»¡è¶³ â†’ åŠ å…¥è°ƒåº¦ç³»ç»Ÿ
             v->isOnline = true;
             //v->ChangeState("Charged");
             ChargeableManager::Instance()->AddChargeable(v);
 
             printf("[ARRIVE] Vehicle at (%.0f, %.0f), elec=%.0f%%, needs=%.0f%%, leave=%.0fs\n",
                 v->GetPosition().x, v->GetPosition().y,
-                v->GetElectricity(),    // Ê¹ÓÃ %.0f ¸ñÊ½»¯ÎªÎŞĞ¡ÊıÎ»µÄdouble
+                v->GetElectricity(),    // ä½¿ç”¨ %.0f æ ¼å¼åŒ–ä¸ºæ— å°æ•°ä½çš„double
                 v->GetTargetElectricity(),
                 v->GetLeaveTime());
+<<<<<<< HEAD
             comingQueue.push(v);//¼ÓÈëÕıÔÚÀ´µÄ³µÁ¾¶ÓÁĞ
         }
         else pendingQueue.push(v);//Èç¹û²»Âú×ã£¬ÔòÔÙ´Ó¶ÓÎ²¼ÓÈë¶ÓÁĞ
+=======
+            comingQueue.push(v);//åŠ å…¥æ­£åœ¨æ¥çš„è½¦è¾†é˜Ÿåˆ—
+        }
+        else pendingQueue.push(v);//å¦‚æœä¸æ»¡è¶³ï¼Œåˆ™å†ä»é˜Ÿå°¾åŠ å…¥é˜Ÿåˆ—
+>>>>>>> 1347a92 (å°†è§„æ¨¡åšäº†UIç•Œé¢ï¼ˆä½†æ˜¯é—®é¢˜æ˜¯å¦‚æœä»levelAåˆ‡æ¢åˆ°LevelBçš„æ—¶å€™ æˆ‘è§‰å¾—å·²ç»å†™å¥½äº†æ¸…ç©ºçš„é€»è¾‘ ä½†æ˜¯å°è¯•äº†å¾ˆä¹…éƒ½è¿˜æ˜¯æ¸…ç©ºä¸äº† å¦‚æœä¸€å¼€å§‹é€‰å¥½levelå°±æ²¡æœ‰ä»€ä¹ˆé—®é¢˜ï¼‰)
     }
     size_t comingQueueSize = comingQueue.size();
     if (comingQueueSize) for (size_t i = 0; i < comingQueueSize; ++i) {
         Vehicle* v = comingQueue.front();
         comingQueue.pop();
+<<<<<<< HEAD
         //std::cout << "comingQueueSize£º" << comingQueueSize << std::endl;
         v->IsTouchingMapBorder = false;//·ÀÖ¹Éú³É³µÁ¾Ê±µÄÎóÅĞ
+=======
+        //std::cout << "comingQueueSizeï¼š" << comingQueueSize << std::endl;
+        v->IsTouchingMapBorder = false;//é˜²æ­¢ç”Ÿæˆè½¦è¾†æ—¶çš„è¯¯åˆ¤
+>>>>>>> 1347a92 (å°†è§„æ¨¡åšäº†UIç•Œé¢ï¼ˆä½†æ˜¯é—®é¢˜æ˜¯å¦‚æœä»levelAåˆ‡æ¢åˆ°LevelBçš„æ—¶å€™ æˆ‘è§‰å¾—å·²ç»å†™å¥½äº†æ¸…ç©ºçš„é€»è¾‘ ä½†æ˜¯å°è¯•äº†å¾ˆä¹…éƒ½è¿˜æ˜¯æ¸…ç©ºä¸äº† å¦‚æœä¸€å¼€å§‹é€‰å¥½levelå°±æ²¡æœ‰ä»€ä¹ˆé—®é¢˜ï¼‰)
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
             if (tasks[index].VehicleTaskNo == v->VehicleNo)
-                break;//µ±indexÊ¹µÃtaskºÍvehicle¶ÔÓ¦µÄÊ±ºòÌø³ö¡£
+                break;//å½“indexä½¿å¾—taskå’Œvehicleå¯¹åº”çš„æ—¶å€™è·³å‡ºã€‚
         }
         //std::cout << "v->GetPosition().x" << v->GetPosition().x << std::endl << "tasks[index].position.x" << tasks[index].position.x << std::endl;
-        if ((int)v->GetPosition().x == (int)tasks[index].position.x || (int)v->GetPosition().y == (int)tasks[index].position.y) {//ÅĞ¶ÏÊÇ²»ÊÇµ½ÁËÄ¿±êÎ»ÖÃ£¬ÕâÀï¿ÉÒÔ¸üÍêÉÆ£¬µ«ÏÖÔÚÏÈÍµ¸öÀÁ£¨
+        if ((int)v->GetPosition().x == (int)tasks[index].position.x || (int)v->GetPosition().y == (int)tasks[index].position.y) {//åˆ¤æ–­æ˜¯ä¸æ˜¯åˆ°äº†ç›®æ ‡ä½ç½®ï¼Œè¿™é‡Œå¯ä»¥æ›´å®Œå–„ï¼Œä½†ç°åœ¨å…ˆå·ä¸ªæ‡’ï¼ˆ
             v->SetVelocity({ 0,0 });
             workingQueue.push(v);
         }
@@ -167,22 +182,34 @@ void VehicleSpawner::OnUpdate(double delta)
     size_t workingQueueSize = workingQueue.size();
     if (workingQueueSize) for (size_t i = 0; i < workingQueueSize; ++i) {
         Vehicle* v = workingQueue.front();
+<<<<<<< HEAD
         v->isMoving = false;//ÉèÖÃÎª²»ÔÚÒÆ¶¯ÖĞ£¬ÈÃ»úÆ÷ÈËÀ´³äµç¡£
         workingQueue.pop();
         //std::cout << "workingQueueSize£º" << workingQueueSize << std::endl;
+=======
+        v->isMoving = false;//è®¾ç½®ä¸ºä¸åœ¨ç§»åŠ¨ä¸­ï¼Œè®©æœºå™¨äººæ¥å……ç”µã€‚
+        workingQueue.pop();
+        //std::cout << "workingQueueSizeï¼š" << workingQueueSize << std::endl;
+>>>>>>> 1347a92 (å°†è§„æ¨¡åšäº†UIç•Œé¢ï¼ˆä½†æ˜¯é—®é¢˜æ˜¯å¦‚æœä»levelAåˆ‡æ¢åˆ°LevelBçš„æ—¶å€™ æˆ‘è§‰å¾—å·²ç»å†™å¥½äº†æ¸…ç©ºçš„é€»è¾‘ ä½†æ˜¯å°è¯•äº†å¾ˆä¹…éƒ½è¿˜æ˜¯æ¸…ç©ºä¸äº† å¦‚æœä¸€å¼€å§‹é€‰å¥½levelå°±æ²¡æœ‰ä»€ä¹ˆé—®é¢˜ï¼‰)
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
             if (tasks[index].VehicleTaskNo == v->VehicleNo)
-                break;//µ±indexÊ¹µÃtaskºÍvehicle¶ÔÓ¦µÄÊ±ºòÌø³ö¡£
+                break;//å½“indexä½¿å¾—taskå’Œvehicleå¯¹åº”çš„æ—¶å€™è·³å‡ºã€‚
         }
-        if (!v->NeedElectricity() || tasks[index].leaveTime <= elapsedTime) {//µ±µ½´ïµçÁ¿ĞèÇó»òÕßÀë¿ªÊ±¼äÊ±½øÈëÀë¿ª¶ÓÁĞ¡£
+        if (!v->NeedElectricity() || tasks[index].leaveTime <= elapsedTime) {//å½“åˆ°è¾¾ç”µé‡éœ€æ±‚æˆ–è€…ç¦»å¼€æ—¶é—´æ—¶è¿›å…¥ç¦»å¼€é˜Ÿåˆ—ã€‚
             Vector2 endDirection = { 0 , 0 };
             endDirection.x = (tasks[index].position_leave.x - tasks[index].position.x);
             endDirection.y = (tasks[index].position_leave.y - tasks[index].position.y);
+<<<<<<< HEAD
             //ÉÏÃæÊÇÉèÖÃÀë¿ªÊ±·½Ïò¡£
             v->SetVelocity(endDirection.Normalized() * 100);//ÏòÀë¿ªµÄÎ»ÖÃ±¼È¥
             std::cout << "going for the night." << std::endl;
+=======
+            //ä¸Šé¢æ˜¯è®¾ç½®ç¦»å¼€æ—¶æ–¹å‘ã€‚
+            v->SetVelocity(endDirection.Normalized() * 100);//å‘ç¦»å¼€çš„ä½ç½®å¥”å»
+            std::cout << "å‘å¤œæ™šå¥”å»" << std::endl;
+>>>>>>> 1347a92 (å°†è§„æ¨¡åšäº†UIç•Œé¢ï¼ˆä½†æ˜¯é—®é¢˜æ˜¯å¦‚æœä»levelAåˆ‡æ¢åˆ°LevelBçš„æ—¶å€™ æˆ‘è§‰å¾—å·²ç»å†™å¥½äº†æ¸…ç©ºçš„é€»è¾‘ ä½†æ˜¯å°è¯•äº†å¾ˆä¹…éƒ½è¿˜æ˜¯æ¸…ç©ºä¸äº† å¦‚æœä¸€å¼€å§‹é€‰å¥½levelå°±æ²¡æœ‰ä»€ä¹ˆé—®é¢˜ï¼‰)
 
             leavingQueue.push(v);
         }
@@ -192,19 +219,56 @@ void VehicleSpawner::OnUpdate(double delta)
     if (leavingQueueSize) for (size_t i = 0; i < leavingQueueSize; ++i) {
         std::cout << "leavingQueueSize:" << leavingQueueSize << std::endl;
         Vehicle* v = leavingQueue.front();
+<<<<<<< HEAD
         v->isMoving = true;//ÉèÖÃÎªÕıÔÚÒÆ¶¯£¬·ÀÖ¹Ç±ÔÚÎÊÌâ¡£
+=======
+        v->isMoving = true;//è®¾ç½®ä¸ºæ­£åœ¨ç§»åŠ¨ï¼Œé˜²æ­¢æ½œåœ¨é—®é¢˜ã€‚
+>>>>>>> 1347a92 (å°†è§„æ¨¡åšäº†UIç•Œé¢ï¼ˆä½†æ˜¯é—®é¢˜æ˜¯å¦‚æœä»levelAåˆ‡æ¢åˆ°LevelBçš„æ—¶å€™ æˆ‘è§‰å¾—å·²ç»å†™å¥½äº†æ¸…ç©ºçš„é€»è¾‘ ä½†æ˜¯å°è¯•äº†å¾ˆä¹…éƒ½è¿˜æ˜¯æ¸…ç©ºä¸äº† å¦‚æœä¸€å¼€å§‹é€‰å¥½levelå°±æ²¡æœ‰ä»€ä¹ˆé—®é¢˜ï¼‰)
         leavingQueue.pop();
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
             if (tasks[index].VehicleTaskNo == v->VehicleNo)
-                break;//µ±indexÊ¹µÃtaskºÍvehicle¶ÔÓ¦µÄÊ±ºòÌø³ö¡£
+                break;//å½“indexä½¿å¾—taskå’Œvehicleå¯¹åº”çš„æ—¶å€™è·³å‡ºã€‚
         }
+<<<<<<< HEAD
         //std::cout << "´¥¼°±ß½ç£¿" << v->IsTouchingMapBorder << std::endl;
         if (v->IsTouchingMapBorder == true) {
             v->Invalidate();//ÉèÖÃÎªinvalid£¬µÈ´ımanagerÇå³ı¡£
             std::cout << "Invalidated vehicle:" << v->VehicleNo << std::endl;
+=======
+        //std::cout << "è§¦åŠè¾¹ç•Œï¼Ÿ" << v->IsTouchingMapBorder << std::endl;
+        if (v->IsTouchingMapBorder == true) {
+            v->Invalidate();//è®¾ç½®ä¸ºinvalidï¼Œç­‰å¾…manageræ¸…é™¤ã€‚
+>>>>>>> 1347a92 (å°†è§„æ¨¡åšäº†UIç•Œé¢ï¼ˆä½†æ˜¯é—®é¢˜æ˜¯å¦‚æœä»levelAåˆ‡æ¢åˆ°LevelBçš„æ—¶å€™ æˆ‘è§‰å¾—å·²ç»å†™å¥½äº†æ¸…ç©ºçš„é€»è¾‘ ä½†æ˜¯å°è¯•äº†å¾ˆä¹…éƒ½è¿˜æ˜¯æ¸…ç©ºä¸äº† å¦‚æœä¸€å¼€å§‹é€‰å¥½levelå°±æ²¡æœ‰ä»€ä¹ˆé—®é¢˜ï¼‰)
         }
         else leavingQueue.push(v);
     }
+    }
+    void VehicleSpawner::ClearAllVehicles()
+    {
+        tasks.clear();
+        nextIndex = 0;
+        elapsedTime = 0;
+        totalSpawned = 0;
+        totalLeft = 0;
+
+        while (!pendingQueue.empty()) {
+            delete pendingQueue.front();
+            pendingQueue.pop();
+        }
+        while (!comingQueue.empty()) {
+            delete comingQueue.front();
+            comingQueue.pop();
+        }
+        while (!workingQueue.empty()) {
+            delete workingQueue.front();
+            workingQueue.pop();
+        }
+        while (!leavingQueue.empty()) {
+            delete leavingQueue.front();
+            leavingQueue.pop();
+        }
+
+        Manager<ChargeableManager>::Instance()->ClearAll(); 
 }

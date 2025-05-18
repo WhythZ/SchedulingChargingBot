@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include "../../Chargeable/Concrete/Vehicle.h"
+#include "../../Manager/Manager.hpp"
 
 // 表示每辆车生成时的配置数据
 struct VehicleSpawnTask {
@@ -17,7 +18,8 @@ struct VehicleSpawnTask {
     int VehicleTaskNo;            // 每辆车唯一标识符
 };
 
-class VehicleSpawner {
+class VehicleSpawner : public Manager<VehicleSpawner> {
+    friend class Manager<VehicleSpawner>;
 private:
     std::vector<VehicleSpawnTask> tasks;  // 所有车辆生成配置任务
     std::queue<Vehicle*> pendingQueue;    // 尚未上线的车辆队列
@@ -27,9 +29,15 @@ private:
 
     size_t nextIndex = 0;                 // 下一个 spawn 任务索引
     double elapsedTime = 0;               // 累计运行时间
+    int totalSpawned = 0;                 //总共生成的车辆数
+    int totalLeft = 0;                    //离开的车辆数目
 public:
     void LoadScenario(int level);         // 加载不同规模
     void OnUpdate(double delta);          // 每帧更新生成/上线逻辑
+    void ClearAllVehicles();              //方便在切换模式的时候清空
+
+    int GetTotalSpawned() const { return totalSpawned; }
+    int GetTotalLeft() const { return totalLeft; }
 };
 
 #endif

@@ -48,6 +48,7 @@ public:
 	StrategyType GetRobotStrategyType() const;           //获取当前的机器人策略类型枚举
 	void AddChargeable(Chargeable* c);
 
+	void ClearAll();		//清空
 private:
 	ChargeableManager() = default;
 	~ChargeableManager();
