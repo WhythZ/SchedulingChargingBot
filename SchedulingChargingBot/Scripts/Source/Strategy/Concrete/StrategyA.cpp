@@ -40,7 +40,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
     
     if (!robot || robot->IsBusy()) return;
 
-    ChargeableManager* cm = ChargeableManager::Instance();
+    static ChargeableManager* cm = ChargeableManager::Instance();
     const auto& vehicles = cm -> GetVehicleList();
 
     Vehicle* bT = nullptr;                  //bestTargeted临时存放变量
