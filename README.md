@@ -11,6 +11,3 @@ There are autonomous charging robots of particular quantity in the industrial pa
 - The more charge a robot/battery/vehicle has, the slower the speed being charged
 
 The goal is to arrange these robots in maximized utilization, multiple problem scales and scheduling strategies should be simulated
-
-## Solution
-- Working...
