@@ -70,10 +70,23 @@ void Chargeable::OnUpdate(double _delta)
 
 	//·ÀÖ¹ÅÜ³öµØÍ¼±ß½ç
 	static SDL_Rect _mapRect = _sm->mapRect;
-	if (position.x - size.x / 2 <= _mapRect.x) position.x = _mapRect.x + size.x/2;
-	if (position.x + size.x / 2 >= _mapRect.x + _mapRect.w) position.x = _mapRect.x + _mapRect.w - size.x/2;
-	if (position.y - size.y / 2 <= _mapRect.y) position.y = _mapRect.y + size.y/2;
-	if (position.y + size.x / 2 >= _mapRect.y + _mapRect.h) position.y = _mapRect.y + _mapRect.h -size.y/2;
+
+	if (position.x - size.x / 2 <= _mapRect.x) {
+		position.x = _mapRect.x + size.x / 2;
+		IsTouchingMapBorder = true;
+	}
+	if (position.x + size.x / 2 >= _mapRect.x + _mapRect.w) {
+		position.x = _mapRect.x + _mapRect.w - size.x / 2;
+		IsTouchingMapBorder = true;
+	}
+	if (position.y - size.y / 2 <= _mapRect.y) {
+		position.y = _mapRect.y + size.y / 2;
+		IsTouchingMapBorder = true;
+	}
+	if (position.y + size.x / 2 >= _mapRect.y + _mapRect.h) {
+		position.y = _mapRect.y + _mapRect.h - size.y / 2;
+		IsTouchingMapBorder = true;
+	}
 	#pragma endregion
 }
 
@@ -144,6 +157,11 @@ bool Chargeable::HasElectricity() const
 bool Chargeable::NeedElectricity() const
 {
 	return currentElectricity < 100;
+}
+
+bool Chargeable::rtisMoving() const
+{
+	return isMoving;
 }
 
 double Chargeable::GetCurrentElectricity() const

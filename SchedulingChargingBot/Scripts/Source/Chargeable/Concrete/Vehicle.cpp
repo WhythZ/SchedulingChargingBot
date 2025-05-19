@@ -1,7 +1,7 @@
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
-
+#include<iostream>
 Vehicle::Vehicle()
 {
     #pragma region SetAnimation
@@ -31,6 +31,7 @@ void Vehicle::OnUpdate(double _delta)
     chargedRect.w = TILE_SIZE * 3;
     chargedRect.h = TILE_SIZE * 3;
     #pragma endregion
+//    std::cout << this->GetCurrentElectricity()<<std::endl;
 }
 
 void Vehicle::ChangeState(std::string _stateName)
@@ -74,4 +75,9 @@ void Vehicle::SetLeaveTime(double t)
 double Vehicle::GetLeaveTime() const
 {
     return leaveTime;
+}
+
+bool Vehicle::NeedElectricity() const
+{
+    return currentElectricity < targetElectricity;
 }

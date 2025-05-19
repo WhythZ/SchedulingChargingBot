@@ -71,7 +71,7 @@ GameManager::~GameManager()
 int GameManager::Run(int _argc, char** _argv)
 {
 	//设置规模
-	vehicleSpawner.LoadScenario(0);  // 可设置为 0=小，1=中，2=大
+	//vehicleSpawner.LoadScenario(0);  // 可设置为 0=小，1=中，2=大
 
 	#pragma region LimitFPS
 	//此函数获取一个高性能（精度较高）计时器，函数返回的值（计时器跳的总数）作为计时器的起点，通过作差后除以频率才有意义
@@ -147,7 +147,7 @@ void GameManager::OnInput()
 
 void GameManager::OnUpdate(double _delta)
 {
-	vehicleSpawner.OnUpdate(_delta); 
+	Manager<VehicleSpawner>::Instance()->OnUpdate(_delta);
 
 	//更新各管理器数据
 	SceneManager::Instance()->OnUpdate(_delta);

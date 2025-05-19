@@ -15,6 +15,7 @@ public:
 
     bool isOnline = false;                         // 是否正式“上线”并可调度
     double arriveTime = 0;                         // 车辆到达园区时间（秒）
+    int VehicleNo;                                 // 车辆编号。
 
 public:
     Vehicle();
@@ -40,6 +41,8 @@ public:
     //离开时间接口
     void SetLeaveTime(double);
     double GetLeaveTime() const;
+
+    bool NeedElectricity() const override;
 
 private:
     double targetElectricity = 100.0;              //离开前期望电量
