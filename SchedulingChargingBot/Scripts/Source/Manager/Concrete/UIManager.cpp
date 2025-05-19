@@ -8,8 +8,8 @@ UIManager::UIManager()
 	rimUI = new RimUI();
 	cursorUI = new CursorUI();
 	statusUI = new StatusUI();
-	buttonUI = new ButtonUI();
-	spawnLevelUI = new SpawnLevelUI();
+	strategyButtonUI = new StrategyButtonUI();
+	levelButtonUI = new LevelButtonUI();
 }
 
 UIManager::~UIManager()
@@ -17,8 +17,8 @@ UIManager::~UIManager()
 	delete rimUI;
 	delete cursorUI;
 	delete statusUI;
-	delete buttonUI;
-	delete spawnLevelUI;
+	delete strategyButtonUI;
+	delete levelButtonUI;
 }
 
 void UIManager::OnInput(const SDL_Event& _event)
@@ -38,16 +38,16 @@ void UIManager::OnInput(const SDL_Event& _event)
 	#pragma endregion
 
 	cursorUI->OnInput(_event);
-	buttonUI->OnInput(_event);
-	spawnLevelUI->OnInput(_event);
+	strategyButtonUI->OnInput(_event);
+	levelButtonUI->OnInput(_event);
 }
 
 void UIManager::OnUpdate(SDL_Renderer* _renderer)
 {
 	cursorUI->OnUpdate(_renderer);
 	statusUI->OnUpdate(_renderer);
-	buttonUI->OnUpdate(_renderer);
-	spawnLevelUI->OnUpdate(_renderer);
+	strategyButtonUI->OnUpdate(_renderer);
+	levelButtonUI->OnUpdate(_renderer);
 }
 
 void UIManager::OnRender(SDL_Renderer* _renderer)
@@ -55,8 +55,8 @@ void UIManager::OnRender(SDL_Renderer* _renderer)
 	rimUI->OnRender(_renderer);
 	cursorUI->OnRender(_renderer);
 	statusUI->OnRender(_renderer);
-	buttonUI->OnRender(_renderer);
-	spawnLevelUI->OnRender(_renderer);
+	strategyButtonUI->OnRender(_renderer);
+	levelButtonUI->OnRender(_renderer);
 }
 
 void UIManager::DrawTexture(SDL_Renderer* _renderer, SDL_Texture* _texture, const SDL_Point& _LeftUpPosition, const SDL_Point& _size)

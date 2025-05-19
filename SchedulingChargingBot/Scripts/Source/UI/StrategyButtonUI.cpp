@@ -1,4 +1,4 @@
-#include "../../Header/UI/ButtonUI.h"
+#include "../../Header/UI/StrategyButtonUI.h"
 #include <string>
 #include <SDL_ttf.h>
 #include "../../Header/Manager/Concrete/ResourceManager.h"
@@ -6,22 +6,22 @@
 #include "../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../Header/Manager/Concrete/SceneManager.h"
 
-ButtonUI::ButtonUI()
+StrategyButtonUI::StrategyButtonUI()
 {
 	//地图Rect
 	SDL_Rect _mapRect = SceneManager::Instance()->mapRect;
 
-	//把按钮放在屏幕中下方
+	//把按钮放在屏幕下方的左侧
 	buttonRect =
 	{
-		_mapRect.w / 2 - buttonSize.x / 2,
+		_mapRect.w / 2 - buttonSize.x / 2 - 3 * TILE_SIZE,
 		_mapRect.h - buttonSize.y,
 		buttonSize.x,
 		buttonSize.y
 	};
 }
 
-void ButtonUI::OnInput(const SDL_Event& _event)
+void StrategyButtonUI::OnInput(const SDL_Event& _event)
 {
 	static ChargeableManager* _cm = ChargeableManager::Instance();
 	static UIManager* _ui = UIManager::Instance();
@@ -57,7 +57,7 @@ void ButtonUI::OnInput(const SDL_Event& _event)
 	}
 }
 
-void ButtonUI::OnUpdate(SDL_Renderer* _renderer)
+void StrategyButtonUI::OnUpdate(SDL_Renderer* _renderer)
 {
 	#pragma region Clear
 	//由于每帧OnUpdate函数都会生成一张文本的纹理，故先清除掉上一帧的遗留垃圾
@@ -98,7 +98,7 @@ void ButtonUI::OnUpdate(SDL_Renderer* _renderer)
 	//更新按钮的Rect
 }
 
-void ButtonUI::OnRender(SDL_Renderer* _renderer)
+void StrategyButtonUI::OnRender(SDL_Renderer* _renderer)
 {
 	//引入纹理渲染相关方法
 	static UIManager* _ui = UIManager::Instance();

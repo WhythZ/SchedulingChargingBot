@@ -8,6 +8,8 @@
 #include "../Infrastructure/Animation.h"
 #include "../Tilemap/Tile.h"
 
+
+
 //带电基类，派生机器人、汽车
 class Chargeable
 {
@@ -23,11 +25,11 @@ protected:
 
 	Vector2 position;                                   //中心位置
 	Vector2 velocity;                                   //速度向量
-	double speed = 0;                                   //速率大小，单位为"瓦片/单位时间"
+	double speed = 250;                                 //速率大小，单位为"瓦片/单位时间"
 	SDL_Point size = { TILE_SIZE,TILE_SIZE };           //纹理图尺寸
 
 	#pragma region Electricity
-	double currentElectricity = 0.0;                      //当前电量[0,100]
+	double currentElectricity = 0.0;                    //当前电量[0,100]
 	
 	double chargedCooldown = 0.05;                      //每次（被动）充电的冷却间隔时间
 	Timer chargedTimer;                                 //实施（被动）充电间隔
@@ -71,8 +73,8 @@ public:
 	virtual bool NeedElectricity() const;				//多态，vehicle类需要灵活调整目标电量
 	double GetCurrentElectricity() const;
 	double GetSpeed() const;
-	//检测是否在区域内
-	bool IsInRectArea(const SDL_Rect&) const;
+
+	bool IsInRectArea(const SDL_Rect&) const;           //检测是否在区域内
 	bool IsInRectsArea(const std::map<size_t, SDL_Rect>&) const;
 
 protected:

@@ -1,14 +1,14 @@
-#ifndef _BUTTON_UI_H_
-#define _BUTTON_UI_H_
+#ifndef _STRATEGY_BUTTON_UI_H_
+#define _STRATEGY_BUTTON_UI_H_
 
 #include <SDL.h>
 #include "../Tilemap/Tile.h"
 
-class ButtonUI
+class StrategyButtonUI
 {
 private:
 	#pragma region Color
-	SDL_Color buttonColor = { 255,255,255,255 };
+	SDL_Color buttonColor = { 200,255,200,255 };
 	SDL_Color textColor = { 0,0,0,0 };
 	#pragma endregion
 
@@ -24,8 +24,8 @@ private:
 	SDL_Rect buttonRect;
 
 public:
-	ButtonUI();
-	~ButtonUI() = default;
+	StrategyButtonUI();
+	~StrategyButtonUI() = default;
 
 	void OnInput(const SDL_Event&);
 	void OnUpdate(SDL_Renderer*);

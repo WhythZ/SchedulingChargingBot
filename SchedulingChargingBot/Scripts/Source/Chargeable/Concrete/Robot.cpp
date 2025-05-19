@@ -14,9 +14,6 @@ Robot::Robot()
 	animCharger.SetLoop(true); animCharger.SetAnimFrames(_sheet, 3, 1, { 2 });
 	#pragma endregion
 
-	//只有机器人会主动移动，故设置速率大小为正数
-	speed = 100;
-
 	//初始化当前电量为最大电量
 	currentElectricity = 100.0;
 

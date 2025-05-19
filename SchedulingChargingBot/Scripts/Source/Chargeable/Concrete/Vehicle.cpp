@@ -2,6 +2,7 @@
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include<iostream>
+
 Vehicle::Vehicle()
 {
     #pragma region SetAnimation
@@ -14,8 +15,6 @@ Vehicle::Vehicle()
     animCharger.SetLoop(true); animCharger.SetAnimFrames(_sheet, 3, 1, { 2 });
     #pragma endregion
 
-    //车辆为静态，不移动
-    speed = 0;
     //初始电量为0
     currentElectricity = 0;
 }
@@ -31,7 +30,7 @@ void Vehicle::OnUpdate(double _delta)
     chargedRect.w = TILE_SIZE * 3;
     chargedRect.h = TILE_SIZE * 3;
     #pragma endregion
-//    std::cout << this->GetCurrentElectricity()<<std::endl;
+    //std::cout << this->GetCurrentElectricity() << "\n";
 }
 
 void Vehicle::ChangeState(std::string _stateName)

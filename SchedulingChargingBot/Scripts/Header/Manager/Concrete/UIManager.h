@@ -7,8 +7,8 @@
 #include "../../UI/StatusUI.h"
 #include "../../UI/CursorUI.h"
 #include "../../UI/RimUI.h"
-#include "../../UI/ButtonUI.h"
-#include "../../UI/SpawnLevelUI.h" 
+#include "../../UI/StrategyButtonUI.h"
+#include "../../UI/LevelButtonUI.h" 
 
 class UIManager :public Manager<UIManager>
 {
@@ -23,8 +23,8 @@ private:
 	StatusUI* statusUI;
 	CursorUI* cursorUI;
 	RimUI* rimUI;
-	ButtonUI* buttonUI;
-	SpawnLevelUI* spawnLevelUI;
+	StrategyButtonUI* strategyButtonUI;
+	LevelButtonUI* levelButtonUI;
 
 public:
 	void OnInput(const SDL_Event&);

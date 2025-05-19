@@ -1,4 +1,4 @@
-#include "../../Header/UI/SpawnLevelUI.h"
+#include "../../Header/UI/LevelButtonUI.h"
 #include <string>
 #include <SDL_ttf.h>
 #include "../../Header/Manager/Concrete/ResourceManager.h"
@@ -6,11 +6,13 @@
 #include "../../Header/Manager/Concrete/SceneManager.h"
 #include "../../Header/Manager/Concrete/VehicleSpawner.h"
 
-SpawnLevelUI::SpawnLevelUI()
+LevelButtonUI::LevelButtonUI()
 {
     SDL_Rect mapRect = SceneManager::Instance()->mapRect;
-    buttonRect = {
-        mapRect.w / 2 + 5 * TILE_SIZE,   // 放在策略按钮旁边
+    buttonRect =
+    {
+        //放在策略按钮右侧
+        mapRect.w / 2 + 1 * TILE_SIZE,
         mapRect.h - buttonSize.y,
         buttonSize.x,
         buttonSize.y
@@ -18,7 +20,7 @@ SpawnLevelUI::SpawnLevelUI()
     Manager<VehicleSpawner>::Instance()->LoadScenario(spawnLevel);
 }
 
-void SpawnLevelUI::OnInput(const SDL_Event& event)
+void LevelButtonUI::OnInput(const SDL_Event& event)
 {
     static UIManager* ui = UIManager::Instance();
     SDL_Point cursorPos = ui->cursorPosition;
@@ -35,7 +37,7 @@ void SpawnLevelUI::OnInput(const SDL_Event& event)
     }
 }
 
-void SpawnLevelUI::OnUpdate(SDL_Renderer* renderer)
+void LevelButtonUI::OnUpdate(SDL_Renderer* renderer)
 {
     // 清除前一帧的纹理
     SDL_DestroyTexture(textTexture);
@@ -43,7 +45,7 @@ void SpawnLevelUI::OnUpdate(SDL_Renderer* renderer)
 
     static TTF_Font* font = ResourceManager::Instance()->GetFontPool().find(FontResID::VonwaonBitmap16)->second;
 
-    std::string textStr = "Level ";
+    std::string textStr = "Level";
     textStr += (spawnLevel == 0 ? "A" : spawnLevel == 1 ? "B" : "C");
 
     SDL_Surface* surface = TTF_RenderText_Blended(font, textStr.c_str(), textColor);
@@ -52,7 +54,7 @@ void SpawnLevelUI::OnUpdate(SDL_Renderer* renderer)
     SDL_FreeSurface(surface);
 }
 
-void SpawnLevelUI::OnRender(SDL_Renderer* renderer)
+void LevelButtonUI::OnRender(SDL_Renderer* renderer)
 {
     static UIManager* ui = UIManager::Instance();
     static double zoom = ui->textZoomRate;

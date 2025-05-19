@@ -116,7 +116,7 @@ void VehicleSpawner::OnUpdate(double delta)
         initDirection.x = (t.position.x - t.position_spawn.x);
         initDirection.y = (t.position.y - t.position_spawn.y);//设置入场时方向。
 
-        v->SetVelocity(initDirection.Normalized() * 100);
+        v->SetVelocity(initDirection.Normalized() * 250);
 
         v->isOnline = false;     // 刚到达，还未正式进入调度
         v->arriveTime = t.spawnTime;
@@ -186,10 +186,11 @@ void VehicleSpawner::OnUpdate(double delta)
         }
         if (!v->NeedElectricity() || tasks[index].leaveTime <= elapsedTime) {//当到达电量需求或者离开时间时进入离开队列。
             Vector2 endDirection = { 0 , 0 };
+            //设置离开时方向
             endDirection.x = (tasks[index].position_leave.x - tasks[index].position.x);
             endDirection.y = (tasks[index].position_leave.y - tasks[index].position.y);
-            //上面是设置离开时方向。
-            v->SetVelocity(endDirection.Normalized() * 100);//向离开的位置奔去
+            //向离开的位置奔去
+            v->SetVelocity(endDirection.Normalized() * v->GetSpeed());
             //std::cout << "向夜晚奔去" << std::endl;
             leavingQueue.push(v);
         }
