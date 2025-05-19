@@ -9,109 +9,100 @@
 #include <iostream>
 
 // 载入不同场景等级对应的车辆生成任务
-void VehicleSpawner::LoadScenario(int _level)
+void VehicleSpawner::LoadScenario(int level)
 {
-    tasks.clear();       //清空旧任务
-    nextIndex = 0;       //重置索引
-    elapsedTime = 0;     //重置仿真时间
+    tasks.clear();       // 清空旧任务
+    nextIndex = 0;       // 重置索引
+    elapsedTime = 0;     // 重置仿真时间
 
-    //清空等待队列
-    while (!pendingQueue.empty()) pendingQueue.pop();
+    while (!pendingQueue.empty()) pendingQueue.pop(); // 清空等待队列
 
-    //根据等级决定要生成的车辆数量
-    int _vehicleCount = (_level == 0) ? 5 : (_level == 1) ? 10 : 20;
+    // 根据难度等级决定要生成的车辆数量
+    int vehicleCount = (level == 0) ? 5 : (level == 1) ? 10 : 20;
 
-    //动态获取地图的瓦片数量（行列数）
-    int _mapTilesX = SceneManager::Instance()->mapRect.w / TILE_SIZE;
-    int _mapTilesY = SceneManager::Instance()->mapRect.h / TILE_SIZE;
+    // 动态获取地图的瓦片数量（行列数）
+    int mapTilesX = SceneManager::Instance()->mapRect.w / TILE_SIZE;
+    int mapTilesY = SceneManager::Instance()->mapRect.h / TILE_SIZE;
 
-    //记录已用瓦片，避免重复生成
-    std::set<std::pair<int, int>> occupiedTiles;
+    std::set<std::pair<int, int>> occupiedTiles;  // 记录已用瓦片，避免重复生成
 
-    for (int _i = 0; _i < _vehicleCount; _i++)
-    {
+    for (int i = 0; i < vehicleCount; ++i) {
         VehicleSpawnTask task;
-        //标记车辆编号，用于辨识每一辆车
-        task.VehicleTaskNo = _i;
+        task.VehicleTaskNo = i;//标记车辆编号，用于辨识每一辆车。
 
-        //设置车辆到达时间：逐车推迟并加随机扰动，避免集中生成
-        task.spawnTime = rand() % 10 + _i * 3;
+        // 设置车辆到达时间：逐车推迟并加随机扰动，避免集中生成
+        task.spawnTime = rand() % 10 + i * 3;
 
-        int _tileX, _tileY;
-        int _tileInitX, _tileInitY;
-        int _tileEndX, _tileEndY;
+        int tileX, tileY;
+        int tile_initX, tile_initY;
+        int tile_endX, tile_endY;
+        // 随机选择未占用的瓦片，避开地图边缘2格
+        // 初始位置和最终位置都是在地图边缘
+        do {
+            tileX = rand() % (mapTilesX - 8) + 4;
+            tileY = rand() % (mapTilesY - 8) + 4;
 
-        //随机选择未占用的瓦片，避开地图边缘2格；初始位置和最终位置都是在地图边缘
-        do
-        {
-            _tileX = rand() % (_mapTilesX - 4) + 2;
-            _tileY = rand() % (_mapTilesY - 4) + 2;
+            // 起点生成逻辑
+            tile_initX = rand() % mapTilesX;
+            tile_initY = rand() % mapTilesY;
 
-            //起点生成逻辑
-            _tileInitX = rand() % _mapTilesX;
-            _tileInitY = rand() % _mapTilesY;
+            int a = rand() % 2; // 选择是靠 X 边界 还是 Y 边界
 
-            //选择是靠X边界还是Y边界
-            int a = rand() % 2;
+            tile_initX = a ? (rand() % 2) * (mapTilesX - 1) : tile_initX; // X=0 或 X=max
+            tile_initY = a ? tile_initY : (rand() % 2) * (mapTilesY - 1); // Y=0 或 Y=max
 
-            _tileInitX = a ? (rand() % 2) * (_mapTilesX - 1) : _tileInitX; //X=0或X=max
-            _tileInitY = a ? _tileInitY : (rand() % 2) * (_mapTilesY - 1); //Y=0或Y=max
+            // 终点生成逻辑
+            tile_endX = rand() % mapTilesX;
+            tile_endY = rand() % mapTilesY;
 
-            //终点生成逻辑
-            _tileEndX = rand() % _mapTilesX;
-            _tileEndY = rand() % _mapTilesY;
+            int b = rand() % 2; // 选择是靠 X 边界 还是 Y 边界
 
-            //选择是靠X边界还是Y边界
-            int b = rand() % 2;
+            tile_endX = b ? (rand() % 2) * (mapTilesX - 1) : tile_endX;
+            tile_endY = b ? tile_endY : (rand() % 2) * (mapTilesY - 1);
 
-            _tileEndX = b ? (rand() % 2) * (_mapTilesX - 1) : _tileEndX;
-            _tileEndY = b ? _tileEndY : (rand() % 2) * (_mapTilesY - 1);
+        } while (occupiedTiles.count({ tileX, tileY }) && occupiedTiles.count({ tile_initX, tile_initY }) && occupiedTiles.count({ tile_endX, tile_endY }));  // 确保不重复
 
-        } while (occupiedTiles.count({ _tileX, _tileY }) && occupiedTiles.count({ _tileInitX, _tileInitY }) && occupiedTiles.count({ _tileEndX, _tileEndY }));  // 确保不重复
+        occupiedTiles.insert({ tileX, tileY });  // 记录这些瓦片已被使用
+        occupiedTiles.insert({ tile_initX, tile_initY });
+        occupiedTiles.insert({ tile_endX, tile_endY });
 
-        //记录这些瓦片已被使用
-        occupiedTiles.insert({ _tileX, _tileY });
-        occupiedTiles.insert({ _tileInitX, _tileInitY });
-        occupiedTiles.insert({ _tileEndX, _tileEndY });
-
-        //设置车辆的实际位置、初始位置和离开位置（转换为像素坐标，居中于瓦片）
+        // 设置车辆的实际位置、初始位置和离开位置（转换为像素坐标，居中于瓦片）
         task.position = {
-            static_cast<double>(_tileX * TILE_SIZE + TILE_SIZE / 2),
-            static_cast<double>(_tileY * TILE_SIZE + TILE_SIZE / 2)
+            static_cast<double>(tileX * TILE_SIZE + TILE_SIZE / 2),
+            static_cast<double>(tileY * TILE_SIZE + TILE_SIZE / 2)
         };
 
         task.position_spawn = {
-            static_cast<double>(_tileInitX * TILE_SIZE + TILE_SIZE / 2),
-            static_cast<double>(_tileInitY * TILE_SIZE + TILE_SIZE / 2)
+            static_cast<double>(tile_initX * TILE_SIZE + TILE_SIZE / 2),
+            static_cast<double>(tile_initY * TILE_SIZE + TILE_SIZE / 2)
         };
 
         task.position_leave = {
-            static_cast<double>(_tileEndX * TILE_SIZE + TILE_SIZE / 2),
-            static_cast<double>(_tileEndY * TILE_SIZE + TILE_SIZE / 2)
+            static_cast<double>(tile_endX * TILE_SIZE + TILE_SIZE / 2),
+            static_cast<double>(tile_endY * TILE_SIZE + TILE_SIZE / 2)
         };
 
-        //初始电量为 20%~59%
+        // 初始电量为 20%~59%
         task.initialElectricity = rand() % 40 + 20;
 
-        //离开时要求的电量为 80%~100%
+        // 离开时要求的电量为 80%~100%
         task.requiredElectricity = 80 + rand() % 21;
 
-        //离开时间为到达时间后 60~120 秒
+        // 离开时间为到达时间后 60~120 秒
         task.leaveTime = task.spawnTime + 60 + rand() % 61;
 
-        //加入任务列表
-        tasks.push_back(task);
+        tasks.push_back(task);  // 加入任务列表
     }
 }
 
-//在每一帧更新时调用，处理车辆到达与上线
+// 在每一帧更新时调用，处理车辆到达与上线
+// 这里使用了四个队列，在VehicleSpawner.h文件里有说明。或许我该写个#pragma region？先这样吧。
 void VehicleSpawner::OnUpdate(double delta)
 {
     elapsedTime += delta;  // 累加仿真时间
 
     // 把“到达时间已到”的任务变成待上线车辆
-    while (nextIndex < tasks.size() && tasks[nextIndex].spawnTime <= elapsedTime)
-    {
+    while (nextIndex < tasks.size() && tasks[nextIndex].spawnTime <= elapsedTime) {
         const auto& t = tasks[nextIndex];
 
         Vehicle* v = new Vehicle();
@@ -123,25 +114,21 @@ void VehicleSpawner::OnUpdate(double delta)
 
         Vector2 initDirection;
         initDirection.x = (t.position.x - t.position_spawn.x);
-        initDirection.y = (t.position.y - t.position_spawn.y);//设置入场时方向
+        initDirection.y = (t.position.y - t.position_spawn.y);//设置入场时方向。
 
-        v->SetVelocity(initDirection.Normalized() * 250);
+        v->SetVelocity(initDirection.Normalized() * v->GetSpeed());
 
-        //刚到达，还未正式进入调度
-        v->isOnline = false;
+        v->isOnline = false;     // 刚到达，还未正式进入调度
         v->arriveTime = t.spawnTime;
 
-        //放入等待上线队列
-        pendingQueue.push(v);
+        pendingQueue.push(v);    // 放入等待上线队列
         ++nextIndex;
     }
-    // 检查pendingQueue中哪些车可以正式上线
+    // 检查 pendingQueue 中哪些车可以正式上线
     size_t pendingqueueSize = pendingQueue.size();
-    if (pendingqueueSize) for (size_t i = 0; i < pendingqueueSize; ++i)
-    {
+    if (pendingqueueSize) for (size_t i = 0; i < pendingqueueSize; ++i) {
         Vehicle* v = pendingQueue.front();
-        //设置为正在移动，防止机器人来充电
-        v->isMoving = true;
+        v->isMoving = true;//设置为正在移动，防止机器人来充电。
         pendingQueue.pop();
         if (v->arriveTime <= elapsedTime) {
             // 到达时间满足 → 加入调度系统
@@ -173,7 +160,7 @@ void VehicleSpawner::OnUpdate(double delta)
         //std::cout << "v->GetPosition().x" << v->GetPosition().x << std::endl << "tasks[index].position.x" << tasks[index].position.x << std::endl;
         if ((int)v->GetPosition().x == (int)tasks[index].position.x || (int)v->GetPosition().y == (int)tasks[index].position.y) {//判断是不是到了目标位置，这里可以更完善，但现在先偷个懒（
             v->SetVelocity({ 0,0 });
-            v->SetPosition((int)tasks[index].position.x ,(int)tasks[index].position.y);
+            v->SetPosition((int)tasks[index].position.x, (int)tasks[index].position.y);
             workingQueue.push(v);
         }
         else comingQueue.push(v);
@@ -199,11 +186,10 @@ void VehicleSpawner::OnUpdate(double delta)
         }
         if (!v->NeedElectricity() || tasks[index].leaveTime <= elapsedTime) {//当到达电量需求或者离开时间时进入离开队列。
             Vector2 endDirection = { 0 , 0 };
-            //设置离开时方向
             endDirection.x = (tasks[index].position_leave.x - tasks[index].position.x);
             endDirection.y = (tasks[index].position_leave.y - tasks[index].position.y);
-            //向离开的位置奔去
-            v->SetVelocity(endDirection.Normalized() * v->GetSpeed());
+            //上面是设置离开时方向。
+            v->SetVelocity(endDirection.Normalized() * v->GetSpeed());//向离开的位置奔去
             //std::cout << "向夜晚奔去" << std::endl;
             leavingQueue.push(v);
         }
