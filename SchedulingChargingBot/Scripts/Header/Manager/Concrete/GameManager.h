@@ -5,6 +5,7 @@
 #include "../Manager.hpp"
 #include "../../Tilemap/Map.h"
 #include "../../../Header/Manager/Concrete/VehicleSpawner.h"
+#include "../../../Header/Manager/Concrete/RobotSpawner.h"
 
 
 //游戏主管理器
@@ -20,6 +21,7 @@ private:
 	int fps = 120;                             //需要维持的游戏帧率，即每秒刷新的帧数
 
 	VehicleSpawner vehicleSpawner;
+    RobotSpawner robotSpawner;
 
 public:
 	int Run(int, char**);
