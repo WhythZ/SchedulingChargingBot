@@ -42,8 +42,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -190,7 +190,6 @@
     <ClInclude Include="Scripts\Header\UI\StrategyButtonUI.h" />
     <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
     <ClInclude Include="Scripts\Header\UI\RimUI.h" />
-    <ClInclude Include="Scripts\Header\UI\LevelButtonUI.h" />
     <ClInclude Include="Scripts\Header\UI\StatusUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -86,7 +86,7 @@ void Robot::OnUpdate(double _delta)
 		{
 			//若自己没电了，或对方满电了，或脱离区域，则分离
 			if (!HasElectricity()
-				|| !((Vehicle*)charged)->NeedElectricity()
+				|| !(((Vehicle*)charged)->GetCurrentElectricity() < ((Vehicle*)charged)->GetTargetElectricity())
 				|| !IsInRectArea(((Vehicle*)charged)->chargedRect)
 				|| !enoughElectricity())
 			{
