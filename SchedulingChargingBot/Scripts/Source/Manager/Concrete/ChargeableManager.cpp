@@ -1,4 +1,4 @@
-#include "../../../Header/Manager/Concrete/ChargeableManager.h"
+ï»¿#include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Chargeable/Concrete/Robot.h"
@@ -14,7 +14,7 @@ ChargeableManager::~ChargeableManager()
 
 void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point)
 {
-	//ÒÀ¾ÝÖ¸¶¨ÀàÐÍÊµÀý»¯¶ÔÓ¦×ÓÀà
+	//ä¾æ®æŒ‡å®šç±»åž‹å®žä¾‹åŒ–å¯¹åº”å­ç±»
 	Chargeable* _new = nullptr;
 	switch (_type)
 	{
@@ -22,9 +22,9 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 		break;
 	case ChargeableType::Robot:
 		_new = new Robot();
-		//²ÉÈ¡µ±Ç°²ßÂÔÀàÐÍ
+		//é‡‡å–å½“å‰ç­–ç•¥ç±»åž‹
 		((Robot*)_new)->ChangeStrategy(currentStrategy);
-		//Ç¿×ªÎªRobot*ÔÙÈûÈë
+		//å¼ºè½¬ä¸ºRobot*å†å¡žå…¥
 		robotList.emplace_back((Robot*)_new);
 		break;
 	case ChargeableType::Vehicle:
@@ -40,7 +40,7 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 	}
 	if (_new == nullptr) return;
 
-	//¸ù¾Ý´«ÈëµÄÍßÆ¬µØÍ¼Ë÷Òý×ø±ê£¬¼ÆËã¶ÔÓ¦Î»ÖÃÍßÆ¬ÖÐÐÄµãÎ»ÖÃ
+	//æ ¹æ®ä¼ å…¥çš„ç“¦ç‰‡åœ°å›¾ç´¢å¼•åæ ‡ï¼Œè®¡ç®—å¯¹åº”ä½ç½®ç“¦ç‰‡ä¸­å¿ƒç‚¹ä½ç½®
 	int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;      // TILE_SIZE==64
 	int _y = _point.y * TILE_SIZE + TILE_SIZE / 2;
 	_new->SetPosition(_x, _y);
@@ -49,10 +49,10 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 void ChargeableManager::OnUpdate(double _delta)
 {
 
-	//ÒÆ³ý·Ç·¨ÊµÀý
+	//ç§»é™¤éžæ³•å®žä¾‹
 	RemoveInvalid();
 
-	//¸üÐÂËùÓÐÊµÀý
+	//æ›´æ–°æ‰€æœ‰å®žä¾‹
 	for (Vehicle* _v : vehicleList)
 	{
 		if (_v->isOnline)
@@ -67,12 +67,26 @@ void ChargeableManager::OnUpdate(double _delta)
 void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 {
 	for (Robot* _robot : robotList)
-		_robot->OnRender(_renderer);
+		if (_robot->IsValid())
+			_robot->OnRender(_renderer);
+
 	for (Vehicle* _vehicle : vehicleList)
-		_vehicle->OnRender(_renderer);
+	{
+		if (!_vehicle->IsValid()) {
+			std::cout << "[DEBUG] é‡åˆ°æ— æ•ˆè½¦è¾†ä»è¢«æ¸²æŸ“ï¼\n";
+			continue; // ç«‹å³è·³è¿‡ï¼Œé˜²æ­¢ç»˜åˆ¶
+		}
+
+		_vehicle->OnRender(_renderer);  // åªç»˜åˆ¶æœ‰æ•ˆè½¦è¾†
+	}
+
 	for (Battery* _battery : batteryList)
-		_battery->OnRender(_renderer);
+		if (_battery->IsValid())
+			_battery->OnRender(_renderer);
+	
+
 }
+
 
 void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
 {
@@ -99,12 +113,12 @@ void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _ve
 		((Vehicle*)_vehicle)->charger = nullptr;
 		((Vehicle*)_vehicle)->isTargeted = nullptr;
 
-		//ÈôÂúµç£¬ÔòÔÚ½â°óÊ±Çå³ý
-		if (!_vehicle->NeedElectricity())
-		{
-			_vehicle->Invalidate();
-			std::cout << "Veicle Leave\n";
-		}
+		//è‹¥ä¸å†éœ€è¦å……ç”µï¼Œåˆ™åœ¨è§£ç»‘æ—¶æ¸…é™¤
+		//if (!_vehicle->NeedElectricity())
+		//{
+		//	_vehicle->Invalidate();
+		//	std::cout << "Veicle Leave\n";
+		//}
 	}
 }
 
@@ -115,13 +129,13 @@ void ChargeableManager::SwitchElectricity_RobotAndBattery(Chargeable* _r, Charge
 		double cur = 0;
 		cur = ((Robot*)_r)->GetCurrentElectricity();
 		((Robot*)_r)->SetElectricity(((Battery*)_b)->GetCurrentElectricity());
-		((Battery*)_b)->SetElectricity(cur);//ºÍµç³Ø½»»»µçÁ¿µÄÂß¼­¡£
+		((Battery*)_b)->SetElectricity(cur);//å’Œç”µæ± äº¤æ¢ç”µé‡çš„é€»è¾‘ã€‚
 	}
 }
 
 void ChargeableManager::ChangeStrategy(StrategyType _type)
 {
-	//¸üÐÂ²ßÂÔÀàÐÍ
+	//æ›´æ–°ç­–ç•¥ç±»åž‹
 	switch (_type)
 	{
 	case StrategyType::A:
@@ -185,24 +199,25 @@ void ChargeableManager::RemoveInvalid()
 	#pragma endregion
 
 	#pragma region RemoveInvalidVehicle
-	//º¯Êýremove_if±éÀúÁÐ±í£¬°´ÕÕLambdaµÄ·µ»ØµÄbool£¬½«trueµÄÔªËØÍ³Í³·ÅÈëÁÐ±íÈÝÆ÷µÄÄ©Î²£¬²¢½«·µ»ØÒ»¸öÖ¸ÏòµÚÒ»¸ötrueµÄÔªËØµÄµü´úÆ÷
+	//å‡½æ•°remove_iféåŽ†åˆ—è¡¨ï¼ŒæŒ‰ç…§Lambdaçš„è¿”å›žçš„boolï¼Œå°†trueçš„å…ƒç´ ç»Ÿç»Ÿæ”¾å…¥åˆ—è¡¨å®¹å™¨çš„æœ«å°¾ï¼Œå¹¶å°†è¿”å›žä¸€ä¸ªæŒ‡å‘ç¬¬ä¸€ä¸ªtrueçš„å…ƒç´ çš„è¿­ä»£å™¨
 	auto _beginV = std::remove_if(vehicleList.begin(), vehicleList.end(),
 		[](const Vehicle* _vehicle)
 		{
 			if (!_vehicle->IsValid())
 			{
+				std::cout << "[DEBUG] delete vehicle: " << _vehicle << std::endl;
 				delete _vehicle;
 				return true;
 			}
 			return false;
 		});
 
-	//É¾³ýËùÓÐÎÞÐ§ÊµÀý£¬´ËÊ±µÄÁÐ±íÔÚremove_ifµÄÅÅÁÐÏÂ£¬ËùÓÐÎÞÐ§µÄÊµÀýÖ¸Õë¾ùÔÚÁÐ±íÄ©Î²
+	//åˆ é™¤æ‰€æœ‰æ— æ•ˆå®žä¾‹ï¼Œæ­¤æ—¶çš„åˆ—è¡¨åœ¨remove_ifçš„æŽ’åˆ—ä¸‹ï¼Œæ‰€æœ‰æ— æ•ˆçš„å®žä¾‹æŒ‡é’ˆå‡åœ¨åˆ—è¡¨æœ«å°¾
 	vehicleList.erase(_beginV, vehicleList.end());
 	#pragma endregion
 
 	#pragma region RemoveInvalidBattery
-	//º¯Êýremove_if±éÀúÁÐ±í£¬°´ÕÕLambdaµÄ·µ»ØµÄbool£¬½«trueµÄÔªËØÍ³Í³·ÅÈëÁÐ±íÈÝÆ÷µÄÄ©Î²£¬²¢½«·µ»ØÒ»¸öÖ¸ÏòµÚÒ»¸ötrueµÄÔªËØµÄµü´úÆ÷
+	//å‡½æ•°remove_iféåŽ†åˆ—è¡¨ï¼ŒæŒ‰ç…§Lambdaçš„è¿”å›žçš„boolï¼Œå°†trueçš„å…ƒç´ ç»Ÿç»Ÿæ”¾å…¥åˆ—è¡¨å®¹å™¨çš„æœ«å°¾ï¼Œå¹¶å°†è¿”å›žä¸€ä¸ªæŒ‡å‘ç¬¬ä¸€ä¸ªtrueçš„å…ƒç´ çš„è¿­ä»£å™¨
 	auto _beginB = std::remove_if(batteryList.begin(), batteryList.end(),
 		[](const Battery* _battery)
 		{
@@ -214,7 +229,7 @@ void ChargeableManager::RemoveInvalid()
 			return false;
 		});
 
-	//É¾³ýËùÓÐÎÞÐ§ÊµÀý£¬´ËÊ±µÄÁÐ±íÔÚremove_ifµÄÅÅÁÐÏÂ£¬ËùÓÐÎÞÐ§µÄÊµÀýÖ¸Õë¾ùÔÚÁÐ±íÄ©Î²
+	//åˆ é™¤æ‰€æœ‰æ— æ•ˆå®žä¾‹ï¼Œæ­¤æ—¶çš„åˆ—è¡¨åœ¨remove_ifçš„æŽ’åˆ—ä¸‹ï¼Œæ‰€æœ‰æ— æ•ˆçš„å®žä¾‹æŒ‡é’ˆå‡åœ¨åˆ—è¡¨æœ«å°¾
 	batteryList.erase(_beginB, batteryList.end());
 	#pragma endregion
 }
@@ -231,3 +246,13 @@ void ChargeableManager::AddChargeable(Chargeable* c)
 		batteryList.emplace_back(b);
 	}
 }
+
+void ChargeableManager::ClearAll()
+{
+	for (Robot* r : robotList) r->Invalidate();
+	for (Vehicle* v : vehicleList) v->Invalidate();
+	for (Battery* b : batteryList) b->Invalidate();
+
+	RemoveInvalid();  
+}
+

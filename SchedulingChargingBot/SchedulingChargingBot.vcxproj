@@ -159,6 +159,7 @@
     <ClCompile Include="Scripts\Source\UI\ButtonUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\CursorUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\RimUI.cpp" />
+    <ClCompile Include="Scripts\Source\UI\SpawnLevelUI.cpp" />
     <ClCompile Include="Scripts\Source\UI\StatusUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +190,7 @@
     <ClInclude Include="Scripts\Header\UI\ButtonUI.h" />
     <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
     <ClInclude Include="Scripts\Header\UI\RimUI.h" />
+    <ClInclude Include="Scripts\Header\UI\SpawnLevelUI.h" />
     <ClInclude Include="Scripts\Header\UI\StatusUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

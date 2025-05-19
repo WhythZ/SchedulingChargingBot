@@ -8,6 +8,7 @@
 #include "../../UI/CursorUI.h"
 #include "../../UI/RimUI.h"
 #include "../../UI/ButtonUI.h"
+#include "../../UI/SpawnLevelUI.h" 
 
 class UIManager :public Manager<UIManager>
 {
@@ -23,6 +24,7 @@ private:
 	CursorUI* cursorUI;
 	RimUI* rimUI;
 	ButtonUI* buttonUI;
+	SpawnLevelUI* spawnLevelUI;
 
 public:
 	void OnInput(const SDL_Event&);
