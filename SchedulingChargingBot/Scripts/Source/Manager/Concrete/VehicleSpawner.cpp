@@ -37,10 +37,10 @@ void VehicleSpawner::LoadScenario(int level)
         int tile_initX, tile_initY;
         int tile_endX, tile_endY;
         // 随机选择未占用的瓦片，避开地图边缘2格
-        //初始位置和最终位置都是在地图边缘
+        // 初始位置和最终位置都是在地图边缘
         do {
-            tileX = rand() % (mapTilesX - 4) + 2;
-            tileY = rand() % (mapTilesY - 4) + 2;
+            tileX = rand() % (mapTilesX - 8) + 4;
+            tileY = rand() % (mapTilesY - 8) + 4;
 
             // 起点生成逻辑
             tile_initX = rand() % mapTilesX;
@@ -128,11 +128,7 @@ void VehicleSpawner::OnUpdate(double delta)
     size_t pendingqueueSize = pendingQueue.size();
     if (pendingqueueSize) for (size_t i = 0; i < pendingqueueSize; ++i) {
         Vehicle* v = pendingQueue.front();
-<<<<<<< HEAD
-        v->isMoving = true;//����Ϊ�����ƶ�����ֹ����������硣
-=======
         v->isMoving = true;//设置为正在移动，防止机器人来充电。
->>>>>>> 1347a92 (将规模做了UI界面（但是问题是如果从levelA切换到LevelB的时候 我觉得已经写好了清空的逻辑 但是尝试了很久都还是清空不了 如果一开始选好level就没有什么问题）)
         pendingQueue.pop();
         if (v->arriveTime <= elapsedTime) {
             // 到达时间满足 → 加入调度系统
@@ -145,27 +141,16 @@ void VehicleSpawner::OnUpdate(double delta)
                 v->GetElectricity(),    // 使用 %.0f 格式化为无小数位的double
                 v->GetTargetElectricity(),
                 v->GetLeaveTime());
-<<<<<<< HEAD
-            comingQueue.push(v);//�����������ĳ�������
-        }
-        else pendingQueue.push(v);//��������㣬���ٴӶ�β�������
-=======
             comingQueue.push(v);//加入正在来的车辆队列
         }
         else pendingQueue.push(v);//如果不满足，则再从队尾加入队列
->>>>>>> 1347a92 (将规模做了UI界面（但是问题是如果从levelA切换到LevelB的时候 我觉得已经写好了清空的逻辑 但是尝试了很久都还是清空不了 如果一开始选好level就没有什么问题）)
     }
     size_t comingQueueSize = comingQueue.size();
     if (comingQueueSize) for (size_t i = 0; i < comingQueueSize; ++i) {
         Vehicle* v = comingQueue.front();
         comingQueue.pop();
-<<<<<<< HEAD
-        //std::cout << "comingQueueSize��" << comingQueueSize << std::endl;
-        v->IsTouchingMapBorder = false;//��ֹ���ɳ���ʱ������
-=======
         //std::cout << "comingQueueSize：" << comingQueueSize << std::endl;
         v->IsTouchingMapBorder = false;//防止生成车辆时的误判
->>>>>>> 1347a92 (将规模做了UI界面（但是问题是如果从levelA切换到LevelB的时候 我觉得已经写好了清空的逻辑 但是尝试了很久都还是清空不了 如果一开始选好level就没有什么问题）)
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
@@ -175,6 +160,7 @@ void VehicleSpawner::OnUpdate(double delta)
         //std::cout << "v->GetPosition().x" << v->GetPosition().x << std::endl << "tasks[index].position.x" << tasks[index].position.x << std::endl;
         if ((int)v->GetPosition().x == (int)tasks[index].position.x || (int)v->GetPosition().y == (int)tasks[index].position.y) {//判断是不是到了目标位置，这里可以更完善，但现在先偷个懒（
             v->SetVelocity({ 0,0 });
+            v->SetPosition((int)tasks[index].position.x ,(int)tasks[index].position.y);
             workingQueue.push(v);
         }
         else comingQueue.push(v);
@@ -182,15 +168,16 @@ void VehicleSpawner::OnUpdate(double delta)
     size_t workingQueueSize = workingQueue.size();
     if (workingQueueSize) for (size_t i = 0; i < workingQueueSize; ++i) {
         Vehicle* v = workingQueue.front();
-<<<<<<< HEAD
-        v->isMoving = false;//����Ϊ�����ƶ��У��û���������硣
-        workingQueue.pop();
-        //std::cout << "workingQueueSize��" << workingQueueSize << std::endl;
-=======
         v->isMoving = false;//设置为不在移动中，让机器人来充电。
         workingQueue.pop();
-        //std::cout << "workingQueueSize：" << workingQueueSize << std::endl;
->>>>>>> 1347a92 (将规模做了UI界面（但是问题是如果从levelA切换到LevelB的时候 我觉得已经写好了清空的逻辑 但是尝试了很久都还是清空不了 如果一开始选好level就没有什么问题）)
+        std::cout << "workingQueueSize：" << workingQueueSize << std::endl;
+        std::cout << "vehicle current electricity:" << v->GetCurrentElectricity() << std::endl;
+        std::cout << "vehicle target electricity:" << v->GetTargetElectricity() << std::endl;
+        std::cout << "vehicle isCharged :" << v->isCharged << std::endl;
+        std::cout << "vehicle isTargeted :" << v->isTargeted << std::endl;
+        std::cout << "vehicle isbusy :" << v->IsBusy() << std::endl;
+        std::cout << "vehicle isMoving :" << v->rtisMoving() << std::endl;
+        std::cout << "vehicle charger :" << v->charger << std::endl;
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
@@ -201,29 +188,18 @@ void VehicleSpawner::OnUpdate(double delta)
             Vector2 endDirection = { 0 , 0 };
             endDirection.x = (tasks[index].position_leave.x - tasks[index].position.x);
             endDirection.y = (tasks[index].position_leave.y - tasks[index].position.y);
-<<<<<<< HEAD
-            //�����������뿪ʱ����
-            v->SetVelocity(endDirection.Normalized() * 100);//���뿪��λ�ñ�ȥ
-            std::cout << "going for the night." << std::endl;
-=======
             //上面是设置离开时方向。
             v->SetVelocity(endDirection.Normalized() * 100);//向离开的位置奔去
-            std::cout << "向夜晚奔去" << std::endl;
->>>>>>> 1347a92 (将规模做了UI界面（但是问题是如果从levelA切换到LevelB的时候 我觉得已经写好了清空的逻辑 但是尝试了很久都还是清空不了 如果一开始选好level就没有什么问题）)
-
+            //std::cout << "向夜晚奔去" << std::endl;
             leavingQueue.push(v);
         }
         else workingQueue.push(v);
     }
     size_t leavingQueueSize = leavingQueue.size();
     if (leavingQueueSize) for (size_t i = 0; i < leavingQueueSize; ++i) {
-        std::cout << "leavingQueueSize:" << leavingQueueSize << std::endl;
+        //std::cout << "leavingQueueSize:" << leavingQueueSize << std::endl;
         Vehicle* v = leavingQueue.front();
-<<<<<<< HEAD
-        v->isMoving = true;//����Ϊ�����ƶ�����ֹǱ�����⡣
-=======
         v->isMoving = true;//设置为正在移动，防止潜在问题。
->>>>>>> 1347a92 (将规模做了UI界面（但是问题是如果从levelA切换到LevelB的时候 我觉得已经写好了清空的逻辑 但是尝试了很久都还是清空不了 如果一开始选好level就没有什么问题）)
         leavingQueue.pop();
         int index = 0;
         for (; index < tasks.size(); ++index)
@@ -231,44 +207,10 @@ void VehicleSpawner::OnUpdate(double delta)
             if (tasks[index].VehicleTaskNo == v->VehicleNo)
                 break;//当index使得task和vehicle对应的时候跳出。
         }
-<<<<<<< HEAD
-        //std::cout << "�����߽磿" << v->IsTouchingMapBorder << std::endl;
-        if (v->IsTouchingMapBorder == true) {
-            v->Invalidate();//����Ϊinvalid���ȴ�manager�����
-            std::cout << "Invalidated vehicle:" << v->VehicleNo << std::endl;
-=======
         //std::cout << "触及边界？" << v->IsTouchingMapBorder << std::endl;
         if (v->IsTouchingMapBorder == true) {
             v->Invalidate();//设置为invalid，等待manager清除。
->>>>>>> 1347a92 (将规模做了UI界面（但是问题是如果从levelA切换到LevelB的时候 我觉得已经写好了清空的逻辑 但是尝试了很久都还是清空不了 如果一开始选好level就没有什么问题）)
         }
         else leavingQueue.push(v);
     }
-    }
-    void VehicleSpawner::ClearAllVehicles()
-    {
-        tasks.clear();
-        nextIndex = 0;
-        elapsedTime = 0;
-        totalSpawned = 0;
-        totalLeft = 0;
-
-        while (!pendingQueue.empty()) {
-            delete pendingQueue.front();
-            pendingQueue.pop();
-        }
-        while (!comingQueue.empty()) {
-            delete comingQueue.front();
-            comingQueue.pop();
-        }
-        while (!workingQueue.empty()) {
-            delete workingQueue.front();
-            workingQueue.pop();
-        }
-        while (!leavingQueue.empty()) {
-            delete leavingQueue.front();
-            leavingQueue.pop();
-        }
-
-        Manager<ChargeableManager>::Instance()->ClearAll(); 
 }

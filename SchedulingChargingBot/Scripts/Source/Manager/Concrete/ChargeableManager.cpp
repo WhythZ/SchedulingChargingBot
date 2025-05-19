@@ -113,12 +113,12 @@ void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _ve
 		((Vehicle*)_vehicle)->charger = nullptr;
 		((Vehicle*)_vehicle)->isTargeted = nullptr;
 
-		//若满电，则在解绑时清除
-		if (!_vehicle->NeedElectricity())
-		{
-			_vehicle->Invalidate();
-			std::cout << "Veicle Leave\n";
-		}
+		//若不再需要充电，则在解绑时清除
+		//if (!_vehicle->NeedElectricity())
+		//{
+		//	_vehicle->Invalidate();
+		//	std::cout << "Veicle Leave\n";
+		//}
 	}
 }
 

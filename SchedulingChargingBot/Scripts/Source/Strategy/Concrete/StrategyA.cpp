@@ -27,10 +27,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         Vector2 PileVelocity;
         PileVelocity.x = returnPath.x / returnPath.Length() * robot->GetSpeed();
         PileVelocity.y = returnPath.y / returnPath.Length() * robot->GetSpeed();
-        if (returnPath.Length() > 96)
-            robot->SetVelocity(PileVelocity);             //初始就设置Robot向充电桩跑
-        else
-            robot->SetVelocity({ 0,0 });
+        robot->SetVelocity(PileVelocity);             //初始就设置Robot向充电桩跑
     }
 
     // 如果电量为0，直接停止
@@ -58,13 +55,26 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         double distance = GetDistance(vPos, robotPos);
 
         // 可达性检查（足够电量移动到目标与返回充电桩）
-        double moveDistance = (distance - 96) + GetDistance(vPos, PilePos);
-        if ((robot->GetCurrentElectricity() >= moveDistance / 20) && (distance < minDistance))   //最近距离
+
+        Vector2 vPilePos;                              //离锁定的vehicle最近充电桩位置
+        vPilePos.x = vPos.x >= 640 ? 1280 : 0;
+        vPilePos.y = vPos.y >= 448 ? 896 : 0;
+        double moveDistance = (distance) + GetDistance(vPos, vPilePos);
+        if ((robot->GetCurrentElectricity() >= moveDistance / 20) && (distance < minDistance) && !v->isMoving)   //最近距离，且必须是不在移动的对象。不然会导致bT确定时的位置和实际位置不同，造成抛锚和未满足需求却没机器人充电的后果。终于找出来了。。。。。
         {
             minDistance = distance;
             bT = v;
-            rD = GetDistance(vPos, PilePos);
+            rD = GetDistance(vPos, vPilePos);
         }
+        //if (v->isTargeted->GetCurrentElectricity() == 100 && (robot->GetCurrentElectricity() >= moveDistance / 19) && (distance < minDistance))
+        //{   
+        //    bT = nullptr;
+        //    v->isTargeted = nullptr;
+        //    robot->bestTarget = nullptr;
+        //    robot->lowestElectricity = 0.0;
+        //    minDistance = std::numeric_limits<double>::max();
+        //    rD = 0.0;
+        //}
     }
 
     if (bT)
@@ -97,7 +107,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         robot->bestTarget = nullptr;
     }
 
-    if (robot->bestTarget && !robot->isCharger)
+    if (robot->bestTarget && !robot->isCharger && !bT->isMoving)//不在移动中的时候再锁定。
     {
         Vector2 dir = (robot->bestTarget)->GetPosition() - robot->GetPosition();
         Vector2 velocity = { 0, 0 };

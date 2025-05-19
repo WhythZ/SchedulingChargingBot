@@ -67,7 +67,7 @@ public:
 	Vector2 GetPosition() const;                        //获取中心位置
 	void SetElectricity(double e);						//用于设置电量。
 	bool HasElectricity() const;
-	bool rtisMoving() const;								//是否正在移动
+	bool rtisMoving() const;							//是否正在移动
 	virtual bool NeedElectricity() const;				//多态，vehicle类需要灵活调整目标电量
 	double GetCurrentElectricity() const;
 	double GetSpeed() const;
