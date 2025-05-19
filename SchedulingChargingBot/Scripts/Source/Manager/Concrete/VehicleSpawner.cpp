@@ -102,7 +102,8 @@ void VehicleSpawner::OnUpdate(double delta)
     elapsedTime += delta;  // 累加仿真时间
 
     // 把“到达时间已到”的任务变成待上线车辆
-    while (nextIndex < tasks.size() && tasks[nextIndex].spawnTime <= elapsedTime) {
+    while (nextIndex < tasks.size() && tasks[nextIndex].spawnTime <= elapsedTime)
+    {
         const auto& t = tasks[nextIndex];
 
         Vehicle* v = new Vehicle();

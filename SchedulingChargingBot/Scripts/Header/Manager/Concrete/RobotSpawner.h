@@ -7,16 +7,14 @@
 #include "../../Strategy/Concrete/StrategyA.h"
 #include "../../Strategy/Concrete/StrategyB.h"
 #include "../../Strategy/Concrete/StrategyC.h"
-class RobotSpawner {
-private:
-    StrategyA strategyA;
-    StrategyB strategyB;
-    StrategyC strategyC;
-    void BornPlaceCreate(double & x,double & y,int &tilex,int &tiley);//获取要生成的机器人的位置
 
+class RobotSpawner
+{
 public:
-    void CreateRobot(int level);         // 加载不同规模
+    void CreateRobot(int level);  //加载不同规模
 
+private:
+    void BornPlaceCreate(double&, double&, int&, int&);
 };
 
 #endif

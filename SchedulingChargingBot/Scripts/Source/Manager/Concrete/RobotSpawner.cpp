@@ -25,23 +25,16 @@ void RobotSpawner::CreateRobot(int level)
         int tx,ty;
         do
         {
-            BornPlaceCreate(posx,posy,tx,ty);//posx和posy接受随机生成的位置信息,tilepos接受瓦片信息
+            BornPlaceCreate(posx,posy,tx,ty);//posx和posy接受随机生成的位置信息
         } while (occupiedTiles.count({ tx, ty }));
 
         occupiedTiles.insert({ tx, ty });  // 记录这个瓦片已被使用
 
-        Robot* r = new Robot();
-
-        r->SetPosition((int)posx, (int)posy);
-        r->SetVelocity({ (double)0.0, (double)0.0});
-        
-
-        r->ChangeStrategy(&strategyA);
-        ChargeableManager::Instance()->AddChargeable(r);
+		ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { tx, ty });
+        Robot* r = new Robot();        
 
         printf("[CREAT]A ROBOT HAS CREAT AT (%.0f, %.0f)\n",posx,posy);
     }
-
 }
 
 void RobotSpawner::BornPlaceCreate(double& x, double& y, int& tilex, int& tiley)
@@ -53,7 +46,7 @@ void RobotSpawner::BornPlaceCreate(double& x, double& y, int& tilex, int& tiley)
     // 创建均匀整数分布（包含0~3）
     std::uniform_int_distribution<> dist(0, 3);
 
-// 动态获取地图的瓦片数量（行列数）
+    // 动态获取地图的瓦片数量（行列数）
     int mapTilesX = SceneManager::Instance()->mapRect.w / TILE_SIZE;
     int mapTilesY = SceneManager::Instance()->mapRect.h / TILE_SIZE;
 
@@ -63,7 +56,7 @@ void RobotSpawner::BornPlaceCreate(double& x, double& y, int& tilex, int& tiley)
     int Charger_x = BornCharger2 % 2;
     int Charger_y = (BornCharger2 ) / 2;
     //int Charger_y = 0;
-    int tilepos;
+    //int tilepos;
     printf("(%d,%d)", BornCharger1,BornCharger2);
     //double position_x=0.0, position_y=0.0;//出生位置
     double sizetile = 64.0;
@@ -96,5 +89,4 @@ void RobotSpawner::BornPlaceCreate(double& x, double& y, int& tilex, int& tiley)
             tiley = Charger_y + mapTilesY - 2;
             break;
     }
-
 }

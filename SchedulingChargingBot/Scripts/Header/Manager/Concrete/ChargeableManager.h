@@ -46,9 +46,10 @@ public:
 	std::vector<Vehicle*> GetVehicleList() const;        //获取车辆实例列表
 	std::vector<Battery*> GetBatteryList() const;        //获取电池实例列表
 	StrategyType GetRobotStrategyType() const;           //获取当前的机器人策略类型枚举
-	void AddChargeable(Chargeable* c);
+	
+	void AddChargeable(Chargeable*);
+	void ClearAll();		                             //清空所有实例
 
-	void ClearAll();		//清空
 private:
 	ChargeableManager() = default;
 	~ChargeableManager();

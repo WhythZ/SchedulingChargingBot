@@ -164,7 +164,6 @@
     <ClCompile Include="Scripts\Source\UI\StatusUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Scripts\Header\Chargeable\ChargeableType.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Robot.h" />
@@ -194,9 +193,6 @@
     <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
     <ClInclude Include="Scripts\Header\UI\RimUI.h" />
     <ClInclude Include="Scripts\Header\UI\StatusUI.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SchedulingChargingBot.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -54,6 +54,12 @@ GameManager::GameManager()
 	//生成场景纹理
 	InitAssert(SceneManager::Instance()->Init(renderer), u8"Failed To Init SceneManager");
 	#pragma endregion
+
+	#pragma region Spawner
+	//设置规模，0=小，1=中，2=大
+	vehicleSpawner.LoadScenario(1);
+	robotSpawner.CreateRobot(1);
+	#pragma endregion
 }
 
 GameManager::~GameManager()
@@ -70,9 +76,6 @@ GameManager::~GameManager()
 
 int GameManager::Run(int _argc, char** _argv)
 {
-	//设置规模
-	//vehicleSpawner.LoadScenario(0);  // 可设置为 0=小，1=中，2=大
-
 	#pragma region LimitFPS
 	//此函数获取一个高性能（精度较高）计时器，函数返回的值（计时器跳的总数）作为计时器的起点，通过作差后除以频率才有意义
 	Uint64 _lastCounter = SDL_GetPerformanceCounter();

@@ -10,6 +10,8 @@ ChargeableManager::~ChargeableManager()
 		delete _robot;
 	for (Chargeable* _vehicle : vehicleList)
 		delete _vehicle;
+	for (Chargeable* _battery : batteryList)
+		delete _battery;
 }
 
 void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point)
@@ -41,7 +43,7 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 	if (_new == nullptr) return;
 
 	//根据传入的瓦片地图索引坐标，计算对应位置瓦片中心点位置
-	int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;      // TILE_SIZE==64
+	int _x = _point.x * TILE_SIZE + TILE_SIZE / 2;
 	int _y = _point.y * TILE_SIZE + TILE_SIZE / 2;
 	_new->SetPosition(_x, _y);
 }
@@ -71,20 +73,11 @@ void ChargeableManager::OnRender(SDL_Renderer* _renderer)
 			_robot->OnRender(_renderer);
 
 	for (Vehicle* _vehicle : vehicleList)
-	{
-		if (!_vehicle->IsValid()) {
-			std::cout << "[DEBUG] 遇到无效车辆仍被渲染！\n";
-			continue; // 立即跳过，防止绘制
-		}
-
-		_vehicle->OnRender(_renderer);  // 只绘制有效车辆
-	}
+		_vehicle->OnRender(_renderer);
 
 	for (Battery* _battery : batteryList)
 		if (_battery->IsValid())
 			_battery->OnRender(_renderer);
-	
-
 }
 
 
@@ -129,7 +122,7 @@ void ChargeableManager::SwitchElectricity_RobotAndBattery(Chargeable* _r, Charge
 		double cur = 0;
 		cur = ((Robot*)_r)->GetCurrentElectricity();
 		((Robot*)_r)->SetElectricity(((Battery*)_b)->GetCurrentElectricity());
-		((Battery*)_b)->SetElectricity(cur);//和电池交换电量的逻辑。
+		((Battery*)_b)->SetElectricity(cur); //和电池交换电量的逻辑
 	}
 }
 
