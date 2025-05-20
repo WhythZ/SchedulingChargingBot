@@ -14,6 +14,38 @@ ChargeableManager::~ChargeableManager()
 		delete _battery;
 }
 
+void ChargeableManager::OnUpdate(double _delta)
+{
+
+	//移除非法实例
+	RemoveInvalid();
+
+	//更新所有实例
+	for (Vehicle* _v : vehicleList)
+	{
+		if (_v->isOnline)
+			_v->OnUpdate(_delta);
+	}
+	for (Robot* _robot : robotList)
+		_robot->OnUpdate(_delta);
+	for (Battery* _battery : batteryList)
+		_battery->OnUpdate(_delta);
+}
+
+void ChargeableManager::OnRender(SDL_Renderer* _renderer)
+{
+	for (Robot* _robot : robotList)
+		if (_robot->IsValid())
+			_robot->OnRender(_renderer);
+
+	for (Vehicle* _vehicle : vehicleList)
+		_vehicle->OnRender(_renderer);
+
+	for (Battery* _battery : batteryList)
+		if (_battery->IsValid())
+			_battery->OnRender(_renderer);
+}
+
 void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point)
 {
 	//依据指定类型实例化对应子类
@@ -48,38 +80,26 @@ void ChargeableManager::SpawnChargeableAt(ChargeableType _type, SDL_Point _point
 	_new->SetPosition(_x, _y);
 }
 
-void ChargeableManager::OnUpdate(double _delta)
+void ChargeableManager::AddExternalChargeable(ChargeableType _type, Chargeable* _c)
 {
-
-	//移除非法实例
-	RemoveInvalid();
-
-	//更新所有实例
-	for (Vehicle* _v : vehicleList)
+	switch (_type)
 	{
-		if (_v->isOnline)
-			_v->OnUpdate(_delta);
+	case ChargeableType::Robot:
+		//采取当前策略类型
+		((Robot*)_c)->ChangeStrategy(currentStrategy);
+		//强转为Robot*再塞入
+		robotList.emplace_back((Robot*)_c);
+		break;
+	case ChargeableType::Vehicle:
+		vehicleList.emplace_back((Vehicle*)_c);
+		break;
+	case ChargeableType::Battery:
+		batteryList.emplace_back((Battery*)_c);
+		break;
+	default:
+		break;
 	}
-	for (Robot* _robot : robotList)
-		_robot->OnUpdate(_delta);
-	for (Battery* _battery : batteryList)
-		_battery->OnUpdate(_delta);
 }
-
-void ChargeableManager::OnRender(SDL_Renderer* _renderer)
-{
-	for (Robot* _robot : robotList)
-		if (_robot->IsValid())
-			_robot->OnRender(_renderer);
-
-	for (Vehicle* _vehicle : vehicleList)
-		_vehicle->OnRender(_renderer);
-
-	for (Battery* _battery : batteryList)
-		if (_battery->IsValid())
-			_battery->OnRender(_renderer);
-}
-
 
 void ChargeableManager::TieRobotAndVehicle(Chargeable* _robot, Chargeable* _vehicle)
 {
@@ -115,17 +135,6 @@ void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _ve
 	}
 }
 
-void ChargeableManager::SwitchElectricity_RobotAndBattery(Chargeable* _r, Chargeable* _b)
-{
-	if (_r != nullptr && _b != nullptr)
-	{
-		double cur = 0;
-		cur = ((Robot*)_r)->GetCurrentElectricity();
-		((Robot*)_r)->SetElectricity(((Battery*)_b)->GetCurrentElectricity());
-		((Battery*)_b)->SetElectricity(cur); //和电池交换电量的逻辑
-	}
-}
-
 void ChargeableManager::ChangeStrategy(StrategyType _type)
 {
 	//更新策略类型
@@ -152,6 +161,27 @@ void ChargeableManager::ChangeStrategy(StrategyType _type)
 	default:
 		break;
 	}
+}
+
+void ChargeableManager::SwitchElectricityRB(Chargeable* _robot, Chargeable* _battery)
+{
+	if (_robot != nullptr && _battery != nullptr)
+	{
+		double _cur = 0;
+		_cur = ((Robot*)_robot)->GetCurrentElectricity();
+		((Robot*)_robot)->SetElectricity(((Battery*)_battery)->GetCurrentElectricity());
+		//和电池交换电量的逻辑
+		((Battery*)_battery)->SetElectricity(_cur);
+	}
+}
+
+void ChargeableManager::ClearAll()
+{
+	for (Robot* _r : robotList) _r->Invalidate();
+	for (Vehicle* _v : vehicleList) _v->Invalidate();
+	for (Battery* _b : batteryList) _b->Invalidate();
+
+	RemoveInvalid();
 }
 
 std::vector<Robot*> ChargeableManager::GetRobotList() const
@@ -226,26 +256,3 @@ void ChargeableManager::RemoveInvalid()
 	batteryList.erase(_beginB, batteryList.end());
 	#pragma endregion
 }
-
-void ChargeableManager::AddChargeable(Chargeable* c)
-{
-	if (Vehicle* v = dynamic_cast<Vehicle*>(c)) {
-		vehicleList.emplace_back(v);
-	}
-	else if (Robot* r = dynamic_cast<Robot*>(c)) {
-		robotList.emplace_back(r);
-	}
-	else if (Battery* b = dynamic_cast<Battery*>(c)) {
-		batteryList.emplace_back(b);
-	}
-}
-
-void ChargeableManager::ClearAll()
-{
-	for (Robot* r : robotList) r->Invalidate();
-	for (Vehicle* v : vehicleList) v->Invalidate();
-	for (Battery* b : batteryList) b->Invalidate();
-
-	RemoveInvalid();  
-}
-

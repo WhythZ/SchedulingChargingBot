@@ -245,5 +245,11 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\RobotSpawner.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\ScoreManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\UI\LevelButtonUI.h">
+      <Filter>头文件\UI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

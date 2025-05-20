@@ -8,9 +8,12 @@
 class ScoreManager :public Manager<ScoreManager>
 {
 	friend class Manager<ScoreManager>;
-	public:
-		double score_timer();
-		ScoreManager();
-		~ScoreManager();
+
+public:
+	double ScoreTimer();            //返回一个double值表示当前时间
+
+private:
+	ScoreManager() = default;
+	~ScoreManager() = default;
 };
 #endif

@@ -178,6 +178,7 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\ResourceManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\RobotSpawner.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\ScoreManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleSpawner.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Scripts\Header\Strategy\StrategyType.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Tile.h" />
     <ClInclude Include="Scripts\Header\Tilemap\Map.h" />
+    <ClInclude Include="Scripts\Header\UI\LevelButtonUI.h" />
     <ClInclude Include="Scripts\Header\UI\StrategyButtonUI.h" />
     <ClInclude Include="Scripts\Header\UI\CursorUI.h" />
     <ClInclude Include="Scripts\Header\UI\RimUI.h" />

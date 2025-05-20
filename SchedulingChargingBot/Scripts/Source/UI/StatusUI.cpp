@@ -55,7 +55,7 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	#pragma endregion
 
 	#pragma region TimeText
-	std::string _timestr = "Time:" + std::to_string(_sm->score_timer());
+	std::string _timestr = "Time:" + std::to_string(_sm->ScoreTimer());
 	SDL_Surface* _timeTextSurface = TTF_RenderText_Blended(_font, _timestr.c_str(), textColor);
 	timeTextSize = { _timeTextSurface->w, _timeTextSurface->h };
 	timeTextTexture = SDL_CreateTextureFromSurface(_renderer, _timeTextSurface);

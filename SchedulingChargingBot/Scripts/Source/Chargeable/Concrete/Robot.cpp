@@ -124,7 +124,7 @@ void Robot::OnUpdate(double _delta)
 		{
 		if(IsInRectArea(_battery->chargedRect) && (this->GetCurrentElectricity() < _battery->GetCurrentElectricity()))//在电池附近且电量少于电池。
 			{
-				_cm->SwitchElectricity_RobotAndBattery(this, _battery);//交换电量。
+				_cm->SwitchElectricityRB(this, _battery);//交换电量。
 			}
 		}
 	#pragma endregion

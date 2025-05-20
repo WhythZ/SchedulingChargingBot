@@ -131,11 +131,12 @@ void VehicleSpawner::OnUpdate(double delta)
         Vehicle* v = pendingQueue.front();
         v->isMoving = true;//设置为正在移动，防止机器人来充电。
         pendingQueue.pop();
-        if (v->arriveTime <= elapsedTime) {
+        if (v->arriveTime <= elapsedTime)
+        {
             // 到达时间满足 → 加入调度系统
             v->isOnline = true;
             //v->ChangeState("Charged");
-            ChargeableManager::Instance()->AddChargeable(v);
+            ChargeableManager::Instance()->AddExternalChargeable(ChargeableType::Vehicle, v);
 
             printf("[ARRIVE] Vehicle at (%.0f, %.0f), elec=%.0f%%, needs=%.0f%%, leave=%.0fs\n",
                 v->GetPosition().x, v->GetPosition().y,
@@ -171,14 +172,14 @@ void VehicleSpawner::OnUpdate(double delta)
         Vehicle* v = workingQueue.front();
         v->isMoving = false;//设置为不在移动中，让机器人来充电。
         workingQueue.pop();
-        std::cout << "workingQueueSize：" << workingQueueSize << std::endl;
-        std::cout << "vehicle current electricity:" << v->GetCurrentElectricity() << std::endl;
-        std::cout << "vehicle target electricity:" << v->GetTargetElectricity() << std::endl;
-        std::cout << "vehicle isCharged :" << v->isCharged << std::endl;
-        std::cout << "vehicle isTargeted :" << v->isTargeted << std::endl;
-        std::cout << "vehicle isbusy :" << v->IsBusy() << std::endl;
-        std::cout << "vehicle isMoving :" << v->rtisMoving() << std::endl;
-        std::cout << "vehicle charger :" << v->charger << std::endl;
+        //std::cout << "workingQueueSize：" << workingQueueSize << std::endl;
+        //std::cout << "vehicle current electricity:" << v->GetCurrentElectricity() << std::endl;
+        //std::cout << "vehicle target electricity:" << v->GetTargetElectricity() << std::endl;
+        //std::cout << "vehicle isCharged :" << v->isCharged << std::endl;
+        //std::cout << "vehicle isTargeted :" << v->isTargeted << std::endl;
+        //std::cout << "vehicle isbusy :" << v->IsBusy() << std::endl;
+        //std::cout << "vehicle isMoving :" << v->rtisMoving() << std::endl;
+        //std::cout << "vehicle charger :" << v->charger << std::endl;
         int index = 0;
         for (; index < tasks.size(); ++index)
         {

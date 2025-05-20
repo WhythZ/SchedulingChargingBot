@@ -48,7 +48,7 @@ bool ResourceManager::LoadTextureRes(SDL_Renderer* _renderer)
 bool ResourceManager::LoadSoundRes()
 {
 	//从文件中加载音效
-	soundPool[SoundResID::Pick_Battery] = Mix_LoadWAV("Assets/Sounds/Pick_Battery.wav");
+	soundPool[SoundResID::PickBattery] = Mix_LoadWAV("Assets/Sounds/PickBattery.wav");
 
 	//检查unordered_map容器中所有键值对的值是否有效；其中auto是自动类型推导，成员second访问的是键值对的值
 	for (const auto& _pair : soundPool)
