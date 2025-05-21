@@ -55,8 +55,7 @@ GameManager::GameManager()
 	InitAssert(SceneManager::Instance()->Init(renderer), u8"Failed To Init SceneManager");
 	#pragma endregion
 
-	//设置规模，0=小，1=中，2=大
-	SpawnManager::Instance()->LoadScenario(0);
+	SpawnManager::Instance()->ChangeLevel(SpawnManager::ScaleLevel::Small);
 }
 
 GameManager::~GameManager()

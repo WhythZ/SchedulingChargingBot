@@ -7,8 +7,7 @@
 #include "../../UI/StatusUI.h"
 #include "../../UI/CursorUI.h"
 #include "../../UI/RimUI.h"
-#include "../../UI/StrategyButtonUI.h"
-#include "../../UI/LevelButtonUI.h" 
+#include "../../UI/ButtonUI.h" 
 
 class UIManager :public Manager<UIManager>
 {
@@ -20,11 +19,10 @@ public:
 	double textZoomRate = 2;                //文本缩放倍数
 
 private:
+	RimUI* rimUI;
 	StatusUI* statusUI;
 	CursorUI* cursorUI;
-	RimUI* rimUI;
-	StrategyButtonUI* strategyButtonUI;
-	LevelButtonUI* levelButtonUI;
+	ButtonUI* buttonUI;
 
 public:
 	void OnInput(const SDL_Event&);

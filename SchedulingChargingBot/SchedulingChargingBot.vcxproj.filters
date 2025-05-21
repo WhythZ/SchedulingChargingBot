@@ -135,7 +135,7 @@
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyB.cpp">
       <Filter>源文件\Strategy\Concrete</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\UI\StrategyButtonUI.cpp">
+    <ClCompile Include="Scripts\Source\UI\ButtonUI.cpp">
       <Filter>源文件\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyC.cpp">
@@ -146,9 +146,6 @@
     </ClCompile>
     <ClCompile Include="Scripts\Source\Manager\Concrete\ScoreManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Source\UI\LevelButtonUI.cpp">
-      <Filter>源文件\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Source\Manager\Concrete\SpawnManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
@@ -227,7 +224,7 @@
     <ClInclude Include="Scripts\Header\Strategy\StrategyType.h">
       <Filter>头文件\Strategy</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\UI\StrategyButtonUI.h">
+    <ClInclude Include="Scripts\Header\UI\ButtonUI.h">
       <Filter>头文件\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyC.h">
@@ -238,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\ScoreManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Header\UI\LevelButtonUI.h">
-      <Filter>头文件\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\SpawnManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
