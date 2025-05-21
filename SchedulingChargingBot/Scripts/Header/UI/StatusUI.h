@@ -2,18 +2,17 @@
 #define _STATUS_UI_
 
 #include <SDL.h>
-#include "../Tilemap/Tile.h"
 
 class StatusUI
 {
 private:
 	#pragma region Color
-	SDL_Color textColor = { 0,0,0,0 };
+	SDL_Color textColor01 = { 0,0,0,0 };
+	SDL_Color textColor02 = { 127,0,127,0 };
 	#pragma endregion
 
 	#pragma region Distance
 	int rowDistance = 2;
-	int colDistance = 2 * TILE_SIZE;
 	#pragma endregion
 
 	#pragma region TextSize

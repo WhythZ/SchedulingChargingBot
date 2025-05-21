@@ -15,7 +15,7 @@ private:
 	SDL_Renderer* renderer = nullptr;          //存储渲染器，渲染器可以使用GPU进行加速
 	SDL_Event event;                           //用于调用SDL事件，根据不同的事件类型做出相应的反应
 	bool isQuit = false;                       //决定游戏主循环是否结束
-	int fps = 120;                             //需要维持的游戏帧率，即每秒刷新的帧数
+	int fps = 360;                             //需要维持的游戏帧率，即每秒刷新的帧数
 
 public:
 	int Run(int, char**);

@@ -20,13 +20,28 @@ void SpawnManager::ChangeLevel(ScaleLevel _level)
     ChargeableManager::Instance()->ClearAll();
 
     //重新加载
-    LoadVehicleLevel(_level);
-    LoadRobotLevel(_level);
+    ChangeVehicleLevel(_level);
+    ChangeRobotLevel(_level);
 }
 
 SpawnManager::ScaleLevel SpawnManager::GetCurrentLevel() const
 {
     return currentScaleLevel;
+}
+
+void SpawnManager::RefreshVehicleTasks()
+{
+    //清空载具生成相关数据
+    tasks.clear();
+    while (!pendingQueue.empty()) pendingQueue.pop();
+    while (!comingQueue.empty()) comingQueue.pop();
+    while (!workingQueue.empty()) workingQueue.pop();
+    while (!leavingQueue.empty()) leavingQueue.pop();
+    nextIndex = 0;
+    elapsedTime = 0;
+
+    //刷新分数管理器
+    ScoreManager::Instance()->RestartTimer();
 }
 
 void SpawnManager::UpdateVehicleSpawn(double _delta)
@@ -43,10 +58,10 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         //将Task和Vehicle对象一一对应（罗子的神之一手）
         Vehicle* v = new Vehicle();
         v->SetPosition((int)_task.spawnPosition.x, (int)_task.spawnPosition.y);
-        v->SetElectricity(_task.initialElectricity);
-        v->SetTargetElectricity(_task.requiredElectricity);
+        v->SetElectricity(_task.spawnElectricity);
+        v->SetTargetElectricity(_task.leaveElectricity);
         v->SetLeaveTime(_task.leaveTime);
-        v->vehicleNo = _task.VehicleTaskNo;
+        v->vehicleNo = _task.vehicleTaskNo;
 
 		//设置车辆的初始入场方向
         Vector2 _spawnDirection;
@@ -102,7 +117,7 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         for (; _index < tasks.size(); _index++)
         {
             //当_index使得Task和Vehicle对应的时候跳出
-            if (tasks[_index].VehicleTaskNo == _v->vehicleNo)
+            if (tasks[_index].vehicleTaskNo == _v->vehicleNo)
                 break;
         }
         //判断是不是到了目标位置，以一个TILE_SIZE的区间进行判断
@@ -136,7 +151,7 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         for (; _index < tasks.size(); _index++)
         {
             //当_index使得Task和Vehicle对应的时候跳出
-            if (tasks[_index].VehicleTaskNo == _v->vehicleNo)
+            if (tasks[_index].vehicleTaskNo == _v->vehicleNo)
                 break;
         }
         //当到达电量需求或者离开时间时进入离开队列
@@ -160,43 +175,43 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
     for (size_t i = 0; i < _leavingQueueSize; i++)
     {
 		//取出离开队列中的车辆
-        Vehicle* v = leavingQueue.front();
+        Vehicle* _v = leavingQueue.front();
         leavingQueue.pop();
         //设置为正在移动，防止潜在问题
-        v->isMoving = true;
+        _v->isMoving = true;
         int _index = 0;
         for (; _index < tasks.size(); _index++)
         {
             //当_index使得Task和Vehicle对应的时候跳出
-            if (tasks[_index].VehicleTaskNo == v->vehicleNo)
+            if (tasks[_index].vehicleTaskNo == _v->vehicleNo)
                 break;
         }
         //到了边界位置后清除
-        if (v->isTouchingMapBorder == true)
-            v->Invalidate();
+        if (_v->isTouchingMapBorder == true)
+            _v->Invalidate();
         else
-            leavingQueue.push(v);
+            leavingQueue.push(_v);
     }
     #pragma endregion
 }
 
-void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
+void SpawnManager::ChangeVehicleLevel(ScaleLevel _level)
 {
     //重置当前场景中的车辆相关变量
     RefreshVehicleTasks();
 
-    #pragma region VehicleCount
-    int _vehicleCount = 0;
+    #pragma region VehicleNum
+    size_t _vehicleNum = 0;
     switch (_level)
     {
     case SpawnManager::ScaleLevel::Small:
-        _vehicleCount = 10;
+        _vehicleNum = vehicleNumLevelSmall;
         break;
     case SpawnManager::ScaleLevel::Medium:
-        _vehicleCount = 50;
+        _vehicleNum = vehicleNumLevelMedium;
         break;
     case SpawnManager::ScaleLevel::Large:
-        _vehicleCount = 100;
+        _vehicleNum = vehicleNumLevelLarge;
         break;
     default:
         break;
@@ -207,15 +222,22 @@ void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
     size_t _mapTilesY = SceneManager::Instance()->map.GetHeightTileNum();
 
     //随机创建所有载具生成任务
-    for (int _i = 0; _i < _vehicleCount; _i++)
+    for (size_t _i = 0; _i < _vehicleNum; _i++)
     {
 		//创建一个载具生成任务
         VehicleSpawnTask _task;
 		//载具生成任务的唯一标识符
-        _task.VehicleTaskNo = _i;
+        _task.vehicleTaskNo = _i;
         
-        #pragma region RandomArriveTime
-        _task.spawnTime = rand() % 5 + _i * 2;
+        #pragma region RandomSpawnAndLeaveTime
+        _task.spawnTime = (double)(rand() % spawnTimeUpper + _i * 1);
+        _task.leaveTime = (double)(_task.spawnTime + leaveTimeSpan);
+        #pragma endregion
+
+        #pragma region RandomElectricityDemand
+        //初始电量及任务电量需求
+        _task.spawnElectricity = (double)(rand() % spawnElectricityUpper + 1);
+        _task.leaveElectricity = (double)(leaveElectricityLower + rand() % (100 - leaveElectricityLower) + 1);
         #pragma endregion
 
         #pragma region RandomPosition
@@ -275,51 +297,29 @@ void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
         };
         #pragma endregion
 
-        #pragma region RandomElectricityDemand
-        //初始电量及任务电量需求
-        _task.initialElectricity = rand() % 40 + 20;
-        _task.requiredElectricity = 80 + rand() % 21;
-        _task.leaveTime = _task.spawnTime + 60 + rand() % 61;
-        #pragma endregion
-
         tasks.push_back(_task);
     }
 }
 
-void SpawnManager::LoadRobotLevel(ScaleLevel _level)
+void SpawnManager::ChangeRobotLevel(ScaleLevel _level)
 {
     //根据难度等级决定要生成的机器数量
-    int _robotCount = 0;
+    size_t _robotNum = 0;
     switch (_level)
     {
     case SpawnManager::ScaleLevel::Small:
-        _robotCount = 4;
+        _robotNum = robotNumLevelSmall;
         break;
     case SpawnManager::ScaleLevel::Medium:
-        _robotCount = 8;
+        _robotNum = robotNumLevelMedium;
         break;
     case SpawnManager::ScaleLevel::Large:
-        _robotCount = 12;
+        _robotNum = robotNumLevelLarge;
         break;
     default:
         break;
     }
 
-    for (int _i = 0; _i < _robotCount; _i++)
+    for (size_t _i = 0; _i < _robotNum; _i++)
         ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { 0,0 });
-}
-
-void SpawnManager::RefreshVehicleTasks()
-{
-    //清空载具生成相关数据
-    tasks.clear();
-    while (!pendingQueue.empty()) pendingQueue.pop();
-    while (!comingQueue.empty()) comingQueue.pop();
-    while (!workingQueue.empty()) workingQueue.pop();
-    while (!leavingQueue.empty()) leavingQueue.pop();
-    nextIndex = 0;
-    elapsedTime = 0;
-
-    //刷新分数管理器
-    ScoreManager::Instance()->RestartTimer();
 }
