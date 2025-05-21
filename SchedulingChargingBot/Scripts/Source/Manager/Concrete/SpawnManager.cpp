@@ -34,116 +34,155 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
     //累加仿真时间
     elapsedTime += _delta;
 
-    //把“到达时间已到”的任务变成待上线车辆
-    while (nextIndex < tasks.size() && tasks[nextIndex].spawnTime <= elapsedTime)
+    #pragma region UpdatePendingQueue
+    //把到达时间已到的任务变成待上线车辆
+    if (nextIndex < tasks.size() && tasks[nextIndex].spawnTime <= elapsedTime)
     {
-        const auto& t = tasks[nextIndex];
+        const VehicleSpawnTask& _task = tasks[nextIndex];
 
+        //将Task和Vehicle对象一一对应（罗子的神之一手）
         Vehicle* v = new Vehicle();
-        v->SetPosition((int)t.spawnPosition.x, (int)t.spawnPosition.y);
-        v->SetElectricity(t.initialElectricity);
-        v->SetTargetElectricity(t.requiredElectricity);
-        v->SetLeaveTime(t.leaveTime);
-        v->VehicleNo = t.VehicleTaskNo;//将task和vehicle对象一一对应。（罗子的神之一手）
+        v->SetPosition((int)_task.spawnPosition.x, (int)_task.spawnPosition.y);
+        v->SetElectricity(_task.initialElectricity);
+        v->SetTargetElectricity(_task.requiredElectricity);
+        v->SetLeaveTime(_task.leaveTime);
+        v->vehicleNo = _task.VehicleTaskNo;
 
-        Vector2 initDirection;
-        initDirection.x = (t.targetPosition.x - t.spawnPosition.x);
-        initDirection.y = (t.targetPosition.y - t.spawnPosition.y);//设置入场时方向。
+		//设置车辆的初始入场方向
+        Vector2 _spawnDirection;
+        _spawnDirection.x = (_task.targetPosition.x - _task.spawnPosition.x);
+        _spawnDirection.y = (_task.targetPosition.y - _task.spawnPosition.y);
+        //根据方向向量和速率大小，设置入场速度向量
+        v->SetVelocity(_spawnDirection.Normalized() * v->GetSpeed());
 
-        v->SetVelocity(initDirection.Normalized() * v->GetSpeed());
+		//还未正式进入调度，只有到达目标位置后才能正式上线
+        v->isOnline = false;
+        v->arriveTime = _task.spawnTime;
 
-        v->isOnline = false;     // 刚到达，还未正式进入调度
-        v->arriveTime = t.spawnTime;
-
-        pendingQueue.push(v);    // 放入等待上线队列
-        ++nextIndex;
+        //放入等待上线的队列中
+        pendingQueue.push(v);
+        nextIndex++;
     }
+    #pragma endregion
     
-    // 检查 pendingQueue 中哪些车可以正式上线
-    size_t pendingqueueSize = pendingQueue.size();
-    if (pendingqueueSize) for (size_t i = 0; i < pendingqueueSize; ++i) {
-        Vehicle* v = pendingQueue.front();
-        v->isMoving = true;//设置为正在移动，防止机器人来充电。
-        pendingQueue.pop();
-        if (v->arriveTime <= elapsedTime)
-        {
-            // 到达时间满足 → 加入调度系统
-            v->isOnline = true;
-            //v->ChangeState("Charged");
-            ChargeableManager::Instance()->AddExternalChargeable(ChargeableType::Vehicle, v);
-
-            printf("[ARRIVE] Vehicle at (%.0f, %.0f), elec=%.0f%%, needs=%.0f%%, leave=%.0fs\n",
-                v->GetPosition().x, v->GetPosition().y,
-                v->GetElectricity(),    // 使用 %.0f 格式化为无小数位的double
-                v->GetTargetElectricity(),
-                v->GetLeaveTime());
-            comingQueue.push(v);//加入正在来的车辆队列
-        }
-        else pendingQueue.push(v);//如果不满足，则再从队尾加入队列
-    }
-    
-    size_t comingQueueSize = comingQueue.size();
-    if (comingQueueSize) for (size_t i = 0; i < comingQueueSize; ++i) {
-        Vehicle* v = comingQueue.front();
-        comingQueue.pop();
-        //std::cout << "comingQueueSize：" << comingQueueSize << std::endl;
-        v->IsTouchingMapBorder = false;//防止生成车辆时的误判
-        int index = 0;
-        for (; index < tasks.size(); ++index)
-        {
-            if (tasks[index].VehicleTaskNo == v->VehicleNo)
-                break;//当index使得task和vehicle对应的时候跳出。
-        }
-        //std::cout << "v->GetPosition().x" << v->GetPosition().x << std::endl << "tasks[index].position.x" << tasks[index].position.x << std::endl;
-        if ((int)v->GetPosition().x == (int)tasks[index].targetPosition.x || (int)v->GetPosition().y == (int)tasks[index].targetPosition.y) {//判断是不是到了目标位置，这里可以更完善，但现在先偷个懒（
-            v->SetVelocity({ 0,0 });
-            v->SetPosition((int)tasks[index].targetPosition.x, (int)tasks[index].targetPosition.y);
-            workingQueue.push(v);
-        }
-        else comingQueue.push(v);
-    }
-
-    size_t workingQueueSize = workingQueue.size();    
-    if (workingQueueSize) for (size_t i = 0; i < workingQueueSize; ++i) {
-        Vehicle* v = workingQueue.front();
-        v->isMoving = false;//设置为不在移动中，让机器人来充电。
-        workingQueue.pop();
-        int index = 0;
-        for (; index < tasks.size(); ++index)
-        {
-            if (tasks[index].VehicleTaskNo == v->VehicleNo)
-                break;//当index使得task和vehicle对应的时候跳出。
-        }
-        if (!v->NeedElectricity() || tasks[index].leaveTime <= elapsedTime) {//当到达电量需求或者离开时间时进入离开队列。
-            Vector2 endDirection = { 0 , 0 };
-            endDirection.x = (tasks[index].leavePosition.x - tasks[index].targetPosition.x);
-            endDirection.y = (tasks[index].leavePosition.y - tasks[index].targetPosition.y);
-            //上面是设置离开时方向。
-            v->SetVelocity(endDirection.Normalized() * v->GetSpeed());//向离开的位置奔去
-            //std::cout << "向夜晚奔去" << std::endl;
-            leavingQueue.push(v);
-        }
-        else workingQueue.push(v);
-    }
-    
-    size_t leavingQueueSize = leavingQueue.size();  
-    if (leavingQueueSize) for (size_t i = 0; i < leavingQueueSize; ++i)
+    #pragma region UpdateComingQueueFromPendingQueue
+    //检查pendingQueue中哪些车可以正式上线
+    size_t _pendingqueueSize = pendingQueue.size();
+    for (size_t _i = 0; _i < _pendingqueueSize; _i++)
     {
-        Vehicle* v = leavingQueue.front();
-        //设置为正在移动，防止潜在问题
-        v->isMoving = true;
-        leavingQueue.pop();
-        int index = 0;
-        for (; index < tasks.size(); ++index)
+        Vehicle* _v = pendingQueue.front();
+        //设置为正在移动，防止机器人来充电
+        _v->isMoving = true;
+        pendingQueue.pop();
+        if (_v->arriveTime <= elapsedTime)
         {
-            //当index使得task和vehicle对应的时候跳出
-            if (tasks[index].VehicleTaskNo == v->VehicleNo)
+            //到达时间满足，则加入调度系统
+            _v->isOnline = true;
+            ChargeableManager::Instance()->AddExternalChargeable(ChargeableType::Vehicle, _v);
+
+            //使用%.0f格式化为无小数位的double
+            printf(
+                "[ARRIVE] Vehicle at (%.0f, %.0f), elec=%.0f%%, needs=%.0f%%, leave=%.0fs\n",
+                _v->GetPosition().x, _v->GetPosition().y,
+                _v->GetElectricity(),
+                _v->GetTargetElectricity(),
+                _v->GetLeaveTime()
+            );
+            //加入正在前往目标位置的车辆队列
+            comingQueue.push(_v);
+        }
+        //若不满足，则再将其塞回队尾
+        else
+            pendingQueue.push(_v);
+    }
+    #pragma endregion
+    
+    #pragma region UpdateWorkingQueueFromComingQueue
+    size_t _comingQueueSize = comingQueue.size();
+    for (size_t _i = 0; _i < _comingQueueSize; _i++)
+    {
+		//从前往目标位置的队列中取出车辆
+        Vehicle* _v = comingQueue.front();
+        comingQueue.pop();
+        //防止生成车辆时的误判
+        _v->isTouchingMapBorder = false;
+        int _index = 0;
+        for (; _index < tasks.size(); _index++)
+        {
+            if (tasks[_index].VehicleTaskNo == _v->vehicleNo)
+                break;//当index使得task和vehicle对应的时候跳出。
+        }
+        //判断是不是到了目标位置，这里可以更完善，但现在先偷个懒
+        if ((int)_v->GetPosition().x == (int)tasks[_index].targetPosition.x ||
+            (int)_v->GetPosition().y == (int)tasks[_index].targetPosition.y)
+        {
+			//将其静止嵌入目标位置
+            _v->SetVelocity({ 0,0 });
+            _v->SetPosition((int)tasks[_index].targetPosition.x, (int)tasks[_index].targetPosition.y);
+            //加入工作队列
+            workingQueue.push(_v);
+        }
+        //否则塞回去
+        else
+            comingQueue.push(_v);
+    }
+    #pragma endregion
+
+    #pragma region UpdateLeavingQueueFromWorkingQueue
+    size_t _workingQueueSize = workingQueue.size();    
+    if (_workingQueueSize) for (size_t i = 0; i < _workingQueueSize; i++)
+    {
+		//取出工作队列中的车辆
+        Vehicle* _v = workingQueue.front();
+        workingQueue.pop();
+        //设置为不在移动中，让机器人来充电
+        _v->isMoving = false;
+        int _index = 0;
+        for (; _index < tasks.size(); _index++)
+        {
+            //当_index使得Task和Vehicle对应的时候跳出
+            if (tasks[_index].VehicleTaskNo == _v->vehicleNo)
                 break;
         }
-        if (v->IsTouchingMapBorder == true)
-            v->Invalidate();
-        else leavingQueue.push(v);
+        //当到达电量需求或者离开时间时进入离开队列
+        if (!_v->NeedElectricity() || tasks[_index].leaveTime <= elapsedTime)
+        {
+            //设置离开时方向
+            Vector2 endDirection = { 0,0 };
+            endDirection.x = (tasks[_index].leavePosition.x - tasks[_index].targetPosition.x);
+            endDirection.y = (tasks[_index].leavePosition.y - tasks[_index].targetPosition.y);
+            //向离开的位置奔去
+            _v->SetVelocity(endDirection.Normalized() * _v->GetSpeed());
+            leavingQueue.push(_v);
+        }
+        else
+            workingQueue.push(_v);
     }
+    #pragma endregion
+    
+    #pragma region UpdateLeavingQueue
+    size_t _leavingQueueSize = leavingQueue.size();  
+    for (size_t i = 0; i < _leavingQueueSize; i++)
+    {
+		//取出离开队列中的车辆
+        Vehicle* v = leavingQueue.front();
+        leavingQueue.pop();
+        //设置为正在移动，防止潜在问题
+        v->isMoving = true;
+        int _index = 0;
+        for (; _index < tasks.size(); _index++)
+        {
+            //当_index使得Task和Vehicle对应的时候跳出
+            if (tasks[_index].VehicleTaskNo == v->vehicleNo)
+                break;
+        }
+        //到了边界位置后清除
+        if (v->isTouchingMapBorder == true)
+            v->Invalidate();
+        else
+            leavingQueue.push(v);
+    }
+    #pragma endregion
 }
 
 void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
@@ -285,8 +324,6 @@ void SpawnManager::RefreshVehicleTasks()
     while (!leavingQueue.empty()) leavingQueue.pop();
     nextIndex = 0;
     elapsedTime = 0;
-    totalSpawned = 0;
-    totalLeft = 0;
 
     //刷新分数管理器
     ScoreManager::Instance()->RestartTimer();

@@ -8,8 +8,6 @@
 #include "../Infrastructure/Animation.h"
 #include "../Tilemap/Tile.h"
 
-
-
 //带电基类，派生机器人、汽车
 class Chargeable
 {
@@ -18,8 +16,9 @@ public:
 
 	bool isCharged = false;                             //是否正在（被动）充电
 	bool isCharger = false;                             //是否正在（主动）放电
-	bool isMoving = false;								//是否正在移动（目前只在Vehicle类用了）
-	bool IsTouchingMapBorder = false;					//是否在离开时触及边界
+	bool isMoving = false;								//是否正在移动
+	bool isTouchingMapBorder = false;					//是否触及边界
+
 protected:
 	bool isValid = true;                                //管理器通过该变量管理实例是否应当处于场景中
 

@@ -46,6 +46,11 @@ bool Vehicle::IsBusy() const
     return isCharged;
 }
 
+bool Vehicle::NeedElectricity() const
+{
+    return currentElectricity < targetElectricity;
+}
+
 void Vehicle::SetElectricity(double e)
 {
     currentElectricity = e;
@@ -74,9 +79,4 @@ void Vehicle::SetLeaveTime(double t)
 double Vehicle::GetLeaveTime() const
 {
     return leaveTime;
-}
-
-bool Vehicle::NeedElectricity() const
-{
-    return currentElectricity < targetElectricity;
 }

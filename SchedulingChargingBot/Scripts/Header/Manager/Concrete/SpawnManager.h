@@ -42,10 +42,8 @@ private:
     std::queue<Vehicle*> workingQueue;       //等待或充电中的车辆队列
     std::queue<Vehicle*> leavingQueue;       //正在离开的车辆队列
 
-    size_t nextIndex = 0;                    //下一个spawn任务索引
+    size_t nextIndex = 0;                    //下一个生成任务索引
     double elapsedTime = 0;                  //累计运行时间
-    int totalSpawned = 0;                    //总共生成的车辆数
-    int totalLeft = 0;                       //离开的车辆数目
     #pragma endregion
 
 public:
