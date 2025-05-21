@@ -80,14 +80,6 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
             _v->isOnline = true;
             ChargeableManager::Instance()->AddExternalChargeable(ChargeableType::Vehicle, _v);
 
-            //使用%.0f格式化为无小数位的double
-            printf(
-                "[ARRIVE] Vehicle at (%.0f, %.0f), elec=%.0f%%, needs=%.0f%%, leave=%.0fs\n",
-                _v->GetPosition().x, _v->GetPosition().y,
-                _v->GetElectricity(),
-                _v->GetTargetElectricity(),
-                _v->GetLeaveTime()
-            );
             //加入正在前往目标位置的车辆队列
             comingQueue.push(_v);
         }
@@ -109,12 +101,15 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         int _index = 0;
         for (; _index < tasks.size(); _index++)
         {
+            //当_index使得Task和Vehicle对应的时候跳出
             if (tasks[_index].VehicleTaskNo == _v->vehicleNo)
-                break;//当index使得task和vehicle对应的时候跳出。
+                break;
         }
-        //判断是不是到了目标位置，这里可以更完善，但现在先偷个懒
-        if ((int)_v->GetPosition().x == (int)tasks[_index].targetPosition.x ||
-            (int)_v->GetPosition().y == (int)tasks[_index].targetPosition.y)
+        //判断是不是到了目标位置，以一个TILE_SIZE的区间进行判断
+        if ((int)_v->GetPosition().x <= (int)tasks[_index].targetPosition.x + TILE_SIZE / 2
+            && (int)_v->GetPosition().x >= (int)tasks[_index].targetPosition.x - TILE_SIZE / 2
+            && (int)_v->GetPosition().y <= (int)tasks[_index].targetPosition.y + TILE_SIZE / 2
+            && (int)_v->GetPosition().y >= (int)tasks[_index].targetPosition.y - TILE_SIZE / 2)
         {
 			//将其静止嵌入目标位置
             _v->SetVelocity({ 0,0 });

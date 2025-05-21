@@ -24,7 +24,7 @@ protected:
 
 	Vector2 position;                                   //中心位置
 	Vector2 velocity;                                   //速度向量
-	double speed = 250;                                 //速率大小，单位为"瓦片/单位时间"
+	double speed = 500;                                 //速率大小，单位为"瓦片/单位时间"
 	SDL_Point size = { TILE_SIZE,TILE_SIZE };           //纹理图尺寸
 
 	#pragma region Electricity
