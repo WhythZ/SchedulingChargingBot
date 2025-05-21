@@ -4,7 +4,7 @@
 #include "../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../Header/Manager/Concrete/UIManager.h"
 #include "../../Header/Manager/Concrete/SceneManager.h"
-#include "../../Header/Manager/Concrete/VehicleSpawner.h"
+#include "../../Header/Manager/Concrete/SpawnManager.h"
 
 LevelButtonUI::LevelButtonUI()
 {
@@ -17,7 +17,7 @@ LevelButtonUI::LevelButtonUI()
         buttonSize.x,
         buttonSize.y
     };
-    Manager<VehicleSpawner>::Instance()->LoadScenario(spawnLevel);
+    SpawnManager::Instance()->LoadScenario(spawnLevel);
 }
 
 void LevelButtonUI::OnInput(const SDL_Event& event)
@@ -31,7 +31,7 @@ void LevelButtonUI::OnInput(const SDL_Event& event)
         {
             // 切换等级 A → B → C → A
             spawnLevel = (spawnLevel + 1) % 3;
-            Manager<VehicleSpawner>::Instance()->LoadScenario(spawnLevel);// 调用车辆生成函数
+            SpawnManager::Instance()->LoadScenario(spawnLevel);// 调用车辆生成函数
             printf("[UI] Clicked to load scenario level %d\n", spawnLevel);
         }
     }

@@ -13,4 +13,3 @@ double ScoreManager::ScoreTimer()
 
     return _delta;
 }
-

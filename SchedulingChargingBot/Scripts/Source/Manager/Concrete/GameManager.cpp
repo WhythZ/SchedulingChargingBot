@@ -8,6 +8,7 @@
 #include "../../../Header/Manager/Concrete/SceneManager.h"
 #include "../../../Header/Manager/Concrete/UIManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
+#include "../../../Header/Manager/Concrete/SpawnManager.h"
 
 GameManager::GameManager()
 {
@@ -54,11 +55,8 @@ GameManager::GameManager()
 	InitAssert(SceneManager::Instance()->Init(renderer), u8"Failed To Init SceneManager");
 	#pragma endregion
 
-	#pragma region Spawner
 	//设置规模，0=小，1=中，2=大
-	vehicleSpawner.LoadScenario(1);
-	robotSpawner.CreateRobot(1);
-	#pragma endregion
+	SpawnManager::Instance()->LoadScenario(0);
 }
 
 GameManager::~GameManager()
@@ -144,11 +142,10 @@ void GameManager::OnInput()
 
 void GameManager::OnUpdate(double _delta)
 {
-	Manager<VehicleSpawner>::Instance()->OnUpdate(_delta);
-
 	//更新各管理器数据
 	SceneManager::Instance()->OnUpdate(_delta);
 	ChargeableManager::Instance()->OnUpdate(_delta);
+	SpawnManager::Instance()->OnUpdate(_delta);
 	UIManager::Instance()->OnUpdate(renderer);
 }
 

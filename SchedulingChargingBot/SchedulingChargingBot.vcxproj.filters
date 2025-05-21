@@ -144,16 +144,13 @@
     <ClCompile Include="Scripts\Source\Chargeable\Concrete\Battery.cpp">
       <Filter>源文件\Chargeable\Concrete</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleSpawner.cpp">
-      <Filter>源文件\Manager\Concrete</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\Source\Manager\Concrete\ScoreManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Source\UI\LevelButtonUI.cpp">
       <Filter>源文件\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Source\Manager\Concrete\RobotSpawner.cpp">
+    <ClCompile Include="Scripts\Source\Manager\Concrete\SpawnManager.cpp">
       <Filter>源文件\Manager\Concrete</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,17 +236,14 @@
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Battery.h">
       <Filter>头文件\Chargeable\Concrete</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleSpawner.h">
-      <Filter>头文件\Manager\Concrete</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Header\Manager\Concrete\RobotSpawner.h">
-      <Filter>头文件\Manager\Concrete</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\Header\Manager\Concrete\ScoreManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Header\UI\LevelButtonUI.h">
       <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Header\Manager\Concrete\SpawnManager.h">
+      <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

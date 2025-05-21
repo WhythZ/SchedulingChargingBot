@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 #include "../Manager.hpp"
-#include "../../../Header/Manager/Concrete/VehicleSpawner.h"
 
 class ScoreManager :public Manager<ScoreManager>
 {

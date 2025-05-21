@@ -147,12 +147,11 @@
     <ClCompile Include="Scripts\Source\Manager\Concrete\ConfigManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\GameManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ResourceManager.cpp" />
-    <ClCompile Include="Scripts\Source\Manager\Concrete\RobotSpawner.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\SceneManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ScoreManager.cpp" />
+    <ClCompile Include="Scripts\Source\Manager\Concrete\SpawnManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\UIManager.cpp" />
     <ClCompile Include="Scripts\Source\Manager\Concrete\ChargeableManager.cpp" />
-    <ClCompile Include="Scripts\Source\Manager\Concrete\VehicleSpawner.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyA.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyB.cpp" />
     <ClCompile Include="Scripts\Source\Strategy\Concrete\StrategyC.cpp" />
@@ -176,12 +175,11 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\ConfigManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\GameManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ResourceManager.h" />
-    <ClInclude Include="Scripts\Header\Manager\Concrete\RobotSpawner.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\SceneManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ScoreManager.h" />
+    <ClInclude Include="Scripts\Header\Manager\Concrete\SpawnManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\UIManager.h" />
     <ClInclude Include="Scripts\Header\Manager\Concrete\ChargeableManager.h" />
-    <ClInclude Include="Scripts\Header\Manager\Concrete\VehicleSpawner.h" />
     <ClInclude Include="Scripts\Header\Manager\Manager.hpp" />
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyA.h" />
     <ClInclude Include="Scripts\Header\Strategy\Concrete\StrategyB.h" />
