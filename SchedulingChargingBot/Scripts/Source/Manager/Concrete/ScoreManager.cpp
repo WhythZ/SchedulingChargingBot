@@ -2,14 +2,17 @@
 #include <SDL.h>
 #include<iostream>
 
-double ScoreManager::ScoreTimer()
+void ScoreManager::OnUpdate(double _delta)
 {
-    static Uint64 _lastCounter = SDL_GetPerformanceCounter();
-    static Uint64 _counterFreq = SDL_GetPerformanceFrequency();
+	levelTimer.OnUpdate(_delta);
+}
 
-    Uint64 _currentCounter = SDL_GetPerformanceCounter();
+void ScoreManager::RestartTimer()
+{
+	levelTimer.Restart();
+}
 
-    double _delta = (double)(_currentCounter - _lastCounter) / _counterFreq;
-
-    return _delta;
+double ScoreManager::GetPassTime() const
+{
+	return levelTimer.GetPassTime();
 }

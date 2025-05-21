@@ -9,6 +9,7 @@
 #include "../../../Header/Manager/Concrete/UIManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SpawnManager.h"
+#include "../../../Header/Manager/Concrete/ScoreManager.h"
 
 GameManager::GameManager()
 {
@@ -145,6 +146,7 @@ void GameManager::OnUpdate(double _delta)
 	SceneManager::Instance()->OnUpdate(_delta);
 	ChargeableManager::Instance()->OnUpdate(_delta);
 	SpawnManager::Instance()->OnUpdate(_delta);
+	ScoreManager::Instance()->OnUpdate(_delta);
 	UIManager::Instance()->OnUpdate(renderer);
 }
 

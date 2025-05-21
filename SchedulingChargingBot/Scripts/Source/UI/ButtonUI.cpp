@@ -44,6 +44,7 @@ void ButtonUI::OnInput(const SDL_Event& _event)
 		//左键按下按钮则切换策略或规模
 		if (_event.button.button == SDL_BUTTON_LEFT)
 		{
+			#pragma region Strategy
 			//如果鼠标处于策略按钮的Rect内
 			if (SDL_PointInRect(&_cursorPosition, &strategyButtonRect))
 			{
@@ -61,6 +62,9 @@ void ButtonUI::OnInput(const SDL_Event& _event)
 					break;
 				}
 			}
+			#pragma endregion
+			
+			#pragma region Level
 			//如果鼠标处于策略按钮的Rect内
 			if (SDL_PointInRect(&_cursorPosition, &levelButtonRect))
 			{
@@ -68,16 +72,20 @@ void ButtonUI::OnInput(const SDL_Event& _event)
 				switch (_sm->GetCurrentScaleLevel())
 				{
 				case SpawnManager::ScaleLevel::Small:
-					_sm->ChangeLevel(SpawnManager::ScaleLevel::Small);
-					break;
-				case SpawnManager::ScaleLevel::Medium:
+					std::cout << "Change Scale Levtl To Medium\n";
 					_sm->ChangeLevel(SpawnManager::ScaleLevel::Medium);
 					break;
-				case SpawnManager::ScaleLevel::Large:
+				case SpawnManager::ScaleLevel::Medium:
+					std::cout << "Change Scale Levtl To Large\n";
 					_sm->ChangeLevel(SpawnManager::ScaleLevel::Large);
+					break;
+				case SpawnManager::ScaleLevel::Large:
+					std::cout << "Change Scale Levtl To Small\n";
+					_sm->ChangeLevel(SpawnManager::ScaleLevel::Small);
 					break;
 				}
 			}
+			#pragma endregion
 		}
 		break;
 	default:

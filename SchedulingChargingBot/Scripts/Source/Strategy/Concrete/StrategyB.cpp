@@ -71,7 +71,7 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
         if (robot->GetCurrentElectricity() < moveDistance / 20) continue;
 
         // ¼ÆËã¼ÛÖµ
-        double value = CalculateVehicleValue(v, sm->ScoreTimer(), distanceToVehicle, distanceToCharger);
+        double value = CalculateVehicleValue(v, sm->GetPassTime(), distanceToVehicle, distanceToCharger);
         if (value > maxValue) 
         {
             maxValue = value;

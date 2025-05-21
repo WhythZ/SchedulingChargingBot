@@ -4,6 +4,7 @@
 #include<random>
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
+#include "../../../Header/Manager/Concrete/ScoreManager.h"
 
 void SpawnManager::OnUpdate(double _delta)
 {
@@ -165,15 +166,8 @@ void SpawnManager::UpdateRobotSpawn(double _delta)
 
 void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
 {
-    //清空旧任务
-    tasks.clear();
-    //重置索引
-    nextIndex = 0;
-    //重置仿真时间
-    elapsedTime = 0;
-
-    //清空等待队列
-    while (!pendingQueue.empty()) pendingQueue.pop();
+    //重置当前场景中的车辆相关变量
+    RefreshVehicleTasks();
 
     //根据难度等级决定要生成的车辆数量
     int vehicleCount = 0;
@@ -298,4 +292,21 @@ void SpawnManager::LoadRobotLevel(ScaleLevel _level)
 
     for (int _i = 0; _i < _robotCount; _i++)
         ChargeableManager::Instance()->SpawnChargeableAt(ChargeableType::Robot, { 0,0 });
+}
+
+void SpawnManager::RefreshVehicleTasks()
+{
+    //清空载具生成相关数据
+    tasks.clear();
+    while (!pendingQueue.empty()) pendingQueue.pop();
+    while (!comingQueue.empty()) comingQueue.pop();
+    while (!workingQueue.empty()) workingQueue.pop();
+    while (!leavingQueue.empty()) leavingQueue.pop();
+    nextIndex = 0;
+    elapsedTime = 0;
+    totalSpawned = 0;
+    totalLeft = 0;
+
+    //刷新分数管理器
+    ScoreManager::Instance()->RestartTimer();
 }

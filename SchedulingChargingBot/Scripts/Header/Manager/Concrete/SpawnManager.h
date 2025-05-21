@@ -33,7 +33,7 @@ private:
     };
 
 private:
-    ScaleLevel currentScaleLevel;
+    ScaleLevel currentScaleLevel = ScaleLevel::Small;
 
     #pragma region VehicleSpawnData
     std::vector<VehicleSpawnTask> tasks;     //所有车辆生成配置任务
@@ -66,6 +66,8 @@ private:
 
     void LoadVehicleLevel(ScaleLevel);
     void LoadRobotLevel(ScaleLevel);
+
+    void RefreshVehicleTasks();              //清空所有任务
 };
 
 #endif
