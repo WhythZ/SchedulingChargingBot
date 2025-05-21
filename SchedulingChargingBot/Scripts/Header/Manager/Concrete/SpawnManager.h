@@ -53,20 +53,15 @@ public:
 
     void ChangeLevel(ScaleLevel);            //加载不同规模
 
-    ScaleLevel GetCurrentScaleLevel() const; //获取当前规模
-    int GetTotalSpawned() const;
-    int GetTotalLeft() const;
+    ScaleLevel GetCurrentLevel() const;      //获取当前规模
 
 private:
 	SpawnManager() = default;
 	~SpawnManager() = default;
 
     void UpdateVehicleSpawn(double);         //处理载具的到达与上线
-    void UpdateRobotSpawn(double);
-
     void LoadVehicleLevel(ScaleLevel);
     void LoadRobotLevel(ScaleLevel);
-
     void RefreshVehicleTasks();              //清空所有任务
 };
 

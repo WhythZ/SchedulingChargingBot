@@ -9,7 +9,7 @@
 void SpawnManager::OnUpdate(double _delta)
 {
 	UpdateVehicleSpawn(_delta);
-	UpdateRobotSpawn(_delta);
+	//UpdateRobotSpawn(_delta);
 }
 
 void SpawnManager::ChangeLevel(ScaleLevel _level)
@@ -24,19 +24,9 @@ void SpawnManager::ChangeLevel(ScaleLevel _level)
     LoadRobotLevel(_level);
 }
 
-SpawnManager::ScaleLevel SpawnManager::GetCurrentScaleLevel() const
+SpawnManager::ScaleLevel SpawnManager::GetCurrentLevel() const
 {
     return currentScaleLevel;
-}
-
-int SpawnManager::GetTotalSpawned() const
-{
-    return totalSpawned;
-}
-
-int SpawnManager::GetTotalLeft() const
-{
-    return totalLeft;
 }
 
 void SpawnManager::UpdateVehicleSpawn(double _delta)
@@ -68,6 +58,7 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         pendingQueue.push(v);    // 放入等待上线队列
         ++nextIndex;
     }
+    
     // 检查 pendingQueue 中哪些车可以正式上线
     size_t pendingqueueSize = pendingQueue.size();
     if (pendingqueueSize) for (size_t i = 0; i < pendingqueueSize; ++i) {
@@ -90,6 +81,7 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         }
         else pendingQueue.push(v);//如果不满足，则再从队尾加入队列
     }
+    
     size_t comingQueueSize = comingQueue.size();
     if (comingQueueSize) for (size_t i = 0; i < comingQueueSize; ++i) {
         Vehicle* v = comingQueue.front();
@@ -110,19 +102,12 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         }
         else comingQueue.push(v);
     }
-    size_t workingQueueSize = workingQueue.size();
+
+    size_t workingQueueSize = workingQueue.size();    
     if (workingQueueSize) for (size_t i = 0; i < workingQueueSize; ++i) {
         Vehicle* v = workingQueue.front();
         v->isMoving = false;//设置为不在移动中，让机器人来充电。
         workingQueue.pop();
-        //std::cout << "workingQueueSize：" << workingQueueSize << std::endl;
-        //std::cout << "vehicle current electricity:" << v->GetCurrentElectricity() << std::endl;
-        //std::cout << "vehicle target electricity:" << v->GetTargetElectricity() << std::endl;
-        //std::cout << "vehicle isCharged :" << v->isCharged << std::endl;
-        //std::cout << "vehicle isTargeted :" << v->isTargeted << std::endl;
-        //std::cout << "vehicle isbusy :" << v->IsBusy() << std::endl;
-        //std::cout << "vehicle isMoving :" << v->rtisMoving() << std::endl;
-        //std::cout << "vehicle charger :" << v->charger << std::endl;
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
@@ -140,28 +125,25 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         }
         else workingQueue.push(v);
     }
-    size_t leavingQueueSize = leavingQueue.size();
-    if (leavingQueueSize) for (size_t i = 0; i < leavingQueueSize; ++i) {
-        //std::cout << "leavingQueueSize:" << leavingQueueSize << std::endl;
+    
+    size_t leavingQueueSize = leavingQueue.size();  
+    if (leavingQueueSize) for (size_t i = 0; i < leavingQueueSize; ++i)
+    {
         Vehicle* v = leavingQueue.front();
-        v->isMoving = true;//设置为正在移动，防止潜在问题。
+        //设置为正在移动，防止潜在问题
+        v->isMoving = true;
         leavingQueue.pop();
         int index = 0;
         for (; index < tasks.size(); ++index)
         {
+            //当index使得task和vehicle对应的时候跳出
             if (tasks[index].VehicleTaskNo == v->VehicleNo)
-                break;//当index使得task和vehicle对应的时候跳出。
+                break;
         }
-        //std::cout << "触及边界？" << v->IsTouchingMapBorder << std::endl;
-        if (v->IsTouchingMapBorder == true) {
-            v->Invalidate();//设置为invalid，等待manager清除。
-        }
+        if (v->IsTouchingMapBorder == true)
+            v->Invalidate();
         else leavingQueue.push(v);
     }
-}
-
-void SpawnManager::UpdateRobotSpawn(double _delta)
-{
 }
 
 void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
@@ -169,105 +151,99 @@ void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
     //重置当前场景中的车辆相关变量
     RefreshVehicleTasks();
 
-    //根据难度等级决定要生成的车辆数量
-    int vehicleCount = 0;
+    #pragma region VehicleCount
+    int _vehicleCount = 0;
     switch (_level)
     {
     case SpawnManager::ScaleLevel::Small:
-        vehicleCount = 10;
+        _vehicleCount = 10;
         break;
     case SpawnManager::ScaleLevel::Medium:
-        vehicleCount = 50;
+        _vehicleCount = 50;
         break;
     case SpawnManager::ScaleLevel::Large:
-        vehicleCount = 100;
+        _vehicleCount = 100;
         break;
     default:
         break;
     }
+    #pragma endregion
 
-    //动态获取地图的瓦片数量（行列数）
-    int mapTilesX = SceneManager::Instance()->mapRect.w / TILE_SIZE;
-    int mapTilesY = SceneManager::Instance()->mapRect.h / TILE_SIZE;
+    int _mapTilesX = SceneManager::Instance()->map.GetWidthTileNum();
+    int _mapTilesY = SceneManager::Instance()->map.GetHeightTileNum();
 
-    //记录已用瓦片，避免重复生成
-    std::set<std::pair<int, int>> occupiedTiles;
+    std::set<std::pair<int, int>> _occupiedTiles;
 
-    for (int i = 0; i < vehicleCount; ++i) {
-        VehicleSpawnTask task;
-        //标记车辆编号，用于辨识每一辆车
-        task.VehicleTaskNo = i;
-
-        //设置车辆到达时间：逐车推迟并加随机扰动，避免集中生成
-        task.spawnTime = rand() % 10 + i * 3;
+    for (int _i = 0; _i < _vehicleCount; _i++)
+    {
+        VehicleSpawnTask _task;
+        _task.VehicleTaskNo = _i;
+        _task.spawnTime = rand() % 10 + _i * 3;
 
         int tileX, tileY;
         int tile_initX, tile_initY;
         int tile_endX, tile_endY;
-        //随机选择未占用的瓦片，避开地图边缘2格
-        //初始位置和最终位置都是在地图边缘
+
+        //设定最大尝试次数，防止死循环
+        const int MAX_TRIES = 1000;
+        int tries = 0;
+
         do
         {
-            tileX = rand() % (mapTilesX - 8) + 4;
-            tileY = rand() % (mapTilesY - 8) + 4;
+            tileX = rand() % (_mapTilesX - 8) + 4;
+            tileY = rand() % (_mapTilesY - 8) + 4;
 
-            //起点生成逻辑
-            tile_initX = rand() % mapTilesX;
-            tile_initY = rand() % mapTilesY;
+            tile_initX = rand() % _mapTilesX;
+            tile_initY = rand() % _mapTilesY;
 
-            //选择是靠X边界还是Y边界
             int a = rand() % 2;
+            tile_initX = a ? (rand() % 2) * (_mapTilesX - 1) : tile_initX;
+            tile_initY = a ? tile_initY : (rand() % 2) * (_mapTilesY - 1);
 
-            tile_initX = a ? (rand() % 2) * (mapTilesX - 1) : tile_initX; //X=0或X=max
-            tile_initY = a ? tile_initY : (rand() % 2) * (mapTilesY - 1); //Y=0或Y=max
+            tile_endX = rand() % _mapTilesX;
+            tile_endY = rand() % _mapTilesY;
 
-            //终点生成逻辑
-            tile_endX = rand() % mapTilesX;
-            tile_endY = rand() % mapTilesY;
-
-            //选择是靠X边界还是Y边界
             int b = rand() % 2;
+            tile_endX = b ? (rand() % 2) * (_mapTilesX - 1) : tile_endX;
+            tile_endY = b ? tile_endY : (rand() % 2) * (_mapTilesY - 1);
 
-            tile_endX = b ? (rand() % 2) * (mapTilesX - 1) : tile_endX;
-            tile_endY = b ? tile_endY : (rand() % 2) * (mapTilesY - 1);
+            tries++;
+            if (tries > MAX_TRIES) {
+                std::cerr << "Warning: Could not find unoccupied tiles after " << MAX_TRIES << " tries\n";
+                break;
+            }
 
-        } while (occupiedTiles.count({ tileX, tileY }) && occupiedTiles.count({ tile_initX, tile_initY }) && occupiedTiles.count({ tile_endX, tile_endY }));  // 确保不重复
+        } while (_occupiedTiles.count({ tileX, tileY })
+            || _occupiedTiles.count({ tile_initX, tile_initY })
+            || _occupiedTiles.count({ tile_endX, tile_endY }));
 
-        //记录这些瓦片已被使用
-        occupiedTiles.insert({ tileX, tileY });
-        occupiedTiles.insert({ tile_initX, tile_initY });
-        occupiedTiles.insert({ tile_endX, tile_endY });
+        _occupiedTiles.insert({ tileX, tileY });
+        _occupiedTiles.insert({ tile_initX, tile_initY });
+        _occupiedTiles.insert({ tile_endX, tile_endY });
 
-        //设置车辆的实际位置、初始位置和离开位置（转换为像素坐标，居中于瓦片）
-        task.position =
+        //车辆任务生成的坐标
+        _task.position =
         {
             static_cast<double>(tileX * TILE_SIZE + TILE_SIZE / 2),
             static_cast<double>(tileY * TILE_SIZE + TILE_SIZE / 2)
         };
-
-        task.position_spawn =
+        _task.position_spawn =
         {
             static_cast<double>(tile_initX * TILE_SIZE + TILE_SIZE / 2),
             static_cast<double>(tile_initY * TILE_SIZE + TILE_SIZE / 2)
         };
-
-        task.position_leave =
+        _task.position_leave =
         {
             static_cast<double>(tile_endX * TILE_SIZE + TILE_SIZE / 2),
             static_cast<double>(tile_endY * TILE_SIZE + TILE_SIZE / 2)
         };
 
-        //初始电量为 20%~59%
-        task.initialElectricity = rand() % 40 + 20;
+        //初始电量及任务电量需求
+        _task.initialElectricity = rand() % 40 + 20;
+        _task.requiredElectricity = 80 + rand() % 21;
+        _task.leaveTime = _task.spawnTime + 60 + rand() % 61;
 
-        //离开时要求的电量为 80%~100%
-        task.requiredElectricity = 80 + rand() % 21;
-
-        //离开时间为到达时间后 60~120 秒
-        task.leaveTime = task.spawnTime + 60 + rand() % 61;
-
-        //加入任务列表
-        tasks.push_back(task);
+        tasks.push_back(_task);
     }
 }
 

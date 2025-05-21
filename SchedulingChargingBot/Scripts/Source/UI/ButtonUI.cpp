@@ -69,7 +69,7 @@ void ButtonUI::OnInput(const SDL_Event& _event)
 			if (SDL_PointInRect(&_cursorPosition, &levelButtonRect))
 			{
 				//切换至下一个规模，循环往复
-				switch (_sm->GetCurrentScaleLevel())
+				switch (_sm->GetCurrentLevel())
 				{
 				case SpawnManager::ScaleLevel::Small:
 					std::cout << "Change Scale Levtl To Medium\n";
@@ -137,7 +137,7 @@ void ButtonUI::OnUpdate(SDL_Renderer* _renderer)
 	#pragma region LevelText
 	//转化为字符串
 	std::string _levelTypeStr = "";
-	switch (_sm->GetCurrentScaleLevel())
+	switch (_sm->GetCurrentLevel())
 	{
 	case SpawnManager::ScaleLevel::Small:
 		_levelTypeStr = "LevelSmall";

@@ -18,13 +18,14 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	vehicleNumTextTexture = nullptr;
 	SDL_DestroyTexture(batteryNumTextTexture);
 	batteryNumTextTexture = nullptr;
+	SDL_DestroyTexture(timeTextTexture);
+	timeTextTexture = nullptr;
 	#pragma endregion
 
 	//先将文本以特定字体加载到内存中
 	static TTF_Font* _font = ResourceManager::Instance()->GetFontPool().find(FontResID::VonwaonBitmap16)->second;
 	static ChargeableManager* _cm = ChargeableManager::Instance();
 	static ScoreManager* _sm = ScoreManager::Instance();
-
 
 	#pragma region RobotNumText
 	//转化为字符串
@@ -55,7 +56,7 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	#pragma endregion
 
 	#pragma region TimeText
-	std::string _timestr = "Time:" + std::to_string(_sm->GetPassTime());
+	std::string _timestr = "Time=" + std::to_string(_sm->GetPassTime());
 	SDL_Surface* _timeTextSurface = TTF_RenderText_Blended(_font, _timestr.c_str(), textColor);
 	timeTextSize = { _timeTextSurface->w, _timeTextSurface->h };
 	timeTextTexture = SDL_CreateTextureFromSurface(_renderer, _timeTextSurface);
