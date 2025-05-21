@@ -23,9 +23,9 @@ private:
     struct VehicleSpawnTask
     {
         double spawnTime;                    //到达园区时间（秒）
-        Vector2 position;                    //目标生成位置（像素坐标）
-        Vector2 position_spawn;              //进入园区位置（像素坐标）
-        Vector2 position_leave;              //离开园区位置（像素坐标）
+        Vector2 targetPosition;              //目标生成位置（像素坐标）
+        Vector2 spawnPosition;               //进入园区位置（像素坐标）
+        Vector2 leavePosition;               //离开园区位置（像素坐标）
         double initialElectricity;           //初始电量（0-100）
         double requiredElectricity;          //离开前需要电量
         double leaveTime;                    //离开园区时间（秒）

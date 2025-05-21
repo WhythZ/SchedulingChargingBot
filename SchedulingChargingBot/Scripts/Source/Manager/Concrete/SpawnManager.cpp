@@ -40,15 +40,15 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         const auto& t = tasks[nextIndex];
 
         Vehicle* v = new Vehicle();
-        v->SetPosition((int)t.position_spawn.x, (int)t.position_spawn.y);
+        v->SetPosition((int)t.spawnPosition.x, (int)t.spawnPosition.y);
         v->SetElectricity(t.initialElectricity);
         v->SetTargetElectricity(t.requiredElectricity);
         v->SetLeaveTime(t.leaveTime);
         v->VehicleNo = t.VehicleTaskNo;//将task和vehicle对象一一对应。（罗子的神之一手）
 
         Vector2 initDirection;
-        initDirection.x = (t.position.x - t.position_spawn.x);
-        initDirection.y = (t.position.y - t.position_spawn.y);//设置入场时方向。
+        initDirection.x = (t.targetPosition.x - t.spawnPosition.x);
+        initDirection.y = (t.targetPosition.y - t.spawnPosition.y);//设置入场时方向。
 
         v->SetVelocity(initDirection.Normalized() * v->GetSpeed());
 
@@ -95,9 +95,9 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
                 break;//当index使得task和vehicle对应的时候跳出。
         }
         //std::cout << "v->GetPosition().x" << v->GetPosition().x << std::endl << "tasks[index].position.x" << tasks[index].position.x << std::endl;
-        if ((int)v->GetPosition().x == (int)tasks[index].position.x || (int)v->GetPosition().y == (int)tasks[index].position.y) {//判断是不是到了目标位置，这里可以更完善，但现在先偷个懒（
+        if ((int)v->GetPosition().x == (int)tasks[index].targetPosition.x || (int)v->GetPosition().y == (int)tasks[index].targetPosition.y) {//判断是不是到了目标位置，这里可以更完善，但现在先偷个懒（
             v->SetVelocity({ 0,0 });
-            v->SetPosition((int)tasks[index].position.x, (int)tasks[index].position.y);
+            v->SetPosition((int)tasks[index].targetPosition.x, (int)tasks[index].targetPosition.y);
             workingQueue.push(v);
         }
         else comingQueue.push(v);
@@ -116,8 +116,8 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         }
         if (!v->NeedElectricity() || tasks[index].leaveTime <= elapsedTime) {//当到达电量需求或者离开时间时进入离开队列。
             Vector2 endDirection = { 0 , 0 };
-            endDirection.x = (tasks[index].position_leave.x - tasks[index].position.x);
-            endDirection.y = (tasks[index].position_leave.y - tasks[index].position.y);
+            endDirection.x = (tasks[index].leavePosition.x - tasks[index].targetPosition.x);
+            endDirection.y = (tasks[index].leavePosition.y - tasks[index].targetPosition.y);
             //上面是设置离开时方向。
             v->SetVelocity(endDirection.Normalized() * v->GetSpeed());//向离开的位置奔去
             //std::cout << "向夜晚奔去" << std::endl;
@@ -169,79 +169,84 @@ void SpawnManager::LoadVehicleLevel(ScaleLevel _level)
     }
     #pragma endregion
 
-    int _mapTilesX = SceneManager::Instance()->map.GetWidthTileNum();
-    int _mapTilesY = SceneManager::Instance()->map.GetHeightTileNum();
+    size_t _mapTilesX = SceneManager::Instance()->map.GetWidthTileNum();
+    size_t _mapTilesY = SceneManager::Instance()->map.GetHeightTileNum();
 
-    std::set<std::pair<int, int>> _occupiedTiles;
-
+    //随机创建所有载具生成任务
     for (int _i = 0; _i < _vehicleCount; _i++)
     {
+		//创建一个载具生成任务
         VehicleSpawnTask _task;
+		//载具生成任务的唯一标识符
         _task.VehicleTaskNo = _i;
-        _task.spawnTime = rand() % 10 + _i * 3;
+        
+        #pragma region RandomArriveTime
+        _task.spawnTime = rand() % 5 + _i * 2;
+        #pragma endregion
 
-        int tileX, tileY;
-        int tile_initX, tile_initY;
-        int tile_endX, tile_endY;
+        #pragma region RandomPosition
+        size_t _targetTileX = 0, _targetTileY = 0;
+        size_t _spawnTileX = 0, _spawnTileY = 0;
+        size_t _leaveTileX = 0, _leaveTileY = 0;
 
-        //设定最大尝试次数，防止死循环
-        const int MAX_TRIES = 1000;
-        int tries = 0;
+		//让目标位置处于整个地图向内凹陷2个瓦片单位的区域内
+        _targetTileX = rand() % (_mapTilesX - 4) + 2;
+        _targetTileY = rand() % (_mapTilesY - 4) + 2;
 
-        do
+		//载具在边缘出现和离开的位置，随机挑一个边：0上，1下，2左，3右
+        size_t _edge = rand() % 4;
+        switch (_edge)
         {
-            tileX = rand() % (_mapTilesX - 8) + 4;
-            tileY = rand() % (_mapTilesY - 8) + 4;
-
-            tile_initX = rand() % _mapTilesX;
-            tile_initY = rand() % _mapTilesY;
-
-            int a = rand() % 2;
-            tile_initX = a ? (rand() % 2) * (_mapTilesX - 1) : tile_initX;
-            tile_initY = a ? tile_initY : (rand() % 2) * (_mapTilesY - 1);
-
-            tile_endX = rand() % _mapTilesX;
-            tile_endY = rand() % _mapTilesY;
-
-            int b = rand() % 2;
-            tile_endX = b ? (rand() % 2) * (_mapTilesX - 1) : tile_endX;
-            tile_endY = b ? tile_endY : (rand() % 2) * (_mapTilesY - 1);
-
-            tries++;
-            if (tries > MAX_TRIES) {
-                std::cerr << "Warning: Could not find unoccupied tiles after " << MAX_TRIES << " tries\n";
-                break;
-            }
-
-        } while (_occupiedTiles.count({ tileX, tileY })
-            || _occupiedTiles.count({ tile_initX, tile_initY })
-            || _occupiedTiles.count({ tile_endX, tile_endY }));
-
-        _occupiedTiles.insert({ tileX, tileY });
-        _occupiedTiles.insert({ tile_initX, tile_initY });
-        _occupiedTiles.insert({ tile_endX, tile_endY });
-
+        case 0: //上边
+            _spawnTileX = rand() % _mapTilesX;
+            _spawnTileY = 0;
+            _leaveTileX = rand() % _mapTilesX;
+            _leaveTileY = 0;
+            break;
+        case 1: //下边
+            _spawnTileX = rand() % _mapTilesX;
+            _spawnTileY = _mapTilesY - 1;
+            _leaveTileX = rand() % _mapTilesX;
+            _leaveTileY = _mapTilesY - 1;
+            break;
+        case 2: //左边
+            _spawnTileX = 0;
+            _spawnTileY = rand() % _mapTilesY;
+            _leaveTileX = 0;
+            _leaveTileY = rand() % _mapTilesY;
+            break;
+        case 3: //右边
+            _spawnTileX = _mapTilesX - 1;
+            _spawnTileY = rand() % _mapTilesY;
+            _leaveTileX = _mapTilesX - 1;
+            _leaveTileY = rand() % _mapTilesY;
+            break;
+        }
+        
         //车辆任务生成的坐标
-        _task.position =
+        _task.targetPosition =
         {
-            static_cast<double>(tileX * TILE_SIZE + TILE_SIZE / 2),
-            static_cast<double>(tileY * TILE_SIZE + TILE_SIZE / 2)
+            static_cast<double>(_targetTileX * TILE_SIZE + TILE_SIZE / 2),
+            static_cast<double>(_targetTileY * TILE_SIZE + TILE_SIZE / 2)
         };
-        _task.position_spawn =
+        _task.spawnPosition =
         {
-            static_cast<double>(tile_initX * TILE_SIZE + TILE_SIZE / 2),
-            static_cast<double>(tile_initY * TILE_SIZE + TILE_SIZE / 2)
+            static_cast<double>(_spawnTileX * TILE_SIZE + TILE_SIZE / 2),
+            static_cast<double>(_spawnTileY * TILE_SIZE + TILE_SIZE / 2)
         };
-        _task.position_leave =
+        _task.leavePosition =
         {
-            static_cast<double>(tile_endX * TILE_SIZE + TILE_SIZE / 2),
-            static_cast<double>(tile_endY * TILE_SIZE + TILE_SIZE / 2)
+            static_cast<double>(_leaveTileX * TILE_SIZE + TILE_SIZE / 2),
+            static_cast<double>(_leaveTileY * TILE_SIZE + TILE_SIZE / 2)
         };
+        #pragma endregion
 
+        #pragma region RandomElectricityDemand
         //初始电量及任务电量需求
         _task.initialElectricity = rand() % 40 + 20;
         _task.requiredElectricity = 80 + rand() % 21;
         _task.leaveTime = _task.spawnTime + 60 + rand() % 61;
+        #pragma endregion
 
         tasks.push_back(_task);
     }
