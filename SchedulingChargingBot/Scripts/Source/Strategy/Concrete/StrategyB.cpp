@@ -1,4 +1,4 @@
-#include "../../../Header/Strategy/Concrete/StrategyA.h"
+#include "../../../Header/Strategy/Concrete/StrategyB.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
 #include "../../../Header/Manager/Concrete/ScoreManager.h"

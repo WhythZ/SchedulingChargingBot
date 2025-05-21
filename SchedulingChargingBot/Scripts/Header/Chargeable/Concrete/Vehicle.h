@@ -15,7 +15,7 @@ public:
 
     bool isOnline = false;                         //是否正式上线，并可调度
     double arriveTime = 0;                         //车辆到达园区时间（秒）
-    size_t vehicleNo;                              //车辆编号
+    size_t vehicleFlag;                            //车辆唯一标识
 
 private:
     double targetElectricity = 100.0;              //离开前期望电量

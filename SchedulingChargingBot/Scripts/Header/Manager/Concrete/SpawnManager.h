@@ -39,8 +39,6 @@ private:
     ScaleLevel currentScaleLevel = ScaleLevel::Small;
 
     #pragma region VehicleTask
-    double elapsedTime = 0;                  //累计运行时间
-
     size_t spawnTimeUpper = 2;               //最长间隔多久生成
     size_t leaveTimeSpan = 30;               //待多久未被充满就先离开
 
@@ -49,7 +47,11 @@ private:
     #pragma endregion
 
     #pragma region VehicleQueue
+    double elapsedTime = 0;                  //累计运行时间
     size_t nextIndex = 0;                    //下一个生成任务索引
+
+    size_t hitVehicleNum = 0;                //完成充电的车数量
+    size_t missVehicleNum = 0;               //未完成而离开的车数量
 
     std::vector<VehicleSpawnTask> tasks;     //所有车辆生成配置任务
     std::queue<Vehicle*> pendingQueue;       //尚未上线的车辆队列
@@ -74,6 +76,8 @@ public:
     void ChangeLevel(ScaleLevel);            //加载不同规模
 
     ScaleLevel GetCurrentLevel() const;      //获取当前规模
+    size_t GetHitVehicleNum() const;
+    size_t GetMissVehicleNum() const;
 
 private:
 	SpawnManager() = default;

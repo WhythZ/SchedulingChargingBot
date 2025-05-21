@@ -29,9 +29,19 @@ SpawnManager::ScaleLevel SpawnManager::GetCurrentLevel() const
     return currentScaleLevel;
 }
 
+size_t SpawnManager::GetHitVehicleNum() const
+{
+    return hitVehicleNum;
+}
+
+size_t SpawnManager::GetMissVehicleNum() const
+{
+    return missVehicleNum;
+}
+
 void SpawnManager::RefreshVehicleTasks()
 {
-    //清空载具生成相关数据
+    //重置载具生成相关数据
     tasks.clear();
     while (!pendingQueue.empty()) pendingQueue.pop();
     while (!comingQueue.empty()) comingQueue.pop();
@@ -40,8 +50,10 @@ void SpawnManager::RefreshVehicleTasks()
     nextIndex = 0;
     elapsedTime = 0;
 
-    //刷新分数管理器
+    //刷新时间与计数数据
     ScoreManager::Instance()->RestartTimer();
+    hitVehicleNum = 0;
+    missVehicleNum = 0;
 }
 
 void SpawnManager::UpdateVehicleSpawn(double _delta)
@@ -56,26 +68,26 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         const VehicleSpawnTask& _task = tasks[nextIndex];
 
         //将Task和Vehicle对象一一对应（罗子的神之一手）
-        Vehicle* v = new Vehicle();
-        v->SetPosition((int)_task.spawnPosition.x, (int)_task.spawnPosition.y);
-        v->SetElectricity(_task.spawnElectricity);
-        v->SetTargetElectricity(_task.leaveElectricity);
-        v->SetLeaveTime(_task.leaveTime);
-        v->vehicleNo = _task.vehicleTaskNo;
+        Vehicle* _v = new Vehicle();
+        _v->SetPosition((int)_task.spawnPosition.x, (int)_task.spawnPosition.y);
+        _v->SetElectricity(_task.spawnElectricity);
+        _v->SetTargetElectricity(_task.leaveElectricity);
+        _v->SetLeaveTime(_task.leaveTime);
+        _v->vehicleFlag = _task.vehicleTaskNo;
 
 		//设置车辆的初始入场方向
         Vector2 _spawnDirection;
         _spawnDirection.x = (_task.targetPosition.x - _task.spawnPosition.x);
         _spawnDirection.y = (_task.targetPosition.y - _task.spawnPosition.y);
         //根据方向向量和速率大小，设置入场速度向量
-        v->SetVelocity(_spawnDirection.Normalized() * v->GetSpeed());
+        _v->SetVelocity(_spawnDirection.Normalized() * _v->GetSpeed());
 
 		//还未正式进入调度，只有到达目标位置后才能正式上线
-        v->isOnline = false;
-        v->arriveTime = _task.spawnTime;
+        _v->isOnline = false;
+        _v->arriveTime = _task.spawnTime;
 
         //放入等待上线的队列中
-        pendingQueue.push(v);
+        pendingQueue.push(_v);
         nextIndex++;
     }
     #pragma endregion
@@ -117,7 +129,7 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         for (; _index < tasks.size(); _index++)
         {
             //当_index使得Task和Vehicle对应的时候跳出
-            if (tasks[_index].vehicleTaskNo == _v->vehicleNo)
+            if (tasks[_index].vehicleTaskNo == _v->vehicleFlag)
                 break;
         }
         //判断是不是到了目标位置，以一个TILE_SIZE的区间进行判断
@@ -151,11 +163,13 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         for (; _index < tasks.size(); _index++)
         {
             //当_index使得Task和Vehicle对应的时候跳出
-            if (tasks[_index].vehicleTaskNo == _v->vehicleNo)
+            if (tasks[_index].vehicleTaskNo == _v->vehicleFlag)
                 break;
         }
         //当到达电量需求或者离开时间时进入离开队列
-        if (!_v->NeedElectricity() || tasks[_index].leaveTime <= elapsedTime)
+        bool _flagHit = !_v->NeedElectricity();
+        bool _flagMiss = tasks[_index].leaveTime <= elapsedTime;
+        if (_flagHit || _flagMiss)
         {
             //设置离开时方向
             Vector2 endDirection = { 0,0 };
@@ -164,6 +178,10 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
             //向离开的位置奔去
             _v->SetVelocity(endDirection.Normalized() * _v->GetSpeed());
             leavingQueue.push(_v);
+
+            //增加计数
+            if (_flagHit) hitVehicleNum++;
+            else if (_flagMiss) missVehicleNum++;
         }
         else
             workingQueue.push(_v);
@@ -183,7 +201,7 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
         for (; _index < tasks.size(); _index++)
         {
             //当_index使得Task和Vehicle对应的时候跳出
-            if (tasks[_index].vehicleTaskNo == _v->vehicleNo)
+            if (tasks[_index].vehicleTaskNo == _v->vehicleFlag)
                 break;
         }
         //到了边界位置后清除

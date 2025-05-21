@@ -7,8 +7,8 @@ class StatusUI
 {
 private:
 	#pragma region Color
-	SDL_Color textColor01 = { 0,0,0,0 };
-	SDL_Color textColor02 = { 127,0,127,0 };
+	SDL_Color textColorNormal = { 0,0,0,0 };
+	SDL_Color textColorSpecial = { 127,0,127,0 };
 	#pragma endregion
 
 	#pragma region Distance
@@ -20,6 +20,8 @@ private:
 	SDL_Point vehicleNumTextSize = { 0 };
 	SDL_Point batteryNumTextSize = { 0 };
 	SDL_Point timeTextSize = { 0 };
+	SDL_Point hitTextSize = { 0 };
+	SDL_Point missTextSize = { 0 };
 	#pragma endregion
 
 	#pragma region TextTexture
@@ -27,6 +29,8 @@ private:
 	SDL_Texture* vehicleNumTextTexture = nullptr;
 	SDL_Texture* batteryNumTextTexture = nullptr;
 	SDL_Texture* timeTextTexture = nullptr;
+	SDL_Texture* hitTextTexture = nullptr;
+	SDL_Texture* missTextTexture = nullptr;
 	#pragma endregion
 
 public:

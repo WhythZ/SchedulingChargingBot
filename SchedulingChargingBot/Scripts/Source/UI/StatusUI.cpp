@@ -7,6 +7,7 @@
 #include "../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../Header/Manager/Concrete/SceneManager.h"
 #include "../../Header/Manager/Concrete/ScoreManager.h"
+#include "../../Header/Manager/Concrete/SpawnManager.h"
 
 void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 {
@@ -20,17 +21,23 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 	batteryNumTextTexture = nullptr;
 	SDL_DestroyTexture(timeTextTexture);
 	timeTextTexture = nullptr;
+	SDL_DestroyTexture(hitTextTexture);
+	hitTextTexture = nullptr;
+	SDL_DestroyTexture(missTextTexture);
+	missTextTexture = nullptr;
 	#pragma endregion
 
 	//先将文本以特定字体加载到内存中
 	static TTF_Font* _font = ResourceManager::Instance()->GetFontPool().find(FontResID::VonwaonBitmap16)->second;
 	static ChargeableManager* _cm = ChargeableManager::Instance();
-	static ScoreManager* _sm = ScoreManager::Instance();
+	static ScoreManager* _scm = ScoreManager::Instance();
+	static SpawnManager* _spm = SpawnManager::Instance();
+
 
 	#pragma region RobotNumText
 	//转化为字符串
 	std::string _robotNumStr = "RNum=" + std::to_string(_cm->GetRobotList().size());
-	SDL_Surface* _robotTextSurface = TTF_RenderText_Blended(_font, _robotNumStr.c_str(), textColor01);
+	SDL_Surface* _robotTextSurface = TTF_RenderText_Blended(_font, _robotNumStr.c_str(), textColorNormal);
 	//获取转化后的图片的长宽
 	robotNumTextSize = { _robotTextSurface->w, _robotTextSurface->h };
 	//然后再将其转化为纹理格式
@@ -41,7 +48,7 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 
 	#pragma region VehicleNumText
 	std::string _vehicleNumStr = "VNum=" + std::to_string(_cm->GetVehicleList().size());
-	SDL_Surface* _vehicleTextSurface = TTF_RenderText_Blended(_font, _vehicleNumStr.c_str(), textColor01);
+	SDL_Surface* _vehicleTextSurface = TTF_RenderText_Blended(_font, _vehicleNumStr.c_str(), textColorNormal);
 	vehicleNumTextSize = { _vehicleTextSurface->w, _vehicleTextSurface->h };
 	vehicleNumTextTexture = SDL_CreateTextureFromSurface(_renderer, _vehicleTextSurface);
 	SDL_FreeSurface(_vehicleTextSurface);
@@ -49,18 +56,34 @@ void StatusUI::OnUpdate(SDL_Renderer* _renderer)
 
 	#pragma region BatteryNumText
 	std::string _batteryNumStr = "BNum=" + std::to_string(_cm->GetBatteryList().size());
-	SDL_Surface* _batteryTextSurface = TTF_RenderText_Blended(_font, _batteryNumStr.c_str(), textColor01);
+	SDL_Surface* _batteryTextSurface = TTF_RenderText_Blended(_font, _batteryNumStr.c_str(), textColorNormal);
 	batteryNumTextSize = { _batteryTextSurface->w, _batteryTextSurface->h };
 	batteryNumTextTexture = SDL_CreateTextureFromSurface(_renderer, _batteryTextSurface);
 	SDL_FreeSurface(_batteryTextSurface);
 	#pragma endregion
 
 	#pragma region TimeText
-	std::string _timestr = "Time=" + std::to_string((int)(_sm->GetPassTime()));
-	SDL_Surface* _timeTextSurface = TTF_RenderText_Blended(_font, _timestr.c_str(), textColor01);
+	std::string _timeStr = "Time=" + std::to_string((int)(_scm->GetPassTime()));
+	SDL_Surface* _timeTextSurface = TTF_RenderText_Blended(_font, _timeStr.c_str(), textColorNormal);
 	timeTextSize = { _timeTextSurface->w, _timeTextSurface->h };
 	timeTextTexture = SDL_CreateTextureFromSurface(_renderer, _timeTextSurface);
 	SDL_FreeSurface(_timeTextSurface);
+	#pragma endregion
+
+	#pragma region HitNumText
+	std::string _hitNumStr = "Hit=" + std::to_string((int)(_spm->GetHitVehicleNum()));
+	SDL_Surface* _hitNumTextSurface = TTF_RenderText_Blended(_font, _hitNumStr.c_str(), textColorSpecial);
+	hitTextSize = { _hitNumTextSurface->w, _hitNumTextSurface->h };
+	hitTextTexture = SDL_CreateTextureFromSurface(_renderer, _hitNumTextSurface);
+	SDL_FreeSurface(_hitNumTextSurface);
+	#pragma endregion
+
+	#pragma region MissNumText
+	std::string _missNumStr = "Miss=" + std::to_string((int)(_spm->GetMissVehicleNum()));
+	SDL_Surface* _missNumTextSurface = TTF_RenderText_Blended(_font, _missNumStr.c_str(), textColorSpecial);
+	missTextSize = { _missNumTextSurface->w, _missNumTextSurface->h };
+	missTextTexture = SDL_CreateTextureFromSurface(_renderer, _missNumTextSurface);
+	SDL_FreeSurface(_missNumTextSurface);
 	#pragma endregion
 }
 
@@ -118,4 +141,25 @@ void StatusUI::OnRender(SDL_Renderer* _renderer)
 	_ui->DrawTexture(_renderer, timeTextTexture, _positionLeftUp, timeTextSize);
 	#pragma endregion
 
+	#pragma region HitNumText
+	//缩放文本大小
+	hitTextSize.x = (int)(hitTextSize.x * _textZoomRate);
+	hitTextSize.y = (int)(hitTextSize.y * _textZoomRate);
+	//渲染在时间文本左侧
+	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - hitTextSize.x / 2
+		- 3 * TILE_SIZE;
+	_positionLeftUp.y = _mapRect.y + vehicleNumTextSize.y + rowDistance;
+	_ui->DrawTexture(_renderer, hitTextTexture, _positionLeftUp, hitTextSize);
+	#pragma endregion
+
+	#pragma region MissNumText
+	//缩放文本大小
+	missTextSize.x = (int)(missTextSize.x * _textZoomRate);
+	missTextSize.y = (int)(missTextSize.y * _textZoomRate);
+	//渲染在时间文本右侧
+	_positionLeftUp.x = _mapRect.x + _mapRect.w / 2 - missTextSize.x / 2
+		+ 3 * TILE_SIZE;
+	_positionLeftUp.y = _mapRect.y + vehicleNumTextSize.y + rowDistance;
+	_ui->DrawTexture(_renderer, missTextTexture, _positionLeftUp, missTextSize);
+	#pragma endregion
 }
