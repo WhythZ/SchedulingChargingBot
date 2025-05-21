@@ -51,9 +51,9 @@ bool Vehicle::NeedElectricity() const
     return currentElectricity < targetElectricity;
 }
 
-void Vehicle::SetElectricity(double e)
+void Vehicle::SetElectricity(double _e)
 {
-    currentElectricity = e;
+    currentElectricity = _e;
 }
 
 double Vehicle::GetElectricity() const
@@ -61,9 +61,9 @@ double Vehicle::GetElectricity() const
     return currentElectricity;
 }
 
-void Vehicle::SetTargetElectricity(double e)
+void Vehicle::SetTargetElectricity(double _e)
 {
-    targetElectricity = e;
+    targetElectricity = _e;
 }
 
 double Vehicle::GetTargetElectricity() const
@@ -71,9 +71,9 @@ double Vehicle::GetTargetElectricity() const
     return targetElectricity;
 }
 
-void Vehicle::SetLeaveTime(double t)
+void Vehicle::SetLeaveTime(double _t)
 {
-    leaveTime = t;
+    leaveTime = _t;
 }
 
 double Vehicle::GetLeaveTime() const

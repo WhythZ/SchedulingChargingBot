@@ -228,7 +228,6 @@ void ChargeableManager::RemoveInvalid()
 		{
 			if (!_vehicle->IsValid())
 			{
-				std::cout << "[DEBUG] delete vehicle: " << _vehicle << std::endl;
 				delete _vehicle;
 				return true;
 			}

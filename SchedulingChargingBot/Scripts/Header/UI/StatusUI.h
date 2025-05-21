@@ -2,6 +2,7 @@
 #define _STATUS_UI_
 
 #include <SDL.h>
+#include "../Tilemap/Tile.h"
 
 class StatusUI
 {
@@ -11,7 +12,8 @@ private:
 	#pragma endregion
 
 	#pragma region Distance
-	int rowDistance = 3;
+	int rowDistance = 2;
+	int colDistance = 2 * TILE_SIZE;
 	#pragma endregion
 
 	#pragma region TextSize

@@ -114,13 +114,13 @@ void ButtonUI::OnUpdate(SDL_Renderer* _renderer)
 	switch (_cm->GetRobotStrategyType())
 	{
 	case StrategyType::A:
-		_strategyTypeStr = "StrategyA";
+		_strategyTypeStr = "Strategy=A";
 		break;
 	case StrategyType::B:
-		_strategyTypeStr = "StrategyB";
+		_strategyTypeStr = "Strategy=B";
 		break;
 	case StrategyType::C:
-		_strategyTypeStr = "StrategyC";
+		_strategyTypeStr = "Strategy=C";
 		break;
 	default:
 		break;
@@ -140,13 +140,13 @@ void ButtonUI::OnUpdate(SDL_Renderer* _renderer)
 	switch (_sm->GetCurrentLevel())
 	{
 	case SpawnManager::ScaleLevel::Small:
-		_levelTypeStr = "LevelSmall";
+		_levelTypeStr = "Level=Small";
 		break;
 	case SpawnManager::ScaleLevel::Medium:
-		_levelTypeStr = "LevelMedium";
+		_levelTypeStr = "Level=Medium";
 		break;
 	case SpawnManager::ScaleLevel::Large:
-		_levelTypeStr = "LevelLarge";
+		_levelTypeStr = "Level=Large";
 		break;
 	}
 	SDL_Surface* _levelTypeTextSurface = TTF_RenderText_Blended(_font, _levelTypeStr.c_str(), textColor);
