@@ -1,8 +1,6 @@
 #include "../../../Header/Strategy/Concrete/StrategyA.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
-#include "../../../Header/Chargeable/Concrete/Robot.h"
-#include "../../../Header/Chargeable/Concrete/Vehicle.h"
 
 void StrategyA::UpdateMovement(Chargeable* _chargeable)
 {
