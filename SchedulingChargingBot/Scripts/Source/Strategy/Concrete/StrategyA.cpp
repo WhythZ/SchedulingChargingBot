@@ -49,10 +49,13 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
 
     for (Vehicle* v : vehicles)
     {
-        if (v->IsBusy() || !v->NeedElectricity())
+        if (v->IsBusy() || !v->NeedElectricity() || v->isMoving)
             continue;
+
         Vector2 vPos = v->GetPosition();
         double distance = GetDistance(vPos, robotPos);
+        if (v->isTargeted && distance >= v->TargetedDistance)
+            continue;
 
         // 可达性检查（足够电量移动到目标与返回充电桩）
 
@@ -60,7 +63,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         vPilePos.x = vPos.x >= 640 ? 1280 : 0;
         vPilePos.y = vPos.y >= 448 ? 896 : 0;
         double moveDistance = (distance) + GetDistance(vPos, vPilePos);
-        if ((robot->GetCurrentElectricity() >= moveDistance / 20) && (distance < minDistance) && !v->isMoving)   //最近距离，且必须是不在移动的对象。不然会导致bT确定时的位置和实际位置不同，造成抛锚和未满足需求却没机器人充电的后果。终于找出来了。。。。。
+        if ((robot->GetCurrentElectricity() >= moveDistance / 30) && (distance < minDistance))   //最近距离，且必须是不在移动的对象。不然会导致bT确定时的位置和实际位置不同，造成抛锚和未满足需求却没机器人充电的后果。终于找出来了。。。。。
         {
             minDistance = distance;
             bT = v;
@@ -86,7 +89,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
             if (((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
                 ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;
             robot->bestTarget = bT;
-            robot->lowestElectricity = rD / 20;
+            robot->lowestElectricity = rD / 30;
         }
         else if (bT->isTargeted && (bT->TargetedDistance > minDistance))
         {
@@ -99,7 +102,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
             if(((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
                 ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;
             robot->bestTarget = bT;
-            robot->lowestElectricity = rD / 20;
+            robot->lowestElectricity = rD / 30;
         }
     }
     else
@@ -107,7 +110,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         robot->bestTarget = nullptr;
     }
 
-    if (robot->bestTarget && !robot->isCharger && !bT->isMoving)//不在移动中的时候再锁定。
+    if (robot->bestTarget && !robot->isCharger)
     {
         Vector2 dir = (robot->bestTarget)->GetPosition() - robot->GetPosition();
         Vector2 velocity = { 0, 0 };

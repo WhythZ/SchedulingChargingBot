@@ -8,6 +8,7 @@ Robot::Robot()
 	#pragma region SetAnimation
 	//获取纹理数据
 	static SDL_Texture* _sheet = ResourceManager::Instance()->GetTexturePool().find(TextureResID::Robot)->second;
+	static const std::map<size_t, SDL_Rect>& _stationRects = SceneManager::Instance()->map.GetStationRects();
 
 	animIdle.SetLoop(true); animIdle.SetAnimFrames(_sheet, 3, 1, { 0 });
 	animCharged.SetLoop(true); animCharged.SetAnimFrames(_sheet, 3, 1, { 1 });
@@ -23,7 +24,7 @@ Robot::Robot()
 	movingDrainTimer.SetTimeOutTrigger(
 	[&]()
 	{
-		if (velocity.Length() > 0.0) // 仅当正在移动
+		if (velocity.Length() > 0.0 && !IsInRectsArea(_stationRects)) // 仅当正在移动且出了充电桩
 		{
 			currentElectricity -= 0.25;
 			if (currentElectricity < 0.0)
@@ -92,14 +93,6 @@ void Robot::OnUpdate(double _delta)
 			{
 				//将二者解绑
 				_cm->UntieRobotAndVehicle(this, charged);
-
-				if (!enoughElectricity())
-				{
-					this->bestTarget = nullptr;
-					if(charged != nullptr)
-						((Vehicle*)charged)->isTargeted = nullptr;
-				}
-
 				//无需进行后续判断
 				return;
 			}
