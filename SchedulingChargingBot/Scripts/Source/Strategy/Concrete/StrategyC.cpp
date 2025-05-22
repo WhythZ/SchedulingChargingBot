@@ -43,6 +43,9 @@ void StrategyC::UpdateMovement(Chargeable* _chargeable)
         Vector2 _vPos = _v->GetPosition();
         double _dist = (_robotPos - _vPos).Length();
 
+        double distance_v = (_vPos - _robotPos).Length();
+        if (_v->isTargeted && distance_v > _v->TargetedDistance) continue;
+
         Vector2 _vPile = { _vPos.x >= 640.0 ? 1280.0 : 0.0, _vPos.y >= 448.0 ? 896.0 : 0.0 };
         double _moveDist = _dist + (_vPos - _vPile).Length();
         double _requiredElec = _moveDist / 20;
@@ -55,6 +58,7 @@ void StrategyC::UpdateMovement(Chargeable* _chargeable)
         double _value = _v->GetTargetElectricity() - _v->GetCurrentElectricity();
         //±ÜÃâ³ý0
         double _score = _value / (_dist + 1);
+        if (_v->isTargeted && _value < _v->TargetedValue) continue;
 
         if (_score > _bestScore)
         {
@@ -64,7 +68,7 @@ void StrategyC::UpdateMovement(Chargeable* _chargeable)
             _retDist = (_vPos - _vPile).Length();
         }
     }
-
+    //×î¼ÑÄ¿±ê
     if (_bestVehicle)
     {
         if (!_bestVehicle->isTargeted || _bestVehicle->TargetedValue < _bestScore)
