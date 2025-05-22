@@ -5,6 +5,7 @@
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
 #include "../../../Header/Manager/Concrete/ScoreManager.h"
+#include "../../../Header/Manager/Concrete/AudioManager.h"
 
 void SpawnManager::OnUpdate(double _delta)
 {
@@ -179,9 +180,17 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
             _v->SetVelocity(endDirection.Normalized() * _v->GetSpeed());
             leavingQueue.push(_v);
 
-            //增加计数
-            if (_flagHit) hitVehicleNum++;
-            else if (_flagMiss) missVehicleNum++;
+			//增加计数，并播放音效
+            if (_flagHit)
+            {
+                hitVehicleNum++;
+                AudioManager::Instance()->PlaySFX(SoundResID::HitVehicle);
+            }
+            else if (_flagMiss)
+            {
+                missVehicleNum++;
+                AudioManager::Instance()->PlaySFX(SoundResID::MissVehicle);
+            }
         }
         else
             workingQueue.push(_v);

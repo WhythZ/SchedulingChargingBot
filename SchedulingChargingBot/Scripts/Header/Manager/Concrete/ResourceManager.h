@@ -20,7 +20,9 @@ enum class TextureResID
 
 enum class SoundResID
 {
-	PickBattery
+	PickBattery,
+	HitVehicle,
+	MissVehicle
 };
 
 enum class FontResID

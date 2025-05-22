@@ -40,7 +40,7 @@ private:
 
     #pragma region VehicleTask
     size_t spawnTimeUpper = 4;               //最长间隔多久生成
-    size_t leaveTimeSpan = 30;               //待多久未被充满就先离开
+    size_t leaveTimeSpan = 15;               //待多久未被充满就先离开
 
     size_t spawnElectricityUpper = 40;       //初始电量上限
     size_t leaveElectricityLower = 80;       //所需电量下限
