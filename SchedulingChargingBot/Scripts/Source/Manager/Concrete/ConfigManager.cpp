@@ -70,19 +70,22 @@ bool ConfigManager::ParseChargeableConfigPrefab(ChargeableConfigPrefab& _prefab,
 	if (!_jsonRoot || _jsonRoot->type != cJSON_Object)
 		return false;
 
-	cJSON* _jsonSpeed = cJSON_GetObjectItem(_jsonRoot, "speed");
+	cJSON* _jsonVehicleSpeed = cJSON_GetObjectItem(_jsonRoot, "vehicle_speed");
+	cJSON* _jsonRobotSpeed = cJSON_GetObjectItem(_jsonRoot, "robot_speed");
 	cJSON* _jsonChargedCd = cJSON_GetObjectItem(_jsonRoot, "charged_cooldown");
 	cJSON* _jsonChargerCd = cJSON_GetObjectItem(_jsonRoot, "charger_cooldown");
 
-	if (!_jsonSpeed || !_jsonChargedCd || !_jsonChargerCd
-		|| _jsonSpeed->type != cJSON_Number
+	if (!_jsonVehicleSpeed || !_jsonRobotSpeed  || !_jsonChargedCd || !_jsonChargerCd
+		|| _jsonVehicleSpeed->type != cJSON_Number
+		|| _jsonRobotSpeed->type != cJSON_Number
 		|| _jsonChargedCd->type != cJSON_Number
 		|| _jsonChargerCd->type != cJSON_Number)
 	{
 		return false;
 	}
 
-	_prefab.speed = _jsonSpeed->valuedouble;
+	_prefab.vehicleSpeed = _jsonVehicleSpeed->valuedouble;
+	_prefab.robotSpeed = _jsonRobotSpeed->valuedouble;
 	_prefab.chargedCooldown = _jsonChargedCd->valuedouble;
 	_prefab.chargerCooldown = _jsonChargerCd->valuedouble;
 
@@ -101,23 +104,28 @@ bool ConfigManager::ParseSimulationConfigPrefab(SimulationConfigPrefab& _prefab,
 	cJSON* _jsonRNumSmall = cJSON_GetObjectItem(_jsonRoot, "r_num_small");
 	cJSON* _jsonRNumMedium = cJSON_GetObjectItem(_jsonRoot, "r_num_medium");
 	cJSON* _jsonRNumLarge = cJSON_GetObjectItem(_jsonRoot, "r_num_large");
-	cJSON* _jsonVSpawnTimeUpper = cJSON_GetObjectItem(_jsonRoot, "v_spawn_time_upper");
-	cJSON* _jsonVLeaveTimeSpan = cJSON_GetObjectItem(_jsonRoot, "v_leave_time_span");
+	
+	cJSON* _jsonVSpawnTimeUpperLS = cJSON_GetObjectItem(_jsonRoot, "v_spawn_time_upper_small");
+	cJSON* _jsonVSpawnTimeUpperLM = cJSON_GetObjectItem(_jsonRoot, "v_spawn_time_upper_medium");
+	cJSON* _jsonVSpawnTimeUpperLL = cJSON_GetObjectItem(_jsonRoot, "v_spawn_time_upper_large");
+	
+	cJSON* _jsonVLeaveTimeSpanLS = cJSON_GetObjectItem(_jsonRoot, "v_leave_time_span_small");
+	cJSON* _jsonVLeaveTimeSpanLM = cJSON_GetObjectItem(_jsonRoot, "v_leave_time_span_medium");
+	cJSON* _jsonVLeaveTimeSpanLL = cJSON_GetObjectItem(_jsonRoot, "v_leave_time_span_large");
+
 	cJSON* _jsonVSpawnElecUpper = cJSON_GetObjectItem(_jsonRoot, "v_spawn_elec_upper");
 	cJSON* _jsonVLeaveElecLower = cJSON_GetObjectItem(_jsonRoot, "v_leave_elec_lower");
 
 	if (!_jsonVNumSmall || !_jsonVNumMedium || !_jsonVNumLarge
 		|| !_jsonRNumSmall || !_jsonRNumMedium || !_jsonRNumLarge
-		|| !_jsonVSpawnTimeUpper || !_jsonVLeaveTimeSpan
+		|| !_jsonVSpawnTimeUpperLS || !_jsonVSpawnTimeUpperLM || !_jsonVSpawnTimeUpperLL
+		|| !_jsonVLeaveTimeSpanLS || !_jsonVLeaveTimeSpanLM || !_jsonVLeaveTimeSpanLL
 		|| !_jsonVSpawnElecUpper || !_jsonVLeaveElecLower
-		|| _jsonVNumSmall->type != cJSON_Number
-		|| _jsonVNumMedium->type != cJSON_Number
-		|| _jsonVNumLarge->type != cJSON_Number
-		|| _jsonRNumSmall->type != cJSON_Number
-		|| _jsonRNumMedium->type != cJSON_Number
-		|| _jsonRNumLarge->type != cJSON_Number
-		|| !_jsonVSpawnTimeUpper || !_jsonVLeaveTimeSpan
-		|| !_jsonVSpawnElecUpper || !_jsonVLeaveElecLower)
+		|| _jsonVNumSmall->type != cJSON_Number || _jsonVNumMedium->type != cJSON_Number || _jsonVNumLarge->type != cJSON_Number
+		|| _jsonRNumSmall->type != cJSON_Number || _jsonRNumMedium->type != cJSON_Number || _jsonRNumLarge->type != cJSON_Number
+		|| _jsonVSpawnTimeUpperLS->type != cJSON_Number || _jsonVSpawnTimeUpperLM->type != cJSON_Number || _jsonVSpawnTimeUpperLL->type != cJSON_Number
+		|| _jsonVLeaveTimeSpanLS->type != cJSON_Number || _jsonVLeaveTimeSpanLM->type != cJSON_Number || _jsonVLeaveTimeSpanLL->type != cJSON_Number
+		|| _jsonVSpawnElecUpper->type != cJSON_Number || _jsonVLeaveElecLower->type != cJSON_Number)
 	{
 		return false;
 	}
@@ -128,8 +136,15 @@ bool ConfigManager::ParseSimulationConfigPrefab(SimulationConfigPrefab& _prefab,
 	_prefab.robotNumLevelSmall = (size_t)(_jsonRNumSmall->valueint);
 	_prefab.robotNumLevelMedium = (size_t)(_jsonRNumMedium->valueint);
 	_prefab.robotNumLevelLarge = (size_t)(_jsonRNumLarge->valueint);
-	_prefab.vehicleSpawnTimeUpper = (size_t)(_jsonVSpawnTimeUpper->valueint);
-	_prefab.vehicleLeaveTimeSpan = (size_t)(_jsonVLeaveTimeSpan->valueint);
+
+	_prefab.vehicleSpawnTimeUpperLevelSmall = (size_t)(_jsonVSpawnTimeUpperLS->valueint);
+	_prefab.vehicleSpawnTimeUpperLevelMedium = (size_t)(_jsonVSpawnTimeUpperLM->valueint);
+	_prefab.vehicleSpawnTimeUpperLevelLarge = (size_t)(_jsonVSpawnTimeUpperLL->valueint);
+	
+	_prefab.vehicleLeaveTimeSpanLevelSmall = (size_t)(_jsonVLeaveTimeSpanLS->valueint);
+	_prefab.vehicleLeaveTimeSpanLevelMedium = (size_t)(_jsonVLeaveTimeSpanLM->valueint);
+	_prefab.vehicleLeaveTimeSpanLevelLarge = (size_t)(_jsonVLeaveTimeSpanLL->valueint);
+	
 	_prefab.vehicleSpawnElectricityUpper = (size_t)(_jsonVSpawnElecUpper->valueint);
 	_prefab.vehicleLeaveElectricityLower = (size_t)(_jsonVLeaveElecLower->valueint);
 

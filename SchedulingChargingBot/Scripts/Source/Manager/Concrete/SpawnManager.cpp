@@ -25,8 +25,14 @@ void SpawnManager::LoadSimulationConfig()
 	robotNumLevelMedium = _cm->simulationPrefab.robotNumLevelMedium;
 	robotNumLevelLarge = _cm->simulationPrefab.robotNumLevelLarge;
 
-	vehicleSpawnTimeUpper = _cm->simulationPrefab.vehicleSpawnTimeUpper;
-	vehicleLeaveTimeSpan = _cm->simulationPrefab.vehicleLeaveTimeSpan;
+	vehicleSpawnTimeUpperLevelSmall = _cm->simulationPrefab.vehicleSpawnTimeUpperLevelSmall;
+	vehicleSpawnTimeUpperLevelMedium = _cm->simulationPrefab.vehicleSpawnTimeUpperLevelMedium;
+	vehicleSpawnTimeUpperLevelLarge = _cm->simulationPrefab.vehicleSpawnTimeUpperLevelLarge;
+    
+    vehicleLeaveTimeSpanLevelSmall = _cm->simulationPrefab.vehicleLeaveTimeSpanLevelSmall;
+	vehicleLeaveTimeSpanLevelMedium = _cm->simulationPrefab.vehicleLeaveTimeSpanLevelMedium;
+	vehicleLeaveTimeSpanLevelLarge = _cm->simulationPrefab.vehicleLeaveTimeSpanLevelLarge;
+
 	vehicleSpawnElectricityUpper = _cm->simulationPrefab.vehicleSpawnElectricityUpper;
 	vehicleLeaveElectricityLower = _cm->simulationPrefab.vehicleLeaveElectricityLower;
 }
@@ -245,7 +251,7 @@ void SpawnManager::ChangeVehicleLevel(ScaleLevel _level)
     //重置当前场景中的车辆相关变量
     RefreshVehicleTasks();
 
-    #pragma region VehicleNum
+    #pragma region ScaleLevelNum
     size_t _vehicleNum = 0;
     switch (_level)
     {
@@ -257,6 +263,36 @@ void SpawnManager::ChangeVehicleLevel(ScaleLevel _level)
         break;
     case SpawnManager::ScaleLevel::Large:
         _vehicleNum = vehicleNumLevelLarge;
+        break;
+    default:
+        break;
+    }
+	size_t _spawnTimeUpper = 0;
+    switch (_level)
+    {
+    case SpawnManager::ScaleLevel::Small:
+		_spawnTimeUpper = vehicleSpawnTimeUpperLevelSmall;
+        break;
+    case SpawnManager::ScaleLevel::Medium:
+		_spawnTimeUpper = vehicleSpawnTimeUpperLevelMedium;
+        break;
+    case SpawnManager::ScaleLevel::Large:
+		_spawnTimeUpper = vehicleSpawnTimeUpperLevelLarge;
+        break;
+    default:
+        break;
+    }
+    size_t _leaveTimeSpan = 0;
+    switch (_level)
+    {
+    case SpawnManager::ScaleLevel::Small:
+		_leaveTimeSpan = vehicleLeaveTimeSpanLevelSmall;
+        break;
+    case SpawnManager::ScaleLevel::Medium:
+		_leaveTimeSpan = vehicleLeaveTimeSpanLevelMedium;
+        break;
+    case SpawnManager::ScaleLevel::Large:
+		_leaveTimeSpan = vehicleLeaveTimeSpanLevelLarge;
         break;
     default:
         break;
@@ -275,8 +311,9 @@ void SpawnManager::ChangeVehicleLevel(ScaleLevel _level)
         _task.vehicleTaskNo = _i;
         
         #pragma region RandomSpawnAndLeaveTime
-        _task.spawnTime = (double)(rand() % vehicleSpawnTimeUpper + _i * 1);
-        _task.leaveTime = (double)(_task.spawnTime + vehicleLeaveTimeSpan);
+        _task.spawnTime = (double)(rand() % _spawnTimeUpper
+            + _i * ((double)(_spawnTimeUpper % 5) / 5));
+        _task.leaveTime = (double)(_task.spawnTime + _leaveTimeSpan);
         #pragma endregion
 
         #pragma region RandomElectricityDemand

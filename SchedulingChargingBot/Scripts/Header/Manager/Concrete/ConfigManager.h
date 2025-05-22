@@ -26,30 +26,37 @@ public:
 	struct ChargeableConfigPrefab
 	{
 		//移动速度
-		double speed;
+		double vehicleSpeed = 1000;
+		double robotSpeed = 1000;
 		//被动充电频率
-		double chargedCooldown;
+		double chargedCooldown = 0.01;
 		//主动放电频率
-		double chargerCooldown;
+		double chargerCooldown = 0.01;
 	};
 	//问题模拟配置信息预制体
 	struct SimulationConfigPrefab
 	{
 		//问题规模
-		size_t vehicleNumLevelSmall;
-		size_t vehicleNumLevelMedium;
-		size_t vehicleNumLevelLarge;
-		size_t robotNumLevelSmall;
-		size_t robotNumLevelMedium;
-		size_t robotNumLevelLarge;
+		size_t vehicleNumLevelSmall = 10;
+		size_t vehicleNumLevelMedium = 20;
+		size_t vehicleNumLevelLarge = 30;
+		size_t robotNumLevelSmall = 2;
+		size_t robotNumLevelMedium = 4;
+		size_t robotNumLevelLarge = 6;
 
-		//车辆生成时间间隔上限、离开时间
-		size_t vehicleSpawnTimeUpper;
-		size_t vehicleLeaveTimeSpan;
+		//车辆生成时间间隔上限
+		size_t vehicleSpawnTimeUpperLevelSmall = 5;
+		size_t vehicleSpawnTimeUpperLevelMedium = 4;
+		size_t vehicleSpawnTimeUpperLevelLarge = 3;
+
+		//车辆的离开时间
+		size_t vehicleLeaveTimeSpanLevelSmall = 15;
+		size_t vehicleLeaveTimeSpanLevelMedium = 12;
+		size_t vehicleLeaveTimeSpanLevelLarge = 8;
 
 		//初始及需求电量范围限定
-		size_t vehicleSpawnElectricityUpper;
-		size_t vehicleLeaveElectricityLower;
+		size_t vehicleSpawnElectricityUpper = 40;
+		size_t vehicleLeaveElectricityLower = 80;
 	};
 
 public:

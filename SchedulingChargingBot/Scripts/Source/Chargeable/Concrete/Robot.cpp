@@ -2,6 +2,7 @@
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
+#include "../../../Header/Manager/Concrete/ConfigManager.h"
 
 Robot::Robot()
 {
@@ -32,6 +33,11 @@ Robot::Robot()
 					currentElectricity = 0.0;
 			}
 		});
+	#pragma endregion
+
+	#pragma region LoadConfig
+	static ConfigManager* _cm = ConfigManager::Instance();
+	speed = _cm->chargeablePrefab.robotSpeed;
 	#pragma endregion
 
 	//初始化当前电量为最大电量

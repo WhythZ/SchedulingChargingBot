@@ -21,8 +21,6 @@ private:
     double targetElectricity = 100.0;              //离开前期望电量
     double leaveTime = 999999.0;                   //离开时间（绝对时间戳，秒）
 
-
-
 public:
     Vehicle();
     ~Vehicle() = default;

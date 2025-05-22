@@ -11,7 +11,6 @@ Chargeable::Chargeable()
 
 	#pragma region LoadConfig
 	static ConfigManager* _cm = ConfigManager::Instance();
-	speed = _cm->chargeablePrefab.speed;
 	chargedCooldown = _cm->chargeablePrefab.chargedCooldown;
 	chargerCooldown = _cm->chargeablePrefab.chargerCooldown;
 	#pragma endregion

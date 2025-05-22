@@ -1,7 +1,7 @@
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Manager/Concrete/ResourceManager.h"
 #include "../../../Header/Manager/Concrete/ChargeableManager.h"
-#include<iostream>
+#include "../../../Header/Manager/Concrete/ConfigManager.h"
 
 Vehicle::Vehicle()
 {
@@ -13,6 +13,11 @@ Vehicle::Vehicle()
     animIdle.SetLoop(true);    animIdle.SetAnimFrames(_sheet, 3, 1, { 0 });
     animCharged.SetLoop(true); animCharged.SetAnimFrames(_sheet, 3, 1, { 1 });
     animCharger.SetLoop(true); animCharger.SetAnimFrames(_sheet, 3, 1, { 2 });
+    #pragma endregion
+
+    #pragma region LoadConfig
+    static ConfigManager* _cm = ConfigManager::Instance();
+    speed = _cm->chargeablePrefab.vehicleSpeed;
     #pragma endregion
 
     //初始电量为0
