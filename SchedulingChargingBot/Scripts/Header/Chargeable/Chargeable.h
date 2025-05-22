@@ -30,10 +30,10 @@ protected:
 	#pragma region Electricity
 	double currentElectricity = 0.0;                    //当前电量[0,100]
 	
-	double chargedCooldown = 0.05;                      //每次（被动）充电的冷却间隔时间
+	double chargedCooldown;                             //每次（被动）充电的冷却间隔时间
 	Timer chargedTimer;                                 //实施（被动）充电间隔
 	
-	double chargerCooldown = 0.05;                      //每次（主动）放电的冷却间隔时间
+	double chargerCooldown;                             //每次（主动）放电的冷却间隔时间
 	Timer chargerTimer;                                 //实施（主动）放电间隔
 	#pragma endregion
 

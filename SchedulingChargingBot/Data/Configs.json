@@ -1,8 +1,27 @@
 {
 	"basic":
 	{
-		"window_width":	    1280,
-		"window_height":	896,
-		"window_title":	    "SchedulingChargingBot"
+		"window_width":	        1280,
+		"window_height":	    896,
+		"window_title":	        "SchedulingChargingBot"
+	},
+	"chargeable":
+	{
+		"speed":                2000,
+		"charged_cooldown":     0.01,
+		"charger_cooldown":     0.01
+	},
+	"simulation":
+	{
+		"v_num_small":          100,
+		"v_num_medium":         400,
+		"v_num_large":          1600,
+		"r_num_small":          8,
+		"r_num_medium":         32,
+		"r_num_large":          128,
+		"v_spawn_time_upper":   4,
+		"v_leave_time_span":    15,
+		"v_spawn_elec_upper":   40,
+		"v_leave_elec_lower":   80
 	}
 }

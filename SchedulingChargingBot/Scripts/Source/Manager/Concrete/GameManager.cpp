@@ -26,11 +26,13 @@ GameManager::GameManager()
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 	#pragma endregion
 
-	#pragma region LoadData
+	#pragma region LoadConfigs
 	//加载配置文件
 	ConfigManager* _config = ConfigManager::Instance();
 	InitAssert(_config->LoadConfig("Data/Configs.json"), u8"Failed To Load Configs.json");
 	InitAssert(_config->LoadMap("Data/Map.csv"), u8"Failed To Load Map.csv");
+	//同为管理器，等ConfigManager加载完后再读取其配置，防止时序错误
+	SpawnManager::Instance()->LoadSimulationConfig();
 	#pragma endregion
 
 	#pragma region Window&Renderer

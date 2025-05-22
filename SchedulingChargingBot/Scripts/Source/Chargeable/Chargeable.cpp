@@ -9,6 +9,13 @@ Chargeable::Chargeable()
 	//初始化当前动画为闲置动画
 	animCurrent = &animIdle;
 
+	#pragma region LoadConfig
+	static ConfigManager* _cm = ConfigManager::Instance();
+	speed = _cm->chargeablePrefab.speed;
+	chargedCooldown = _cm->chargeablePrefab.chargedCooldown;
+	chargerCooldown = _cm->chargeablePrefab.chargerCooldown;
+	#pragma endregion
+
 	#pragma region SetTimer
 	//计时器需要持续更新以充电/放电，每次对当前电量做出一定数量改变
 	chargedTimer.SetOneShot(false);

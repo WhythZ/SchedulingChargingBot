@@ -6,11 +6,29 @@
 #include "../../../Header/Manager/Concrete/SceneManager.h"
 #include "../../../Header/Manager/Concrete/ScoreManager.h"
 #include "../../../Header/Manager/Concrete/AudioManager.h"
+#include "../../../Header/Manager/Concrete/ConfigManager.h"
 
 void SpawnManager::OnUpdate(double _delta)
 {
 	UpdateVehicleSpawn(_delta);
 	//UpdateRobotSpawn(_delta);
+}
+
+void SpawnManager::LoadSimulationConfig()
+{
+    static ConfigManager* _cm = ConfigManager::Instance();
+
+	vehicleNumLevelSmall = _cm->simulationPrefab.vehicleNumLevelSmall;
+	vehicleNumLevelMedium = _cm->simulationPrefab.vehicleNumLevelMedium;
+	vehicleNumLevelLarge = _cm->simulationPrefab.vehicleNumLevelLarge;
+	robotNumLevelSmall = _cm->simulationPrefab.robotNumLevelSmall;
+	robotNumLevelMedium = _cm->simulationPrefab.robotNumLevelMedium;
+	robotNumLevelLarge = _cm->simulationPrefab.robotNumLevelLarge;
+
+	vehicleSpawnTimeUpper = _cm->simulationPrefab.vehicleSpawnTimeUpper;
+	vehicleLeaveTimeSpan = _cm->simulationPrefab.vehicleLeaveTimeSpan;
+	vehicleSpawnElectricityUpper = _cm->simulationPrefab.vehicleSpawnElectricityUpper;
+	vehicleLeaveElectricityLower = _cm->simulationPrefab.vehicleLeaveElectricityLower;
 }
 
 void SpawnManager::ChangeLevel(ScaleLevel _level)
@@ -257,14 +275,14 @@ void SpawnManager::ChangeVehicleLevel(ScaleLevel _level)
         _task.vehicleTaskNo = _i;
         
         #pragma region RandomSpawnAndLeaveTime
-        _task.spawnTime = (double)(rand() % spawnTimeUpper + _i * 1);
-        _task.leaveTime = (double)(_task.spawnTime + leaveTimeSpan);
+        _task.spawnTime = (double)(rand() % vehicleSpawnTimeUpper + _i * 1);
+        _task.leaveTime = (double)(_task.spawnTime + vehicleLeaveTimeSpan);
         #pragma endregion
 
         #pragma region RandomElectricityDemand
         //初始电量及任务电量需求
-        _task.spawnElectricity = (double)(rand() % spawnElectricityUpper + 1);
-        _task.leaveElectricity = (double)(leaveElectricityLower + rand() % (100 - leaveElectricityLower) + 1);
+        _task.spawnElectricity = (double)(rand() % vehicleSpawnElectricityUpper + 1);
+        _task.leaveElectricity = (double)(vehicleLeaveElectricityLower + rand() % (100 - vehicleLeaveElectricityLower) + 1);
         #pragma endregion
 
         #pragma region RandomPosition
