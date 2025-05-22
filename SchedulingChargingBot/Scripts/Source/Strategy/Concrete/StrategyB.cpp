@@ -60,18 +60,23 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
     double rD = 0.0;                        // 返回充电桩距离
 
     for (Vehicle* v : vehicles) {
-        if (v->IsBusy() || !v->NeedElectricity()) continue;
+        if (v->IsBusy() || !v->NeedElectricity() || v->isMoving) continue;
 
         Vector2 vPos = v->GetPosition();
+        Vector2 vPilePos;                              //离锁定的vehicle最近充电桩位置
+        vPilePos.x = vPos.x >= 640 ? 1280 : 0;
+        vPilePos.y = vPos.y >= 448 ? 896 : 0;
         double distanceToVehicle = GetDistance(robotPos, vPos);
-        double distanceToCharger = GetDistance(vPos, PilePos); // PilePos: 充电桩位置
+        double distanceToCharger = GetDistance(vPos, vPilePos); // vPilePos: 离载具最近的充电桩位置
 
         // 可达性检查（足够电量移动到目标与返回充电桩）
         double moveDistance = (distanceToVehicle - 96) + distanceToCharger;
-        if (robot->GetCurrentElectricity() < moveDistance / 20) continue;
+        if (robot->GetCurrentElectricity() < moveDistance / 30) continue;
 
         // 计算价值
         double value = CalculateVehicleValue(v, sm->GetPassTime(), distanceToVehicle, distanceToCharger);
+        if (v->isTargeted && value <= v->TargetedValue)
+            continue;
         if (value > maxValue) 
         {
             maxValue = value;
@@ -89,7 +94,7 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
             if (((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
                 ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;
             robot->bestTarget = bT;
-            robot->lowestElectricity = rD / 20;
+            robot->lowestElectricity = rD / 30;
         }
         else if (bT->isTargeted && (bT->TargetedValue < maxValue)) {
             if (bT->isTargeted != robot) {
@@ -100,7 +105,7 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
             if (((Vehicle*)(robot->bestTarget)) != nullptr && ((Vehicle*)(robot->bestTarget)) != bT)
                 ((Vehicle*)(robot->bestTarget))->isTargeted = nullptr;
             robot->bestTarget = bT;
-            robot->lowestElectricity = rD / 20;
+            robot->lowestElectricity = rD / 30;
         }
     }
     else {
