@@ -72,15 +72,15 @@ void ButtonUI::OnInput(const SDL_Event& _event)
 				switch (_sm->GetCurrentLevel())
 				{
 				case SpawnManager::ScaleLevel::Small:
-					std::cout << "Change Scale Levtl To Medium\n";
+					//std::cout << "Change Scale Level To Medium\n";
 					_sm->ChangeLevel(SpawnManager::ScaleLevel::Medium);
 					break;
 				case SpawnManager::ScaleLevel::Medium:
-					std::cout << "Change Scale Levtl To Large\n";
+					//std::cout << "Change Scale Level To Large\n";
 					_sm->ChangeLevel(SpawnManager::ScaleLevel::Large);
 					break;
 				case SpawnManager::ScaleLevel::Large:
-					std::cout << "Change Scale Levtl To Small\n";
+					//std::cout << "Change Scale Level To Small\n";
 					_sm->ChangeLevel(SpawnManager::ScaleLevel::Small);
 					break;
 				}
