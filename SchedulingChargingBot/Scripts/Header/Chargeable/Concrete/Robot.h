@@ -27,7 +27,7 @@ public:
 	void ChangeState(std::string) override;
 
 	bool IsBusy() const override;
-	bool enoughElectricity() const;
+	bool EnoughElectricity() const;
 };
 
 #endif

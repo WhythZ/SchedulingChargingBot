@@ -54,7 +54,7 @@ void Robot::OnUpdate(double _delta)
 	{
 		#pragma region LinkVehicle
 		//有电才充电
-		if (HasElectricity() && enoughElectricity())
+		if (HasElectricity() && EnoughElectricity())
 		{
 			//遍历所有载具
 			for (Vehicle* _vehicle : _cm->GetVehicleList())
@@ -92,7 +92,7 @@ void Robot::OnUpdate(double _delta)
 			if (!HasElectricity()
 				|| !(((Vehicle*)charged)->GetCurrentElectricity() < ((Vehicle*)charged)->GetTargetElectricity())
 				|| !IsInRectArea(((Vehicle*)charged)->chargedRect)
-				|| !enoughElectricity())
+				|| !EnoughElectricity())
 			{
 				//将二者解绑
 				_cm->UntieRobotAndVehicle(this, charged);
@@ -160,7 +160,7 @@ bool Robot::IsBusy() const
 	return (isCharger || isCharged);
 }
 
-bool Robot::enoughElectricity() const
+bool Robot::EnoughElectricity() const
 {
 	return (currentElectricity >= lowestElectricity);
 }
