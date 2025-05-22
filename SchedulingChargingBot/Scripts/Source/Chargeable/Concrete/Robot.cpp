@@ -8,31 +8,34 @@ Robot::Robot()
 	#pragma region SetAnimation
 	//获取纹理数据
 	static SDL_Texture* _sheet = ResourceManager::Instance()->GetTexturePool().find(TextureResID::Robot)->second;
-	static const std::map<size_t, SDL_Rect>& _stationRects = SceneManager::Instance()->map.GetStationRects();
 
 	animIdle.SetLoop(true); animIdle.SetAnimFrames(_sheet, 3, 1, { 0 });
 	animCharged.SetLoop(true); animCharged.SetAnimFrames(_sheet, 3, 1, { 1 });
 	animCharger.SetLoop(true); animCharger.SetAnimFrames(_sheet, 3, 1, { 2 });
 	#pragma endregion
 
-	//初始化当前电量为最大电量
-	currentElectricity = 100.0;
-
 	#pragma region MovementDrainTimer
+	//获取充电桩Rect数据
+	static const std::map<size_t, SDL_Rect>& _stationRects = SceneManager::Instance()->map.GetStationRects();
+
+	//每0.05秒触发一次
 	movingDrainTimer.SetOneShot(false);
-	movingDrainTimer.SetWaitTime(0.05); // 每 0.05 秒触发一次
+	movingDrainTimer.SetWaitTime(0.05);
 	movingDrainTimer.SetTimeOutTrigger(
-	[&]()
-	{
-		if (velocity.Length() > 0.0 && !IsInRectsArea(_stationRects)) // 仅当正在移动且出了充电桩
+		[&]()
 		{
-			currentElectricity -= 0.25;
-			if (currentElectricity < 0.0)
-				currentElectricity = 0.0;
-		}
-	});
+			//仅当正在移动且出了充电桩
+			if (velocity.Length() > 0.0 && !IsInRectsArea(_stationRects))
+			{
+				currentElectricity -= 0.25;
+				if (currentElectricity < 0.0)
+					currentElectricity = 0.0;
+			}
+		});
 	#pragma endregion
 
+	//初始化当前电量为最大电量
+	currentElectricity = 100.0;
 }
 
 void Robot::OnUpdate(double _delta)
@@ -111,16 +114,20 @@ void Robot::OnUpdate(double _delta)
 	}
 	#pragma endregion
 
-	#pragma region ChangeBattery
-
+	#pragma region BatteryReact
 	for(Battery* _battery : _cm->GetBatteryList())
-		{
-		if(IsInRectArea(_battery->chargedRect) && (this->GetCurrentElectricity() < _battery->GetCurrentElectricity()))//在电池附近且电量少于电池。
-			{
-				_cm->SwitchElectricityRB(this, _battery);//交换电量。
-			}
-		}
+	{
+		//在电池附近且电量少于电池，交换电量
+		if((this->GetCurrentElectricity() < _battery->GetCurrentElectricity())
+			&& IsInRectArea(_battery->chargedRect))
+			_cm->SwitchElectricityRB(this, _battery);
+	}
 	#pragma endregion
+}
+
+void Robot::ChangeStrategy(Strategy* _strategy)
+{
+	strategy = _strategy;
 }
 
 void Robot::ChangeState(std::string _stateName)
@@ -146,11 +153,6 @@ void Robot::ChangeState(std::string _stateName)
 		isCharger = false;
 		isMoving = true;
 	}
-}
-
-void Robot::ChangeStrategy(Strategy* _strategy)
-{
-	strategy = _strategy;
 }
 
 bool Robot::IsBusy() const

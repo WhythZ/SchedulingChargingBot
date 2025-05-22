@@ -3,8 +3,9 @@
 
 #include "../Strategy.h"
 
-struct StrategyC :public Strategy
+class StrategyC :public Strategy
 {
+public:
 	void UpdateMovement(Chargeable*) override;
 };
 

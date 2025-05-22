@@ -39,7 +39,7 @@ private:
     ScaleLevel currentScaleLevel = ScaleLevel::Small;
 
     #pragma region VehicleTask
-    size_t spawnTimeUpper = 2;               //最长间隔多久生成
+    size_t spawnTimeUpper = 4;               //最长间隔多久生成
     size_t leaveTimeSpan = 30;               //待多久未被充满就先离开
 
     size_t spawnElectricityUpper = 40;       //初始电量上限
@@ -65,9 +65,9 @@ private:
     size_t vehicleNumLevelMedium = 400;
     size_t vehicleNumLevelLarge = 1600;
 
-    size_t robotNumLevelSmall = 4;
-    size_t robotNumLevelMedium = 16;
-    size_t robotNumLevelLarge = 64;
+    size_t robotNumLevelSmall = 8;
+    size_t robotNumLevelMedium = 32;
+    size_t robotNumLevelLarge = 128;
     #pragma endregion
 
 public:
