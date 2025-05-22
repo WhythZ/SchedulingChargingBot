@@ -2,6 +2,7 @@
 #define _STRATEGY_B_H_
 
 #include "../Strategy.h"
+#include "../../Chargeable/Concrete/Vehicle.h"
 
 class StrategyB :public Strategy
 {
