@@ -7,7 +7,7 @@
 	},
 	"chargeable":
 	{
-		"vehicle_speed":              400,
+		"vehicle_speed":              600,
 		"robot_speed":                850,
 		"charged_cooldown":           0.008,
 		"charger_cooldown":           0.01
@@ -21,9 +21,9 @@
 		"r_num_medium":               8,
 		"r_num_large":                12,
 
-		"v_spawn_time_upper_small":   2,
-		"v_spawn_time_upper_medium":  1,
-		"v_spawn_time_upper_large":   0.6,
+		"v_spawn_time_upper_small":   4,
+		"v_spawn_time_upper_medium":  3,
+		"v_spawn_time_upper_large":   2,
 		
 		"v_leave_time_span_small":    20,
 		"v_leave_time_span_medium":   24,
