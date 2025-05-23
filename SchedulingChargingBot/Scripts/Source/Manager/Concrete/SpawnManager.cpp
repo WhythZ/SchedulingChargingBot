@@ -208,7 +208,8 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
             if (_flagHit)
             {
                 hitVehicleNum++;
-                AudioManager::Instance()->PlaySFX(SoundResID::HitVehicle);
+                //有点吵，关了先
+                //AudioManager::Instance()->PlaySFX(SoundResID::HitVehicle);
             }
             else if (_flagMiss)
             {
