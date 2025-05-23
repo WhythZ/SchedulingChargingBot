@@ -87,7 +87,7 @@ private:
 	SpawnManager() = default;
 	~SpawnManager() = default;
 
-    void RefreshVehicleTasks();                   //清空所有任务
+    void RefreshVehicleTasks();                   //重置所有任务
     void UpdateVehicleSpawn(double);              //处理载具的到达与上线
     void ChangeVehicleLevel(ScaleLevel);
     void ChangeRobotLevel(ScaleLevel);

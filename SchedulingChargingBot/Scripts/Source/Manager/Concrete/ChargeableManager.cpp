@@ -1,5 +1,6 @@
 ﻿#include "../../../Header/Manager/Concrete/ChargeableManager.h"
 #include "../../../Header/Manager/Concrete/SceneManager.h"
+#include "../../../Header/Manager/Concrete/SpawnManager.h"
 #include "../../../Header/Chargeable/Concrete/Vehicle.h"
 #include "../../../Header/Chargeable/Concrete/Robot.h"
 #include "../../../Header/Chargeable/Concrete/Battery.h"
@@ -137,6 +138,10 @@ void ChargeableManager::UntieRobotAndVehicle(Chargeable* _robot, Chargeable* _ve
 
 void ChargeableManager::ChangeStrategy(StrategyType _type)
 {
+	//重置当前任务
+	static SpawnManager* _sm = SpawnManager::Instance();
+	_sm->ChangeLevel(_sm->GetCurrentLevel());
+
 	//更新策略类型
 	switch (_type)
 	{

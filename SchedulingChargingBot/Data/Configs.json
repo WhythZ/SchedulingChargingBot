@@ -9,8 +9,8 @@
 	{
 		"vehicle_speed":              600,
 		"robot_speed":                850,
-		"charged_cooldown":           0.008,
-		"charger_cooldown":           0.01
+		"charged_cooldown":           0.015,
+		"charger_cooldown":           0.015
 	},
 	"simulation":
 	{
@@ -25,9 +25,9 @@
 		"v_spawn_time_upper_medium":  3,
 		"v_spawn_time_upper_large":   2,
 		
-		"v_leave_time_span_small":    20,
-		"v_leave_time_span_medium":   24,
-		"v_leave_time_span_large":    28,
+		"v_leave_time_span_small":    10,
+		"v_leave_time_span_medium":   8,
+		"v_leave_time_span_large":    6,
 		
 		"v_spawn_elec_upper":         30,
 		"v_leave_elec_lower":         90

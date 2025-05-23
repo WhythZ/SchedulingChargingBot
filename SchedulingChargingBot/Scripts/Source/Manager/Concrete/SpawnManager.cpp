@@ -42,7 +42,7 @@ void SpawnManager::ChangeLevel(ScaleLevel _level)
     currentScaleLevel = _level;
 
     //清空
-    ChargeableManager::Instance()->ClearAll();
+    RefreshVehicleTasks();
 
     //重新加载
     ChangeVehicleLevel(_level);
@@ -66,6 +66,9 @@ size_t SpawnManager::GetMissVehicleNum() const
 
 void SpawnManager::RefreshVehicleTasks()
 {
+    //清空实例
+    ChargeableManager::Instance()->ClearAll();
+
     //重置载具生成相关数据
     tasks.clear();
     while (!pendingQueue.empty()) pendingQueue.pop();
@@ -249,9 +252,6 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
 
 void SpawnManager::ChangeVehicleLevel(ScaleLevel _level)
 {
-    //重置当前场景中的车辆相关变量
-    RefreshVehicleTasks();
-
     #pragma region ScaleLevelNum
     size_t _vehicleNum = 0;
     switch (_level)
