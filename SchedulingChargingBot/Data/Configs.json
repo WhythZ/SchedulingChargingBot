@@ -7,27 +7,27 @@
 	},
 	"chargeable":
 	{
-		"vehicle_speed":              600,
+		"vehicle_speed":              400,
 		"robot_speed":                850,
-		"charged_cooldown":           0.015,
-		"charger_cooldown":           0.015
+		"charged_cooldown":           0.008,
+		"charger_cooldown":           0.01
 	},
 	"simulation":
 	{
 		"v_num_small":                24,
-		"v_num_medium":               60,
-		"v_num_large":                105,
+		"v_num_medium":               66,
+		"v_num_large":                120,
 		"r_num_small":                5,
-		"r_num_medium":               8,
-		"r_num_large":                12,
+		"r_num_medium":               9,
+		"r_num_large":                10,
 
-		"v_spawn_time_upper_small":   4,
-		"v_spawn_time_upper_medium":  3,
-		"v_spawn_time_upper_large":   2,
+		"v_spawn_time_upper_small":   2,
+		"v_spawn_time_upper_medium":  1,
+		"v_spawn_time_upper_large":   1,
 		
-		"v_leave_time_span_small":    10,
-		"v_leave_time_span_medium":   8,
-		"v_leave_time_span_large":    6,
+		"v_leave_time_span_small":    20,
+		"v_leave_time_span_medium":   22,
+		"v_leave_time_span_large":    25,
 		
 		"v_spawn_elec_upper":         30,
 		"v_leave_elec_lower":         90
