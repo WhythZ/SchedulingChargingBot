@@ -239,5 +239,8 @@
     <ClInclude Include="Scripts\Header\Manager\Concrete\SpawnManager.h">
       <Filter>头文件\Manager\Concrete</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Header\Infrastructure\ObjectPool.hpp">
+      <Filter>头文件\Infrastructure</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

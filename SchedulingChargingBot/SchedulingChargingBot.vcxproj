@@ -167,6 +167,7 @@
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Robot.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Concrete\Vehicle.h" />
     <ClInclude Include="Scripts\Header\Infrastructure\Animation.h" />
+    <ClInclude Include="Scripts\Header\Infrastructure\ObjectPool.hpp" />
     <ClInclude Include="Scripts\Header\Infrastructure\Timer.h" />
     <ClInclude Include="Scripts\Header\Infrastructure\Vector2.h" />
     <ClInclude Include="Scripts\Header\Chargeable\Chargeable.h" />

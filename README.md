@@ -11,7 +11,7 @@ There are particular quantity of autonomous charging robots in the industrial pa
 ## Solution
 This project uses SDL2 to visualize the scheduling process
 
-![Cover.png](https://github.com/WhythZ/SchedulingChargingBot/blob/master/Cover.png)
+![Cover.png](https://github.com/WhythZ/SchedulingChargingBot/blob/master/Cover.gif)
 
 There are three levels of problem scale
 - Small 
