@@ -9,19 +9,9 @@ There are particular quantity of autonomous charging robots in the industrial pa
 - Each of the robots needs to be charged somewhere, and can move to charge vehicle if they themselves have enough electricity
 
 ## Solution
-This project uses SDL2 to visualize the scheduling process
+This project uses SDL2 to visualize the scheduling process simulated with multiple scales and strategies, you can read or expand the strategies in `SchedulingChargingBot\Scripts\Header\Strategy\Concrete\` folder
 
 ![Cover.png](https://github.com/WhythZ/SchedulingChargingBot/blob/master/Cover.gif)
-
-There are three levels of problem scale
-- Small 
-- Medium 
-- Large 
-
-There are three strategies
-- `StrategyA` 
-- `StrategyB` 
-- `StrategyC` 
 
 ## Acknowledgement
 - [Le1zyCatt](https://github.com/Le1zyCatt)
