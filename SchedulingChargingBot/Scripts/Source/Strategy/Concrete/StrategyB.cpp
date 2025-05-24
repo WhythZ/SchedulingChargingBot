@@ -62,7 +62,7 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
 
         //¼ÆËã¼ÛÖµ
         double _value = CalculateVehicleValue(_v, _sm->GetPassTime(), _distanceToVehicle, _distanceToStation);
-        if (_v->isTargeted && _value <= _v->TargetedValue)
+        if (_v->isTargeted && _value <= _v->targetedValue)
             continue;
         if (_value > _maxValue) 
         {
@@ -78,20 +78,20 @@ void StrategyB::UpdateMovement(Chargeable* _chargeable)
         if (!_bT->isTargeted)
         {
             _bT->isTargeted = _robot;
-			_bT->TargetedValue = _maxValue;
+			_bT->targetedValue = _maxValue;
             if (((Vehicle*)(_robot->bestTarget)) != nullptr && ((Vehicle*)(_robot->bestTarget)) != _bT)
                 ((Vehicle*)(_robot->bestTarget))->isTargeted = nullptr;
             _robot->bestTarget = _bT;
             _robot->lowestElectricity = _rD / 30;
         }
-        else if (_bT->isTargeted && (_bT->TargetedValue < _maxValue))
+        else if (_bT->isTargeted && (_bT->targetedValue < _maxValue))
         {
             if (_bT->isTargeted != _robot)
             {
                 ((Robot*)(_bT->isTargeted))->bestTarget = nullptr;
                 _bT->isTargeted = _robot;
             }
-            _bT->TargetedValue = _maxValue;
+            _bT->targetedValue = _maxValue;
             if (((Vehicle*)(_robot->bestTarget)) != nullptr && ((Vehicle*)(_robot->bestTarget)) != _bT)
                 ((Vehicle*)(_robot->bestTarget))->isTargeted = nullptr;
             _robot->bestTarget = _bT;

@@ -44,7 +44,7 @@ void StrategyC::UpdateMovement(Chargeable* _chargeable)
         double _dist = (_robotPos - _vPos).Length();
 
         double distance_v = (_vPos - _robotPos).Length();
-        if (_v->isTargeted && distance_v > _v->TargetedDistance) continue;
+        if (_v->isTargeted && distance_v > _v->targetedDistance) continue;
 
         Vector2 _vPile = { _vPos.x >= 640.0 ? 1280.0 : 0.0, _vPos.y >= 448.0 ? 896.0 : 0.0 };
         double _moveDist = _dist + (_vPos - _vPile).Length();
@@ -58,7 +58,7 @@ void StrategyC::UpdateMovement(Chargeable* _chargeable)
         double _value = _v->GetTargetElectricity() - _v->GetCurrentElectricity();
         //±ÜÃâ³ý0
         double _score = _value / (_dist + 1);
-        if (_v->isTargeted && _value < _v->TargetedValue) continue;
+        if (_v->isTargeted && _value < _v->targetedValue) continue;
 
         if (_score > _bestScore)
         {
@@ -71,14 +71,14 @@ void StrategyC::UpdateMovement(Chargeable* _chargeable)
     //×î¼ÑÄ¿±ê
     if (_bestVehicle)
     {
-        if (!_bestVehicle->isTargeted || _bestVehicle->TargetedValue < _bestScore)
+        if (!_bestVehicle->isTargeted || _bestVehicle->targetedValue < _bestScore)
         {
             if (_bestVehicle->isTargeted && _bestVehicle->isTargeted != _robot)
                 ((Robot*)_bestVehicle->isTargeted)->bestTarget = nullptr;
 
             _bestVehicle->isTargeted = _robot;
-            _bestVehicle->TargetedDistance = _minDistance;
-            _bestVehicle->TargetedValue = _bestScore;
+            _bestVehicle->targetedDistance = _minDistance;
+            _bestVehicle->targetedValue = _bestScore;
 
             if (_robot->bestTarget && _robot->bestTarget != _bestVehicle)
                 ((Vehicle*)(_robot->bestTarget))->isTargeted = nullptr;

@@ -21,6 +21,6 @@ void RimUI::OnRender(SDL_Renderer* _renderer)
 	for (const Vehicle* _vehicle : _vehicleList)
 	{
 		const SDL_Rect& _rect = _vehicle->chargedRect;
-		UIManager::Instance()->DrawBox(_renderer, { _rect.x, _rect.y }, { _rect.w, _rect.h }, { 0, 0, 255, 100 });
+		UIManager::Instance()->DrawBox(_renderer, { _rect.x, _rect.y }, { _rect.w, _rect.h }, _vehicle->rimColor);
 	}
 }

@@ -47,7 +47,7 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
 
         Vector2 _vPos = _v->GetPosition();
         double _distance = (_vPos - _robotPos).Length();
-        if (_v->isTargeted && _distance >= _v->TargetedDistance)
+        if (_v->isTargeted && _distance >= _v->targetedDistance)
             continue;
 
         //可达性检查（足够电量移动到目标与返回充电桩）
@@ -82,20 +82,20 @@ void StrategyA::UpdateMovement(Chargeable* _chargeable)
         if (!_bT->isTargeted)
         {
             _bT->isTargeted = _robot;
-            _bT->TargetedDistance = _minDistance;
+            _bT->targetedDistance = _minDistance;
             if (((Vehicle*)(_robot->bestTarget)) != nullptr && ((Vehicle*)(_robot->bestTarget)) != _bT)
                 ((Vehicle*)(_robot->bestTarget))->isTargeted = nullptr;
             _robot->bestTarget = _bT;
             _robot->lowestElectricity = _rD / 30;
         }
-        else if (_bT->isTargeted && (_bT->TargetedDistance > _minDistance))
+        else if (_bT->isTargeted && (_bT->targetedDistance > _minDistance))
         {
             if(_bT->isTargeted != _robot)
             {
 				((Robot*)(_bT->isTargeted))->bestTarget = nullptr;
                 _bT->isTargeted = _robot;
             }
-            _bT->TargetedDistance = _minDistance;
+            _bT->targetedDistance = _minDistance;
             if(((Vehicle*)(_robot->bestTarget)) != nullptr && ((Vehicle*)(_robot->bestTarget)) != _bT)
                 ((Vehicle*)(_robot->bestTarget))->isTargeted = nullptr;
             _robot->bestTarget = _bT;

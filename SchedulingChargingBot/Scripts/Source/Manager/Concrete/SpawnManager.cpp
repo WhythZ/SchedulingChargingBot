@@ -213,11 +213,15 @@ void SpawnManager::UpdateVehicleSpawn(double _delta)
                 hitVehicleNum++;
                 //有点吵，关了先
                 //AudioManager::Instance()->PlaySFX(SoundResID::HitVehicle);
+                //Rim变色
+                _v->rimColor = { 0, 255, 0, 100 };
             }
             else if (_flagMiss)
             {
                 missVehicleNum++;
                 AudioManager::Instance()->PlaySFX(SoundResID::MissVehicle);
+                //Rim变色
+				_v->rimColor = { 255, 0, 0, 100 };
             }
         }
         else
