@@ -14,47 +14,47 @@
 GameManager::GameManager()
 {
 	#pragma region SDL
-	//³õÊ¼»¯SDL¿âµÄËùÓĞ×ÓÏµÍ³£»ÒòÎªSDL_Initº¯Êı·µ»Ø0±íÊ¾³É¹¦£¬ËùÒÔ´Ë´¦µÚÒ»¸ö´«Èë²ÎÊıÈ¡·´
+	//åˆå§‹åŒ–SDLåº“çš„æ‰€æœ‰å­ç³»ç»Ÿï¼›å› ä¸ºSDL_Initå‡½æ•°è¿”å›0è¡¨ç¤ºæˆåŠŸï¼Œæ‰€ä»¥æ­¤å¤„ç¬¬ä¸€ä¸ªä¼ å…¥å‚æ•°å–å
 	InitAssert(!SDL_Init(SDL_INIT_EVERYTHING), u8"Failed To Init SDL");
-	//³õÊ¼»¯SDL_ttf¿â£»TTF_Initº¯Êı·µ»Ø0±íÊ¾³É¹¦
+	//åˆå§‹åŒ–SDL_ttfåº“ï¼›TTF_Initå‡½æ•°è¿”å›0è¡¨ç¤ºæˆåŠŸ
 	InitAssert(!TTF_Init(), u8"Failed To Init SDL_ttf");
-	//³õÊ¼»¯SDL_image¿âµÄ¸÷Ö§³Ö¸ñÊ½£»IMG_Initº¯Êı·µ»Ø·ÇÁãÖµ±íÊ¾³É¹¦£¬ËùÒÔÖ±½Ó´«Èë¼´¿É
+	//åˆå§‹åŒ–SDL_imageåº“çš„å„æ”¯æŒæ ¼å¼ï¼›IMG_Initå‡½æ•°è¿”å›éé›¶å€¼è¡¨ç¤ºæˆåŠŸï¼Œæ‰€ä»¥ç›´æ¥ä¼ å…¥å³å¯
 	InitAssert(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG), u8"Failed To Init SDL_image");
-	//³õÊ¼»¯SDL_mixer¿âµÄÖ§³Ö¸ñÊ½£»Mix_Initº¯Êı·µ»Ø·ÇÁãÖµ±íÊ¾³É¹¦
+	//åˆå§‹åŒ–SDL_mixeråº“çš„æ”¯æŒæ ¼å¼ï¼›Mix_Initå‡½æ•°è¿”å›éé›¶å€¼è¡¨ç¤ºæˆåŠŸ
 	InitAssert(Mix_Init(MIX_INIT_MP3), u8"Failed To Init SDL_mixer");
-	//´ò¿ª»ìÒôÆ÷µÄÉùµÀ£¬Mix_OpenAudio(ÒôÆµ²ÉÑùÂÊ, ½âÂëÒôÆµ¸ñÊ½, ÉùµÀÊı, ÒôÆµ½âÂë»º³åÇø´óĞ¡)
+	//æ‰“å¼€æ··éŸ³å™¨çš„å£°é“ï¼ŒMix_OpenAudio(éŸ³é¢‘é‡‡æ ·ç‡, è§£ç éŸ³é¢‘æ ¼å¼, å£°é“æ•°, éŸ³é¢‘è§£ç ç¼“å†²åŒºå¤§å°)
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 	#pragma endregion
 
 	#pragma region LoadConfigs
-	//¼ÓÔØÅäÖÃÎÄ¼ş
+	//åŠ è½½é…ç½®æ–‡ä»¶
 	ConfigManager* _config = ConfigManager::Instance();
 	InitAssert(_config->LoadConfig("Data/Configs.json"), u8"Failed To Load Configs.json");
 	InitAssert(_config->LoadMap("Data/Map.csv"), u8"Failed To Load Map.csv");
-	//Í¬Îª¹ÜÀíÆ÷£¬µÈConfigManager¼ÓÔØÍêºóÔÙ¶ÁÈ¡ÆäÅäÖÃ£¬·ÀÖ¹Ê±Ğò´íÎó
+	//åŒä¸ºç®¡ç†å™¨ï¼Œç­‰ConfigManageråŠ è½½å®Œåå†è¯»å–å…¶é…ç½®ï¼Œé˜²æ­¢æ—¶åºé”™è¯¯
 	SpawnManager::Instance()->LoadSimulationConfig();
 	#pragma endregion
 
 	#pragma region Window&Renderer
-	//´ÓÆÁÄ»ÖĞĞÄÏÔÊ¾Ò»¸ö´ø±êÌâµÄÌØ¶¨³ß´çµÄÒ»°ãÑùÊ½µÄ´°¿Ú
+	//ä»å±å¹•ä¸­å¿ƒæ˜¾ç¤ºä¸€ä¸ªå¸¦æ ‡é¢˜çš„ç‰¹å®šå°ºå¯¸çš„ä¸€èˆ¬æ ·å¼çš„çª—å£
 	window = SDL_CreateWindow(_config->basicPrefab.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		_config->basicPrefab.windowWidth, _config->basicPrefab.windowHeight, SDL_WINDOW_SHOWN);
-	//¼ì²â´°¿ÚÊÇ·ñ³õÊ¼»¯³É¹¦
-	InitAssert(window, "Failed To Create Window");
+	//æ£€æµ‹çª—å£æ˜¯å¦åˆå§‹åŒ–æˆåŠŸ
+	InitAssert(window, u8"Failed To Create Window");
 
-	//¼ÓÔØäÖÈ¾Æ÷µ½´°¿ÚwindowÉÏ£¬µÚÈı²ÎÊıÎ»Ê¹ÓÃÁËÈıÖÖäÖÈ¾¼¼Êõ
-	//SDL_RENDERER_ACCELERATED£ºÓ²¼ş¼ÓËÙ
-	//SDL_RENDERER_PRESENTVSYNC£º´¹Ö±Í¬²½£¬ÊÇÒ»ÖÖÎªÁËÏû³ıÆÁÄ»ËºÁÑ£¨²úÉúÓÚ´°¿ÚÊÓÆµÖ¡ÂÊÓëÏÔÊ¾Æ÷Ë¢ĞÂÂÊ²»Í¬²½£©µÄÏÔÊ¾¼¼Êõ
-	//SDL_RENDERER_TARGETTEXTURE£º½«äÖÈ¾Ä¿±êÉèÖÃÎªÎÆÀí£¬¼´ÏÈäÖÈ¾ÎÆÀíÍ¼Æ¬£¬ÔÙ½«Í¼Æ¬äÖÈ¾µ½´°¿Ú£¬ÓÃÓÚÍßÆ¬µØÍ¼µÄÉú³É
+	//åŠ è½½æ¸²æŸ“å™¨åˆ°çª—å£windowä¸Šï¼Œç¬¬ä¸‰å‚æ•°ä½ä½¿ç”¨äº†ä¸‰ç§æ¸²æŸ“æŠ€æœ¯
+	//SDL_RENDERER_ACCELERATEDï¼šç¡¬ä»¶åŠ é€Ÿ
+	//SDL_RENDERER_PRESENTVSYNCï¼šå‚ç›´åŒæ­¥ï¼Œæ˜¯ä¸€ç§ä¸ºäº†æ¶ˆé™¤å±å¹•æ’•è£‚ï¼ˆäº§ç”Ÿäºçª—å£è§†é¢‘å¸§ç‡ä¸æ˜¾ç¤ºå™¨åˆ·æ–°ç‡ä¸åŒæ­¥ï¼‰çš„æ˜¾ç¤ºæŠ€æœ¯
+	//SDL_RENDERER_TARGETTEXTUREï¼šå°†æ¸²æŸ“ç›®æ ‡è®¾ç½®ä¸ºçº¹ç†ï¼Œå³å…ˆæ¸²æŸ“çº¹ç†å›¾ç‰‡ï¼Œå†å°†å›¾ç‰‡æ¸²æŸ“åˆ°çª—å£ï¼Œç”¨äºç“¦ç‰‡åœ°å›¾çš„ç”Ÿæˆ
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
-	//¼ì²âäÖÈ¾Æ÷ÊÇ·ñ³õÊ¼»¯³É¹¦
-	InitAssert(renderer, "Failed To Create Renderer");
+	//æ£€æµ‹æ¸²æŸ“å™¨æ˜¯å¦åˆå§‹åŒ–æˆåŠŸ
+	InitAssert(renderer, u8"Failed To Create Renderer");
 	#pragma endregion
 
 	#pragma region LoadResource
-	//¼ÓÔØ×ÊÔ´
+	//åŠ è½½èµ„æº
 	InitAssert(ResourceManager::Instance()->LoadResource(renderer), u8"Failed To Load Resources");
-	//Éú³É³¡¾°ÎÆÀí
+	//ç”Ÿæˆåœºæ™¯çº¹ç†
 	InitAssert(SceneManager::Instance()->Init(renderer), u8"Failed To Init SceneManager");
 	#pragma endregion
 
@@ -63,10 +63,10 @@ GameManager::GameManager()
 
 GameManager::~GameManager()
 {
-	//×¢ÒâÎö¹¹Ë³Ğò£¬ÏÈÏú»ÙäÖÈ¾Æ÷Óë´°¿Ú
+	//æ³¨æ„ææ„é¡ºåºï¼Œå…ˆé”€æ¯æ¸²æŸ“å™¨ä¸çª—å£
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	//×îºóÊÍ·Å¿âµÄ³õÊ¼»¯ÄÚÈİ£¬ÒòÎªÉÏÃæÁ½¸öÊÇÒÀÀµÓÚ¿â¶ø´æÔÚµÄ
+	//æœ€åé‡Šæ”¾åº“çš„åˆå§‹åŒ–å†…å®¹ï¼Œå› ä¸ºä¸Šé¢ä¸¤ä¸ªæ˜¯ä¾èµ–äºåº“è€Œå­˜åœ¨çš„
 	Mix_Quit();
 	IMG_Quit();
 	TTF_Quit();
@@ -76,43 +76,43 @@ GameManager::~GameManager()
 int GameManager::Run(int _argc, char** _argv)
 {
 	#pragma region LimitFPS
-	//´Ëº¯Êı»ñÈ¡Ò»¸ö¸ßĞÔÄÜ£¨¾«¶È½Ï¸ß£©¼ÆÊ±Æ÷£¬º¯Êı·µ»ØµÄÖµ£¨¼ÆÊ±Æ÷ÌøµÄ×ÜÊı£©×÷Îª¼ÆÊ±Æ÷µÄÆğµã£¬Í¨¹ı×÷²îºó³ıÒÔÆµÂÊ²ÅÓĞÒâÒå
+	//æ­¤å‡½æ•°è·å–ä¸€ä¸ªé«˜æ€§èƒ½ï¼ˆç²¾åº¦è¾ƒé«˜ï¼‰è®¡æ—¶å™¨ï¼Œå‡½æ•°è¿”å›çš„å€¼ï¼ˆè®¡æ—¶å™¨è·³çš„æ€»æ•°ï¼‰ä½œä¸ºè®¡æ—¶å™¨çš„èµ·ç‚¹ï¼Œé€šè¿‡ä½œå·®åé™¤ä»¥é¢‘ç‡æ‰æœ‰æ„ä¹‰
 	Uint64 _lastCounter = SDL_GetPerformanceCounter();
-	//ÆµÂÊ¼´Ã¿Ò»Ãë´Ë¼ÆÊ±Æ÷»áÌø¶àÉÙ´Î
+	//é¢‘ç‡å³æ¯ä¸€ç§’æ­¤è®¡æ—¶å™¨ä¼šè·³å¤šå°‘æ¬¡
 	Uint64 _counterFreq = SDL_GetPerformanceFrequency();
 	#pragma endregion
 
-	//ÓÎÏ·Ö÷Ñ­»·
+	//æ¸¸æˆä¸»å¾ªç¯
 	while (!isQuit)
 	{
 		#pragma region LimitFPS
-		//»ñÈ¡µ±Ç°µÄ¼ÆÊ±Æ÷ÌøµÄ×ÜÊı£¬ÓÃÒÔÓëÖ÷Ñ­»·Ç°µÃµ½µÄ¼ÆÊ±Æ÷×ÜÊı×÷²î
+		//è·å–å½“å‰çš„è®¡æ—¶å™¨è·³çš„æ€»æ•°ï¼Œç”¨ä»¥ä¸ä¸»å¾ªç¯å‰å¾—åˆ°çš„è®¡æ—¶å™¨æ€»æ•°ä½œå·®
 		Uint64 _currentCounter = SDL_GetPerformanceCounter();
-		//×÷²îºó×ª»»ÎªË«¾«¶È¸¡µã£¬³ıÒÔÆµÂÊµÃµ½Ã¿´ÎÑ­»·µÄÊ±¼ä¼ä¸ô£¨µ¥Î»ÎªÃë£©
+		//ä½œå·®åè½¬æ¢ä¸ºåŒç²¾åº¦æµ®ç‚¹ï¼Œé™¤ä»¥é¢‘ç‡å¾—åˆ°æ¯æ¬¡å¾ªç¯çš„æ—¶é—´é—´éš”ï¼ˆå•ä½ä¸ºç§’ï¼‰
 		double _delta = (double)(_currentCounter - _lastCounter) / _counterFreq;
-		//½«µ±Ç°µÄ´ÎÊı×÷ÎªÆğµã£¬½øĞĞÏÂÒ»´ÎÑ­»·
+		//å°†å½“å‰çš„æ¬¡æ•°ä½œä¸ºèµ·ç‚¹ï¼Œè¿›è¡Œä¸‹ä¸€æ¬¡å¾ªç¯
 		_lastCounter = _currentCounter;
-		//¶¯Ì¬ÑÓÊ±¿ØÖÆÖ¡ÂÊ£¬ÈôÊÇÖ¡ÂÊ³¬¹ıÁËÏŞ¶¨Öµ£¬ÄÇÃ´¾Í½«¶àÓàµÄÊ±¼äÑÓ³Ùµô·ÀÖ¹Ö÷Ñ­»·ÆµÂÊ¹ı¿ì£»³ËÒÔ1000ÊÇ½«Ãë×ª»¯ÎªºÁÃë£¬ÒòÎªÃëÕâ¸öµ¥Î»Ì«´ó¶ø¾«¶È²»¸ß
+		//åŠ¨æ€å»¶æ—¶æ§åˆ¶å¸§ç‡ï¼Œè‹¥æ˜¯å¸§ç‡è¶…è¿‡äº†é™å®šå€¼ï¼Œé‚£ä¹ˆå°±å°†å¤šä½™çš„æ—¶é—´å»¶è¿Ÿæ‰é˜²æ­¢ä¸»å¾ªç¯é¢‘ç‡è¿‡å¿«ï¼›ä¹˜ä»¥1000æ˜¯å°†ç§’è½¬åŒ–ä¸ºæ¯«ç§’ï¼Œå› ä¸ºç§’è¿™ä¸ªå•ä½å¤ªå¤§è€Œç²¾åº¦ä¸é«˜
 		if (_delta * 1000 < 1000.0 / fps)
 			SDL_Delay((Uint32)(1000.0 / fps - _delta * 1000));
 		#pragma endregion
 
-		//À­È¡²¢´¦ÀíÊÂ¼şÒÔ±£Ö¤´°¿ÚÕı³£½»»¥
+		//æ‹‰å–å¹¶å¤„ç†äº‹ä»¶ä»¥ä¿è¯çª—å£æ­£å¸¸äº¤äº’
 		while (SDL_PollEvent(&event))
 			OnInput();
 
-		//Êı¾İ¸üĞÂ¼ì²â
+		//æ•°æ®æ›´æ–°æ£€æµ‹
 		OnUpdate(_delta);
 
 		#pragma region Render
-		//È·¶¨äÖÈ¾µÄÑÕÉ«Îª´¿ºÚ£¨²»Í¸Ã÷£©£¬½ÓÊÕRGBÈıÉ«ÓëAlpha£¨¼ÇÂ¼Í¼ÏñµÄÍ¸Ã÷¶ÈĞÅÏ¢µÄ256¼¶»Ò¶È£©
+		//ç¡®å®šæ¸²æŸ“çš„é¢œè‰²ä¸ºçº¯é»‘ï¼ˆä¸é€æ˜ï¼‰ï¼Œæ¥æ”¶RGBä¸‰è‰²ä¸Alphaï¼ˆè®°å½•å›¾åƒçš„é€æ˜åº¦ä¿¡æ¯çš„256çº§ç°åº¦ï¼‰
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		//Ê¹ÓÃÉè¶¨µÄ²»Í¸Ã÷ºÚÉ«Ìî³äÕû¸ö´°¿Ú´ïµ½ÇåÆÁµÄĞ§¹û
+		//ä½¿ç”¨è®¾å®šçš„ä¸é€æ˜é»‘è‰²å¡«å……æ•´ä¸ªçª—å£è¾¾åˆ°æ¸…å±çš„æ•ˆæœ
 		SDL_RenderClear(renderer);
 
-		//ÔÚ¾­ÀúÁËÉÏÊö×¼±¸ºó£¬½øĞĞ¾ßÌåµÄäÖÈ¾»æÍ¼
+		//åœ¨ç»å†äº†ä¸Šè¿°å‡†å¤‡åï¼Œè¿›è¡Œå…·ä½“çš„æ¸²æŸ“ç»˜å›¾
 		OnRender();
-		//½«äÖÈ¾µÄÄÚÈİ¸üĞÂµ½´°¿Ú»º³åÇøÉÏ
+		//å°†æ¸²æŸ“çš„å†…å®¹æ›´æ–°åˆ°çª—å£ç¼“å†²åŒºä¸Š
 		SDL_RenderPresent(renderer);
 		#pragma endregion
 	}
@@ -121,30 +121,30 @@ int GameManager::Run(int _argc, char** _argv)
 
 void GameManager::InitAssert(bool _flag, const char* _errMsg)
 {
-	//Èç¹û³õÊ¼»¯³É¹¦£¬ÄÇÃ´ÎŞÊÂ·¢Éú£¬Ö±½Ó·µ»Ø
+	//å¦‚æœåˆå§‹åŒ–æˆåŠŸï¼Œé‚£ä¹ˆæ— äº‹å‘ç”Ÿï¼Œç›´æ¥è¿”å›
 	if (_flag) return;
-	//Èç¹û³õÊ¼»¯Ê§°Ü£¬ÄÇÃ´¾ÍÓÃSDL´´½¨Ò»¸ö±¨´íÏûÏ¢´°¿Ú£¬¸Ãº¯Êı(ÏûÏ¢ÀàĞÍ, ´°¿Ú±êÌâ, ÏêÏ¸±¨´íĞÅÏ¢, ×÷ÎªË­µÄ×Ó´°¿Ú)
-	//µÚËÄ¸ö²ÎÊıÈç¹ûÌîNULL£¬ÄÇÃ´±¨´í´°¿Ú²»×÷Îª×Ó´°¿Ú£»ÈôÊÇÓĞ´«Èë´°¿Ú£¬ÄÇÃ´±¨´í´°¿Ú½«×÷Îª´«ÈëµÄ´°¿ÚµÄ×Ó´°¿Ú£¬Èô×Ó´°¿Ú²»¹Øµô£¬¸¸´°¿ÚÎŞ·¨±»ÓÃ»§½»»¥
+	//å¦‚æœåˆå§‹åŒ–å¤±è´¥ï¼Œé‚£ä¹ˆå°±ç”¨SDLåˆ›å»ºä¸€ä¸ªæŠ¥é”™æ¶ˆæ¯çª—å£ï¼Œè¯¥å‡½æ•°(æ¶ˆæ¯ç±»å‹, çª—å£æ ‡é¢˜, è¯¦ç»†æŠ¥é”™ä¿¡æ¯, ä½œä¸ºè°çš„å­çª—å£)
+	//ç¬¬å››ä¸ªå‚æ•°å¦‚æœå¡«NULLï¼Œé‚£ä¹ˆæŠ¥é”™çª—å£ä¸ä½œä¸ºå­çª—å£ï¼›è‹¥æ˜¯æœ‰ä¼ å…¥çª—å£ï¼Œé‚£ä¹ˆæŠ¥é”™çª—å£å°†ä½œä¸ºä¼ å…¥çš„çª—å£çš„å­çª—å£ï¼Œè‹¥å­çª—å£ä¸å…³æ‰ï¼Œçˆ¶çª—å£æ— æ³•è¢«ç”¨æˆ·äº¤äº’
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, u8"Game Init Failed", _errMsg, window);
-	//ÒÔ-1½áÊø³ÌĞòÔËĞĞ
+	//ä»¥-1ç»“æŸç¨‹åºè¿è¡Œ
 	exit(-1);
 }
 
 void GameManager::OnInput()
 {
-	//µã»÷´°¿ÚµÄÍË³ö¼üÊ±´¥·¢µÄSDL_QUITÊÂ¼ş
+	//ç‚¹å‡»çª—å£çš„é€€å‡ºé”®æ—¶è§¦å‘çš„SDL_QUITäº‹ä»¶
 	if (event.type == SDL_QUIT)
 		isQuit = true;
 
-	//µØÍ¼ÖĞµÄÊó±êÎ»ÖÃ¼ì²â
+	//åœ°å›¾ä¸­çš„é¼ æ ‡ä½ç½®æ£€æµ‹
 	SceneManager::Instance()->OnInput(event);
-	//UI¹ÜÀíÆ÷µÄ°´¼üÊäÈë
+	//UIç®¡ç†å™¨çš„æŒ‰é”®è¾“å…¥
 	UIManager::Instance()->OnInput(event);
 }
 
 void GameManager::OnUpdate(double _delta)
 {
-	//¸üĞÂ¸÷¹ÜÀíÆ÷Êı¾İ
+	//æ›´æ–°å„ç®¡ç†å™¨æ•°æ®
 	SceneManager::Instance()->OnUpdate(_delta);
 	ChargeableManager::Instance()->OnUpdate(_delta);
 	SpawnManager::Instance()->OnUpdate(_delta);
@@ -154,10 +154,10 @@ void GameManager::OnUpdate(double _delta)
 
 void GameManager::OnRender()
 {
-	//³¡¾°µØÍ¼µÄäÖÈ¾
+	//åœºæ™¯åœ°å›¾çš„æ¸²æŸ“
 	SceneManager::Instance()->OnRender(renderer);
-	//UIÓ¦µ±×îºóäÖÈ¾µÄÒÔ±£Ö¤Ê¼ÖÕÔÚ×îÉÏ²ã
+	//UIåº”å½“æœ€åæ¸²æŸ“çš„ä»¥ä¿è¯å§‹ç»ˆåœ¨æœ€ä¸Šå±‚
 	UIManager::Instance()->OnRender(renderer);
-	//ÎÒ²»ÏëÈÃRimUIÕÚ×¡ChargeableManagerµÄäÖÈ¾
+	//æˆ‘ä¸æƒ³è®©RimUIé®ä½ChargeableManagerçš„æ¸²æŸ“
 	ChargeableManager::Instance()->OnRender(renderer);
 }
